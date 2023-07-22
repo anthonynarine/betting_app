@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Ignore virtual environment
+betting_env/
+
+# Ignore local_settings.py file
+local_settings.py
+
 # C extensions
 *.so
 
