@@ -1,0 +1,27 @@
+:root {
+  --bg-color: #0C0E23;
+  --bg-light-color: #303270;
+  --main-accent-color: #E7BEFE;
+  --emblem-accent-color: #C82532;
+}
+/* above used to add css styling using css variables to root elements */
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* This will remove the underline from our Links being mapped out in C1Grouplinks */
+a {
+  color: inherit;
+  text-decoration: none;
+}

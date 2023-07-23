@@ -1,0 +1,42 @@
+.App {
+  text-align: center;
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  color: white;
+}
+
+.header {
+  width: 100%;
+  border-bottom: 2px solid var(--main-accent-color);
+  padding: 1rem;
+}
+
+.emblem{
+  padding: .5rem;
+  border: 1px solid var(--emblem-accent-color);
+}
+
+/* styles everything below header elements  */
+.general-content {
+  display: grid;
+  grid-template-columns: 15rem 1fr;
+
+}
+
+.sidebar{
+  background-color: var(--bg-light-color);
+  /* thi extends the sidebar component to the entier lenght of screen -header +padding  */
+  height: calc(100vh - 152px);
+  padding: .5rem;
+}
+
+.main{
+  padding: 1rem;  
+
+}
+
+
+
+
+
+
