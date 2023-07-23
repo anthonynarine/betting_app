@@ -3,27 +3,29 @@ import React from "react";
 // import C1GroupList from "./components/C1GroupList";
 import Header from "./components/Header";
 import Sidebarr from "./components/SideBar";
-import GroupsList from "./components/pages/GroupsList";
 import GroupDetailsPage from "./components/pages/GroupDetails";
+import Main from "./components/Main";
 
 import "./App.css";
 import "./index.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./Theme";
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <Header />
-        <div className="general-content">
-          <Sidebarr />
-          <Routes>
-            <Route path="/" element={<GroupsList />} />
-            <Route path="/details/:groupId" element={<GroupDetailsPage />} /> 
-          </Routes>
-        </div>
+        <Router>
+          <Header />
+          <div className="general-content">
+            <Sidebarr />
+            <Routes>
+              <Route path="/" element={<Main />} />
+              <Route path="/details/:groupId" element={<GroupDetailsPage />} />
+            </Routes>
+          </div>
+        </Router>
       </div>
     </ThemeProvider>
   );

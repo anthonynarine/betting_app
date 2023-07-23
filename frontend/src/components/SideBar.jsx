@@ -10,7 +10,7 @@ function C4Sidebarr() {
     return(
         <div className="sidebar" >
             <h1>SideBar</h1>
-            <Button color="primary" variant='contained' >My Button</Button>
+            <Button color="primary" variant='contained'>My Button</Button>
         </div>
     )
 

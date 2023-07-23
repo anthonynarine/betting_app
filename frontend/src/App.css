@@ -1,14 +1,17 @@
 .App {
-  text-align: center;
+
   background-color: var(--bg-color);
   min-height: 100vh;
   color: white;
+
 }
 
 .header {
+  text-align: center;
   width: 100%;
   border-bottom: 2px solid var(--main-accent-color);
   padding: 1rem;
+  padding-top: 2rem;
 }
 
 .emblem{
@@ -16,18 +19,22 @@
   border: 1px solid var(--emblem-accent-color);
 }
 
-/* styles everything below header elements  */
+/*  below header elements
+seperates the screen into two columns    */
 .general-content {
   display: grid;
   grid-template-columns: 15rem 1fr;
+  /* grid-template-columns: 1fr 4fr; */
 
 }
 
 .sidebar{
   background-color: var(--bg-light-color);
   /* thi extends the sidebar component to the entier lenght of screen -header +padding  */
-  height: calc(100vh - 152px);
-  padding: .5rem;
+  height: calc(100vh -152px );
+  /* 100vh is entire ver height of screen - 152 px for the header */
+  padding: 1rem;
+  padding-left: 3.5rem;
 }
 
 .main{
