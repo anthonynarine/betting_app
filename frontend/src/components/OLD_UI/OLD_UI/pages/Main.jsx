@@ -1,5 +1,5 @@
-import GroupsList from "./pages/GroupsList";
-import GroupDetailsPage from "./pages/GroupDetails";
+import GroupsList from "./GroupsList";
+import GroupDetailsPage from "./GroupDetails";
 import { Routes, Route } from "react-router-dom";
 
 import React from "react";

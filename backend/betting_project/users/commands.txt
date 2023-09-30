@@ -1,0 +1,8 @@
+
+Running Test
+runs test of specivic app 
+python manage.py test myapp.tests
+
+runs all test in project
+python manage.py test .
+

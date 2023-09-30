@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../shared";
+import { baseUrl } from "../../../../shared";
 import { Typography } from "@mui/material";
 
 /**
