@@ -1,9 +1,9 @@
-import { createTheme, responsiveFontSizes } from "@mui/material";
+import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-export const createMuiTheme = (mode) => {
+export const createBettingAppTheme = (mode) => {
   let theme = createTheme({
     typography: {
-      fontFamily: ['Teko', "sans-serif", 'Roboto', "sans-serif"].join(","),
+      fontFamily: ["Roboto", "sans-serif","Teko", "sans-serif",].join(","),
       body2: {
         fontWeight: 600,
         letterSpacing: "0.5px",
@@ -13,11 +13,12 @@ export const createMuiTheme = (mode) => {
       height: 150,
     },
     primaryDraw: {
-      width: 240,
-      closed: 70,
+      width: 250,
+      closed: 100,
     },
+    // LIGHT AND DARK MODE
     palette: {
-      mode,
+      mode, // Set the mode based on the argument passed (e.g., "light" or "dark")
     },
     // overrides MUI theme
     components: {
@@ -30,37 +31,19 @@ export const createMuiTheme = (mode) => {
       MuiButton: {
         styleOverrides: {
           containedPrimary: {
-            backgroundColor: "#C3CFE1", // Ice gray color
-            '&:hover': {
-              backgroundColor: "#3A851B", // Darker gray for hover state
+            backgroundColor: mode === "dark" ? "#3A851B" : undefined, // Use default for light mode
+            "&:hover": {
+              backgroundColor: mode === "dark" ? "#222" : undefined, // Use default for light mode
             },
           },
         },
       },
-// overides MUI textfield box border color placeholder label color
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#E0E0E0', // change border color on hover
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: '#E0E0E0', // change border color when focused
-            },
-          },
-        },
-      },
-// overides MUI textfield onhover 
-      MuiInputLabel: {
-        styleOverrides: {
-          root: {
-            '&:hover': {
-              color: '#B0B0B0', // Change to your desired hover color
-            },
-            '&.Mui-focused': {
-              color: 'black', // Change to your desired focus color
-            },
-          },
+    },
+    //DIVIDER COLOR
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "yellow",
         },
       },
     },
@@ -70,3 +53,12 @@ export const createMuiTheme = (mode) => {
 
   return theme;
 };
+
+/*  
+
+to use in a component:
+import { useTheme } from "@mui/material/styles";
+
+const theme = useTheme();
+
+*/

@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+config.jsx
+
 # production
 /build
 
