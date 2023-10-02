@@ -7,13 +7,13 @@ import ThemeWrapper from "../theme/ThemeProvider";
 const ToggleColorModeProvider = ({ children }) => {
   const prefersDarkMode = useMediaQuery("([prefers-color-scheme: dark])");
 
-  console.log("Before useState initialization");
+  // console.log("Before useState initialization");
   const [mode, setMode] = useState(() => {
     const colorMode = Cookies.get("colorMode");
-    console.log("Color mode from cookies:", colorMode);
+    // console.log("Color mode from cookies:", colorMode);
     return colorMode || (prefersDarkMode ? "dark" : "light");
   });
-  console.log("After useState initialization");
+  // console.log("After useState initialization");
 
   const toggleColorMode = useCallback(() => {
     // Invert the current mode

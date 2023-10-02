@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+
 import Home from "./pages/pages/Home";
+import Groups from "./pages/structure/Main/Groups/Groups";
 
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,7 +15,8 @@ function App() {
       <CssBaseline />
       <Routes>
         <Route path="/" element={< Home />} />
-        {/* <Route path="/details/:groupId" element={<GroupDetailsPage />} /> */}
+        <Route path="/groups/:groupId" element={<Groups />} />
+
       </Routes>
     </ToggleColorModeProvider>
   );
