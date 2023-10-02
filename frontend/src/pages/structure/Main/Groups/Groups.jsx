@@ -7,7 +7,7 @@ import GroupDetailsCard from "./GroupDetailsCard";
 
 function Groups() {
   const { groupId } = useParams();
-  const url = groupId ? `/groups/${groupId}` : "/groups";
+  const url = groupId ? `/groups/${groupId}/` : "/groups/";
 
   const { apiData, fetchData } = useCrud([], url);
 

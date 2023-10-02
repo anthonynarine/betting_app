@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -13,12 +13,18 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import useCrud from "../../../../services/useCrud";
 // import RateMovieDialog from "../RateMoive";
+
+// import Moment from "react-moment"
+
+import EventTimestamp from "./EventTimeStamp";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,13 +37,15 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function GroupDetailsCard({ apiData  }) {
+export default function GroupDetailsCard({ apiData }) {
   const { name, location, banner_img, description, events } = apiData;
 
   const [expanded, setExpanded] = useState(false);
 
+  // const targeTime = new Date();
+  // targeTime.setHours(targeTime.getHours() + 2)
 
-  console.log("test in groudDetailsCard", apiData)
+  console.log("test in groudDetailsCard", apiData);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -60,42 +68,42 @@ export default function GroupDetailsCard({ apiData  }) {
 
   return (
     <Card
-      sx={{
-        // Set initial maxWidth (for smaller screens)
-        maxWidth: 300,
-        // Set maxHeight for scrolling on smaller screens
-        maxHeight: 650,
-        overflow: "auto",
-        // Rounded corners to make it look like a book
-        borderRadius: "20px",
-        // Shadow to simulate pages
-        boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
-        // Light background color like pages of a book
-        background: "#f2f2f2",
-        // CSS media query for larger screens
-        "@media (min-width: 768px)": {
-          // Adjust maxWidth for wider screens
-          maxWidth: 700, // You can adjust this value
-          // Remove maxHeight for wider screens (no scrolling)
-          maxHeight: "none",
-        },
-      }}
-      elevation={0}
+    sx={{
+      // Set initial maxWidth (for smaller screens)
+      maxWidth: 300,
+      // Set maxHeight for scrolling on smaller screens
+      maxHeight: 650,
+      overflow: "auto",
+      // Rounded corners to make it look like a book
+      borderRadius: "20px",
+      // Shadow to simulate pages
+      boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
+      // Light background color like pages of a book
+      background: "#f2f2f2",
+      // CSS media query for larger screens
+      "@media (min-width: 768px)": {
+        // Adjust maxWidth for wider screens
+        maxWidth: 700, // You can adjust this value
+        // Remove maxHeight for wider screens (no scrolling)
+        maxHeight: "none",
+      },
+    }}
+    elevation={0}
     >
       <CardHeader
-        avatar={<Avatar src={"https://source.unsplash.com/random/?plant"} aria-label="movie-icon" />}
+        avatar={
+          <Avatar
+            src={"https://source.unsplash.com/random/?plant"}
+            aria-label="movie-icon"
+          />
+        }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={<Typography variant="h5">{name}</Typography>}
-        subheader={
-          
-          <Typography variant="h6">
-            Location: {location} 
-          </Typography>
-        }
+        title={<Typography variant="h6">{name}</Typography>}
+        subheader={<Typography variant="h6">Location {location}</Typography>}
       />
       <CardMedia
         component="img"
@@ -103,23 +111,32 @@ export default function GroupDetailsCard({ apiData  }) {
         image={banner_img ? banner_img : "https://source.unsplash.com/random/?football"}
         alt="banner image"
       />
-      <CardContent>
+      <CardContent >
+        <Box sx={{margin: 2}}>
         <Typography variant="body2" color="text.secondary">
           {description}
         </Typography>
         {events && events.length > 0 && (
           <>
-            <Typography variant="h6">Event:</Typography>
+            {/* <Typography variant="h6">Event:</Typography> */}
             {events.map((event) => (
               <div key={event.id}>
-                <Typography variant="body2">{event.team1} Vs {event.team2}</Typography>
-                <Typography variant="body2">Time: {event.time}</Typography>
+                <Typography variant="h6" sx={{marginTop: 1}}>
+                  {event.team1} Vs {event.team2}
+                </Typography>
+                
+                <Typography sx={{ display: "flex", alignItems: "center", marginTop: 2, }} >
+           
+                  <EventTimestamp createdAt={new Date(event.time)} />
+                </Typography>
+
+                {/* <Typography variant="body2"><Moment date={targeTime} fromNow /> remaining time </Typography> */}
                 {/* Add more event details here */}
               </div>
             ))}
           </>
         )}
-        
+        </Box>
       </CardContent>
       <CardActions disableSpacing>
         {/* <IconButton onClick={handleOpenRateMovie}><Button variant="contained" >Rate Movie</Button></IconButton>
@@ -149,4 +166,3 @@ export default function GroupDetailsCard({ apiData  }) {
     </Card>
   );
 }
-
