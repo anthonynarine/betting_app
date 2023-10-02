@@ -15,7 +15,7 @@ import {
 
 const GroupCard = ({ group }) => {
     
-  console.log("GroupCard props:", group);
+  // console.log("GroupCard props:", group);
 
   return (
     <Link

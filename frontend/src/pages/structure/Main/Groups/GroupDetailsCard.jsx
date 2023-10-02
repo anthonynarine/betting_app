@@ -32,19 +32,12 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function GroupDetailsCard({ apiData  }) {
-  const { name, location, icon, banner_img, description } = apiData;
+  const { name, location, banner_img, description, events } = apiData;
 
   const [expanded, setExpanded] = useState(false);
 
-  const [isRateMovieOpen, setIsRateMovieOpen] = useState(false);
 
-  const handleOpenRateMovie = () => {
-    setIsRateMovieOpen(true);
-  };
-
-  const handleCloseRateMovie = () => {
-    setIsRateMovieOpen(false);
-  };
+  console.log("test in groudDetailsCard", apiData)
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -98,6 +91,7 @@ export default function GroupDetailsCard({ apiData  }) {
         }
         title={<Typography variant="h5">{name}</Typography>}
         subheader={
+          
           <Typography variant="h6">
             Location: {location} 
           </Typography>
@@ -106,13 +100,26 @@ export default function GroupDetailsCard({ apiData  }) {
       <CardMedia
         component="img"
         height="300"
-        image={banner_img ? banner_img : "https://source.unsplash.com/random/?fire"}
+        image={banner_img ? banner_img : "https://source.unsplash.com/random/?football"}
         alt="banner image"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {description}
         </Typography>
+        {events && events.length > 0 && (
+          <>
+            <Typography variant="h6">Event:</Typography>
+            {events.map((event) => (
+              <div key={event.id}>
+                <Typography variant="body2">{event.team1} Vs {event.team2}</Typography>
+                <Typography variant="body2">Time: {event.time}</Typography>
+                {/* Add more event details here */}
+              </div>
+            ))}
+          </>
+        )}
+        
       </CardContent>
       <CardActions disableSpacing>
         {/* <IconButton onClick={handleOpenRateMovie}><Button variant="contained" >Rate Movie</Button></IconButton>

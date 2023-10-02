@@ -1,30 +1,26 @@
 import { Typography, Box, Container, Grid } from "@mui/material";
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import useCrud from "../../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "./GroupCard";
 import GroupDetailsCard from "./GroupDetailsCard";
 
-
-
-function Groups( ) {
-
+function Groups() {
   const { groupId } = useParams();
-  const url = groupId ? `/groups/${groupId}` : "/groups"
+  const url = groupId ? `/groups/${groupId}` : "/groups";
 
   const { apiData, fetchData } = useCrud([], url);
 
-  useEffect(()=> {
+  useEffect(() => {
     fetchData();
-  },[groupId,])
+  }, [groupId]);
 
-  useEffect(()=>{
-    console.log("GOUP ID:", apiData, "data test in GroupsComp")
-  },[groupId],)
-
+  useEffect(() => {
+    console.log("Group ID:", apiData, "data test in GroupsComp");
+  }, [groupId]);
 
   // Sample static data for groups
-  
+
   // const staticData = [
   //   { id: 1, name: "Group 1" },
   //   { id: 2, name: "Group 2" },
@@ -106,6 +102,35 @@ function Groups( ) {
     }
   };
 
+  const renderGroupList = () => {
+    if (groupId) {
+      return null;
+    } else {
+      return (
+        <Grid
+          container
+          spacing={{ xs: 2, sm: 3, md: 4, lg: 5 }}
+          style={{ width: "100%" }}
+        >
+          {Array.isArray(apiData) &&
+            apiData.map((group) => (
+              <Grid
+                item
+                key={group.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                xl={2}
+                style={{ width: "100%" }}
+              >
+                <GroupCard group={group} />
+              </Grid>
+            ))}
+        </Grid>
+      );
+    }
+  };
 
   const renderSubheader = () => {
     if (groupId) {
@@ -138,41 +163,10 @@ function Groups( ) {
     }
   };
 
-  const renderGroupList = () => {
-    if (groupId) {
-      return null;
-    } else {
-      return (
-        <Grid
-          container
-          spacing={{ xs: 2, sm: 3, md: 4, lg: 5 }}
-          style={{ width: "100%" }}
-        >
-          {Array.isArray(apiData) &&
-            apiData.map((group) => (
-              <Grid
-                item
-                key={group.id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                xl={2}
-                style={{ width: "100%" }}
-              >
-                <GroupCard group={group} />
-              </Grid>
-            ))}
-        </Grid>
-      );
-    }
-  };
-
-
   return (
     <>
       <Container maxWidth="xxl" sx={{ px: { md: 5, lg: 7 }, width: "100%" }}>
-      <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
+        <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
         <Box>{renderSubheader()}</Box>
         <Box>{renderGroupList()}</Box>
       </Container>
