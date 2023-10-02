@@ -1,4 +1,3 @@
-// MovieCard.js
 
 import { Link } from "react-router-dom";
 import {
@@ -36,7 +35,7 @@ const GroupCard = ({ group }) => {
       >
         <CardMedia
           component="img"
-          image={"https://source.unsplash.com/random/?flag"}
+          image={"https://source.unsplash.com/random/?cloud"}
           alt="random"
           sx={{
             display: { xs: "none", sm: "block" },
@@ -49,11 +48,11 @@ const GroupCard = ({ group }) => {
         />
         <CardContent sx={{ flexGrow: 1, p: 0, "&:last-child": { paddingBottom: 0 } }}>
           <ListItem disablePadding>
-            {/* <ListItemIcon sx={{ minWidth: "50px" }}>
+            <ListItemIcon sx={{ minWidth: "50px", margin:1 }}>
               <ListItemAvatar sx={{ pt: "5px" }}>
-                <Avatar alt="movie icon" src={movie.icon} />
+                <Avatar alt="movie icon" src={"https://source.unsplash.com/random/?denseforest"}/>
               </ListItemAvatar>
-            </ListItemIcon> */}
+            </ListItemIcon>
             <ListItemText
               primary={
                 <Typography
@@ -64,14 +63,25 @@ const GroupCard = ({ group }) => {
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",
+                    ml: 1.5,
+                    flexGrow: 1, // Allow text to take available space
                   }}
                 >
                   {group.name}
                 </Typography>
               }
               secondary={
-                <Typography variant="body2">
-                  test
+                <Typography variant="body2"
+                sx={{
+                    fontWeight: 700,
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    ml: "5px",
+                    flexGrow: 1, // Allow text to take available space
+                  }}
+                >
+                 Join this group
                   {/* <StarRating rating={movie.avg_rating} /> */}
                 </Typography>
               }

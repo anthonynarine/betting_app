@@ -27,30 +27,30 @@ const Home = () => {
   // }, []);
 
 
-  const url = "/groups/";
-  const { apiData, error, isLoading, fetchData } = useCrud(url);
+  // const url = "/groups/";
+  // const { apiData, error, isLoading, fetchData } = useCrud(url);
 
-  useEffect(() => {
-    fetchData()
-      .then((data) => {
-        console.log("FETCHED from Home Page", data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, [url]);
+  // useEffect(() => {
+  //   fetchData()
+  //     .then((data) => {
+  //       console.log("FETCHED from Home Page", data);
+  //     })
+  //     .catch((error) => {
+  //       console.error("Error fetching data:", error);
+  //     });
+  // }, [url]);
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  // if (error) {
+  //   return <p>Error: {error.message}</p>;
+  // }
 
-  if (!apiData || apiData.length === 0) {
-    return <p>No data available.</p>;
-  }
+  // if (!apiData || apiData.length === 0) {
+  //   return <p>No data available.</p>;
+  // }
 
 
   return (
@@ -60,7 +60,8 @@ const Home = () => {
       <PrimaryDraw></PrimaryDraw>
       <Main>
         {/* <Groups groups={groups} /> */}
-        <Groups groups={apiData} />
+        {/* <Groups groups={apiData} /> */}
+        <Groups />
       </Main>
     </Box>
   );

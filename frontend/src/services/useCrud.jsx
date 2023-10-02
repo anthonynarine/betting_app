@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_URL } from "../config";
 import { useState } from "react";
 
-const useCrud = (apiURL) => {
+const useCrud = (initialData=[], apiURL) => {
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +20,7 @@ const useCrud = (apiURL) => {
     } catch (error) {
       if (error.response && error.response.status === 400) {
         setError(new Error("400"));
+        console.error(error)
       }
       console.error("Error:", error);
       setIsLoading(false);
