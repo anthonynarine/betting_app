@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     # 3rd party
     'corsheaders',
     'rest_framework',
+      'rest_framework_simplejwt',
     #local
     "api",
     "users",
@@ -120,3 +121,19 @@ CORS_ALLOWED_ORIGINS = [
 
 #..ADDED..
 AUTH_USER_MODEL = "users.CustomUser"
+
+
+#....ADDED...
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+#....ADDED...
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
