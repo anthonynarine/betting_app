@@ -28,16 +28,16 @@ export function useAuthServices() {
   };
 
   // Request tokens
-  const obtainTokens = async (username, password) => {
+  const obtainTokens = async (email, password) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/token/`, {
-        username,
+        email,
         password,
       });
 
-      const { access, refresh } = response.data;
-
       console.log("Data returned by obtainTokens():", response.data);
+
+      const { access, refresh } = response.data;
 
       return response.data;
     } catch (error) {

@@ -9,19 +9,24 @@ import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
+import AuthProvider from "./context/AuthContext";
 
 function App() {
 
+
+  
   return (
-    <ToggleColorModeProvider >
-      <CssBaseline />
-      <Routes>
-        <Route path="/" element={< Home />} />
-        <Route path="/group/:groupId" element={<DetailPage />} />
-        {/* <Route path="/login" element={<LoginPage />} /> */}
-        <Route path="/login" element={<LoginPageV0 />} />
-      </Routes>
-    </ToggleColorModeProvider>
+    <AuthProvider>
+      <ToggleColorModeProvider>
+        <CssBaseline />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/group/:groupId" element={<DetailPage />} />
+          {/* <Route path="/login" element={<LoginPage />} /> */}
+          <Route path="/login" element={<LoginPageV0 />} />
+        </Routes>
+      </ToggleColorModeProvider>
+    </AuthProvider>
   );
 }
 
