@@ -1,5 +1,6 @@
 
 from pathlib import Path
+import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -95,6 +96,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
+
+#..UPDATED...
 TIME_ZONE = 'America/New_York'  # Set your desired timezone
 
 USE_I18N = True
@@ -104,11 +107,14 @@ USE_TZ = True
 
 
 
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
 STATIC_URL = "static/"
 
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 
 #..ADDED..
