@@ -6,6 +6,8 @@ import { useResponsiveDrawer } from "../PrimaryDraw/Drawer/useResponsive";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
+import AccountButton from "./AccountButton";
+
 function PrimaryAppBar() {
   const theme = useTheme();
 
@@ -59,10 +61,12 @@ function PrimaryAppBar() {
                 display: { fontWeight: 900, letterSpacing: "0.25px", color: "black" },
               }}
             >
-              Lucky 777
+              Bet On This
             </Typography>
           </Link>
           <CasinoIcon sx={{ marginLeft: "3px" }} />
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <AccountButton />
         </Toolbar>
       </AppBar>
     </>

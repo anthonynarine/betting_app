@@ -1,37 +1,28 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { CssBaseline, useMediaQuery, createTheme } from "@mui/material";
-import Cookies from "js-cookie";
 import { ColorModeContext } from "../context/ColorModeContext";
 import ThemeWrapper from "../theme/ThemeProvider";
 
 const ToggleColorModeProvider = ({ children }) => {
-  const prefersDarkMode = useMediaQuery("([prefers-color-scheme: dark])");
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
 
-  // console.log("Before useState initialization");
   const [mode, setMode] = useState(() => {
-    const colorMode = Cookies.get("colorMode");
-    // console.log("Color mode from cookies:", colorMode);
-    return colorMode || (prefersDarkMode ? "dark" : "light");
+    const storedColorMode = localStorage.getItem("colorMode");
+    if (storedColorMode === "light" || storedColorMode === "dark") {
+      return storedColorMode;
+    }
+    return prefersDarkMode ? "dark" : "light";
   });
-  // console.log("After useState initialization");
 
   const toggleColorMode = useCallback(() => {
-    // Invert the current mode
     const newMode = mode === "light" ? "dark" : "light";
-    // Store the new mode in cookies
-    Cookies.set("colorMode", newMode);
-    // Update the color mode state
+    localStorage.setItem("colorMode", newMode);
     setMode(newMode);
   }, [mode]);
 
   const colorMode = useMemo(() => ({ toggleColorMode }), [toggleColorMode]);
 
-  const theme = useMemo(() => createTheme(mode || "light"), [mode]);
-
-  useEffect(() => {
-    Cookies.set("colorMode", mode);
-    console.log(`Color mode switched to: ${mode}`);
-  }, [mode]);
+  const theme = useMemo(() => createTheme(mode), [mode]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -44,3 +35,10 @@ const ToggleColorModeProvider = ({ children }) => {
 };
 
 export default ToggleColorModeProvider;
+
+
+//                useMomo
+/* The useMemo hook in React is used to memoize (cache)
+ the result of a function or an expression so that it
+is only recalculated when the dependencies specified
+ in its dependency array change. */

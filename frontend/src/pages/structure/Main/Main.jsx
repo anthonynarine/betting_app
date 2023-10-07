@@ -12,6 +12,7 @@ const Main = ({ children }) => {
         mt: `${theme.primaryAppBar.height}px`,
         height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
         overflow: "hidden", //enable scrool with auto, disable with hidden
+        
       }}
     >
       {children}
