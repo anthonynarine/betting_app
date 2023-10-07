@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/AuthContext";
+import { useAuthServices } from "../../../../Auth/AuthServices";
 
 function LoginTest() {
   const [email, setEmail] = useState("");
@@ -8,7 +9,7 @@ function LoginTest() {
 
   const navigate = useNavigate();
 
-  const { obtainTokens } = useAuth();
+  const { obtainTokens, getUserIdFromToken, getUserDetails  } = useAuthServices();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +18,15 @@ function LoginTest() {
       const tokens = await obtainTokens(email, password);
       localStorage.setItem("accessToken", tokens.access);
       localStorage.setItem("refreshToken", tokens.refresh);
+      localStorage.setItem("userId", getUserIdFromToken(tokens.access))
+
+      await getUserDetails();
+
+      //TESTS
+      console.log("Access Token being stored:", tokens.access);
+      console.log("Refresh Token being stored:", tokens.refresh);
+      console.log("getUserIdFromToken:", getUserIdFromToken(tokens.access));
+
 
       // navigate("/testlogin/")
     } catch (error) {

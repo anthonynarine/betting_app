@@ -47,29 +47,48 @@ export function useAuthServices() {
 
   // Extract the user_id from the token
   const getUserIdFromToken = (access) => {
+
+    // Attempt to extract user ID from the provided JWT.
     try {
-      const token = access;
-      // Split the token into its components (header, payload, signature)
-      const tokenParts = token.split(".");
-      if (tokenParts.length !== 3) {
-        throw new Error("Invalid token structure");
-      }
 
-      // Decode the payload
-      const decodedPayload = atob(tokenParts[1]);
+        // Assign the provided JWT to a constant
+        const token = access;
 
-      // Parse the payload
-      const payloadData = JSON.parse(decodedPayload);
-      const userId = payloadData.user_id;
+        // A JWT consists of three parts: header, payload, and signature. 
+        // These parts are separated by periods ('.').
+        // This line splits the token into its three individual components.
+        const tokenParts = token.split(".");
 
-      return userId;
+        // Check if the token has the correct number of parts (i.e., 3).
+        // If not, it's considered invalid.
+        if (tokenParts.length !== 3) {
+            throw new Error("Invalid token structure");
+        }
+
+        // The payload of the JWT (which is the second part) is Base64Url encoded.
+        // This line decodes the payload to get the actual content.
+        const decodedPayload = atob(tokenParts[1]);
+
+        // After decoding, the payload is still in a stringified JSON format.
+        // This line parses it to convert it into a JavaScript object.
+        const payloadData = JSON.parse(decodedPayload);
+
+        // Extract the user ID from the parsed payload.
+        const userId = payloadData.user_id;
+
+        // Return the extracted user ID.
+        return userId;
+
     } catch (error) {
-      console.error("Error extracting user ID from token:", error.message);
-      return null;
+        // Log any errors encountered during the process.
+        console.error("Error extracting user ID from token:", error.message);
+        
+        // Return null in case of an error.
+        return null;
     }
-  };
-  // Use the userId in localstorage to get get the username
-  const getUserDetials = async () => {
+};
+  // Use the userId in localstorage to get get the user's email
+  const getUserDetails = async () => {
     try {
       const userId = localStorage.getItem("userId");
       const accessToken = localStorage.getItem("accessToken");
@@ -81,9 +100,9 @@ export function useAuthServices() {
       console.log("API Response:", response.data);
       const userDetails = response.data;
       console.log("User Details:", userDetails);
-      const username = userDetails.username;
-      console.log("Extracted Username:", username);
-      localStorage.setItem("username", username);
+      const userEmail = userDetails.email;
+      console.log("Extracted Email:", userEmail);
+      localStorage.setItem("email", userEmail);
     } catch (error) {
       console.log("Error obtaining user details:", error.message);
       return error;
@@ -94,6 +113,6 @@ export function useAuthServices() {
     signup,
     obtainTokens,
     getUserIdFromToken,
-    getUserDetials,
+    getUserDetails,
   };
 }
