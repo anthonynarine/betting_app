@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, TextField, Container, Typography, Box, useTheme } from "@mui/material";
 import { useAuthServices } from "../../Auth/AuthServices";
 import { useNavigate } from "react-router-dom";
-import { useLogin } from "../../context/login/LoginContext";
+// import { useLogin } from "../../context/login/LoginContext";
 import { LoginStyles } from "./LoginStyles";
 import { validatePasswordLogin, validateEmail } from "./validators/LoginValidators";
 
@@ -19,8 +19,8 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const { obtainTokens, getUserIdFromToken, getUserDetails } = useAuthServices();
-  const { isLoggedIn, login, logout } = useLogin();
+  const { obtainTokens, getUserIdFromToken, getUserDetails, isLoggedIn, login, logout } = useAuthServices();
+  // const { isLoggedIn, login, logout } = useLogin();
 
   const theme = useTheme();
   const classes = LoginStyles(theme);
@@ -57,8 +57,8 @@ const LoginPage = () => {
       console.log("Refresh Token being stored:", tokens.refresh);
       console.log("getUserIdFromToken:", getUserIdFromToken(tokens.access));
 
-      // navigate("/testlogin");
-      navigate("/");
+      navigate("/testlogin");
+      // navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 401) {
         setApiError("Invalid email or password. Please try again");

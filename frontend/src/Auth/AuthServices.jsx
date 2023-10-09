@@ -1,7 +1,16 @@
 import axios from "axios";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 
 export function useAuthServices() {
+
+  const navigate = useNavigate();
+
   const BASE_URL = "http://127.0.0.1:8000";
+
+  const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+  const [isLoggedIn,  setIsLoggedIn] = useState(loggedIn)
+
   // new user registration
   const signup = async (username, email, password, confirmPassword) => {
     try {
@@ -87,6 +96,12 @@ export function useAuthServices() {
         return null;
     }
 };
+
+const login = () => {
+  setIsLoggedIn(true);
+  localStorage.setItem("isLoggedIn", "true");
+};
+
   // Use the userId in localstorage to get get the user's email
   const getUserDetails = async () => {
     try {
@@ -109,10 +124,25 @@ export function useAuthServices() {
     }
   };
 
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.setItem("isLoggedIn", "false");
+    localStorage.removeItem("accessToken")
+    localStorage.removeItem("refreshToken")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("username")
+    navigate("/login")
+
+};
+
   return {
     signup,
     obtainTokens,
     getUserIdFromToken,
+    setIsLoggedIn,
+    isLoggedIn,
+    login,
     getUserDetails,
+    logout
   };
 }

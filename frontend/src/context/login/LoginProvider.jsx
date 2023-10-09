@@ -1,4 +1,9 @@
-// LoginProvider.js
+
+
+////////////////////////////////////////////////////////////////////////////////////
+//    Decided to combine these functions with the useAuthServices hook
+
+
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { LoginContext } from "./LoginContext";
@@ -33,3 +38,5 @@ export const LoginProvider = ({ children }) => {
         </LoginContext.Provider>
     );
 };
+
+
