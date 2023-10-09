@@ -3,6 +3,9 @@ import { IconButton, Box, Menu, MenuItem } from "@mui/material";
 import { AccountCircle, Brightness4 as Brightness4Icon } from "@mui/icons-material";
 import LigtSwitch from "./LigtSwitch";
 
+//CURRENTLY ACTIVATING THE ACCOUNT BUTTON DISABLES THE LINK COMPONENTS
+//TODO FIX ABOVE
+
 
 export default function AccountButton() {
   const renderMenu = (
@@ -23,3 +26,5 @@ export default function AccountButton() {
     </Box>
   );
 }
+
+

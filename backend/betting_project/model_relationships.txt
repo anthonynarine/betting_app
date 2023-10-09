@@ -1,0 +1,59 @@
+Relationships:
+CustomUser and Group:
+
+A CustomUser can be part of multiple Group instances, and a Group can 
+have multiple CustomUser instances. 
+This is a ManyToMany relationship.
+In your CustomUser model, this relationship is represented by the
+"groups" field.
+
+Event and Group:
+An Event is associated with a single Group. This means a Group can have multiple
+events, but each Event belongs to one and only one Group.
+This is a ForeignKey relationship from Event to Group.
+
+Event and CustomUser (participants):
+An Event can have multiple participants (CustomUser instances), and
+a CustomUser can participate in multiple events.
+This is another ManyToMany relationship.
+In the proposed design, this relationship could be represented in the
+Event model with a field like participants = models.ManyToManyField(CustomUser).
+
+
+Example Scenario:
+
+Creating Groups and Users:
+
+Let's say you have two Group instances: "Basketball Lovers" in "New York" and
+"Football Fans" in "Los Angeles".
+And you have three users: Alice, Bob, and Charlie.
+Alice and Bob are part of the "Basketball Lovers" group.
+Charlie is part of the "Football Fans" group.
+
+
+Organizing Events:
+The "Basketball Lovers" group decides to organize two events:
+A match between "Knicks vs. Nets".
+A group meetup to discuss the season.
+The "Football Fans" group organizes an event:
+A match watch party for "Rams vs. Chargers".
+
+
+Participation in Events:
+Alice decides to participate in both the match and the meetup of "Basketball Lovers".
+Bob only participates in the meetup.
+Charlie participates in the watch party organized by "Football Fans".
+
+Concluding Remarks:
+With the above relationships:
+
+CustomUser (Alice, Bob, Charlie) can be part of multiple Group instances 
+and participate in multiple Event instances.
+Each Group (Basketball Lovers, Football Fans) can organize multiple
+Event instances.
+Each Event belongs to a specific Group and can have multiple participants
+(CustomUser).
+
+The relationships are flexible and can be used to represent
+various scenarios, like users participating in different group activities,
+groups organizing various events, and more.

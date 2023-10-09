@@ -15,15 +15,18 @@ export const validateUsername = (username) => {
     return "";
   };
   
-  /**
-   * Validates the provided password.
-   *
-   * @param {string} password - The password to validate.
-   * @returns {string} - Returns an error message if the password is invalid,
-   *                     otherwise returns an empty string.
-   */
+
+//Email validator
+export const validateEmail = (email) => {
+  if (!email.trim()) {
+    return "Email is required.";
+  }
+  return "";
+};
+
+
+//Password validator
   export const validatePasswordLogin = (password) => {
-    // Check if the password is empty or only contains whitespace
     if (!password.trim()) {
       return "Password is required.";
     }

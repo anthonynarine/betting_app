@@ -1,31 +1,30 @@
-import React, { useState } from "react";
+import Home from "./pages/home/Home";
+// import DetailPage from "./pages/detailsPage/DetailsPage";
 
-import Home from "./pages/pages/Home";
-import DetailPage from "./pages/pages/DetailsPage";
-import LoginPage from "./pages/pages/Login/LoginPage";
-import LoginPageV0 from "./pages/pages/Login/test/LoginPageV0";
-
+import DetailPage from "./pages/details/DetailsPage";
+import LoginPageV0 from "./pages/Login/test/LoginPageV0";
+import LoginPage from "./pages/Login/LoginPage";
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
 import AuthProvider from "./context/AuthContext";
+import { LoginProvider } from "./context/login/LoginProvider";
 
 function App() {
-
-
-  
   return (
     <AuthProvider>
-      <ToggleColorModeProvider>
-        <CssBaseline />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/group/:groupId" element={<DetailPage />} />
-          {/* <Route path="/login" element={<LoginPage />} /> */}
-          <Route path="/login" element={<LoginPageV0 />} />
-        </Routes>
-      </ToggleColorModeProvider>
+      <LoginProvider>
+        <ToggleColorModeProvider>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/group/:groupId" element={<DetailPage />} />
+            {/* <Route path="/login" element={<LoginPageV0 />} /> */}
+            <Route path="/login" element={<LoginPage />} />
+          </Routes>
+        </ToggleColorModeProvider>
+      </LoginProvider>
     </AuthProvider>
   );
 }

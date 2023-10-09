@@ -2,7 +2,6 @@ import { AppBar, Toolbar, Typography, Box, IconButton, Drawer } from "@mui/mater
 import { Link } from "react-router-dom";
 import CasinoIcon from "@mui/icons-material/Casino";
 import { useResponsiveDrawer } from "../PrimaryDraw/Drawer/useResponsive";
-
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -66,7 +65,7 @@ function PrimaryAppBar() {
           </Link>
           <CasinoIcon sx={{ marginLeft: "3px" }} />
           <Box sx={{ flexGrow: 1 }}></Box>
-          <AccountButton />
+          {/* <AccountButton /> */}
         </Toolbar>
       </AppBar>
     </>
