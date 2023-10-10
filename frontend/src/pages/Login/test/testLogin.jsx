@@ -1,16 +1,45 @@
-
-
-import { useAuthServices } from '../../../Auth/AuthServices'
+import axios from "axios";
+import { useState } from "react";
+import useAxiosWithInterceptor from "../../../services/jwtinterceptor";
+import { useAuthServices } from "../../../Auth/AuthServices";
 
 const TestLogin = () => {
-  const { isLoggedIn } = useAuthServices();
-  console.log("LOGIN STATUS", isLoggedIn)
+  const jwtAxios = useAxiosWithInterceptor();
+  
+  const { isLoggedIn, logout } = useAuthServices();
+  console.log("LOGIN STATUS", isLoggedIn);
 
+  const [userEmail, setUserEmail] = useState();
 
-  return <>
-    {isLoggedIn.toString()}
-  </>
+  const getUserDetails = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await jwtAxios.get(`http://127.0.0.1:8000/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
 
+      const userDetails = response.data;
+      console.log(response)
+      setUserEmail(userDetails.email);
+      console.log(userDetails.email)
+    } catch (error) {
+      console.log("Error obtaining user details:", error.message);
+      return error;
+    }
+  };
 
+  return (
+    <>
+      <div>{isLoggedIn.toString()}</div>
+      <div>
+        <button onClick={logout}>Logout</button>
+        <button onClick={getUserDetails}>GetUserDetails</button>
+      </div>
+      <div>UserEmail: {userEmail}</div>
+    </>
+  );
 };
 export default TestLogin;
