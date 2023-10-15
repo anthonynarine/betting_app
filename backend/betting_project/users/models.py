@@ -18,8 +18,6 @@ class CustomUser(AbstractUser):
     profile_picture = models.FileField(
         upload_to=profile_picture_upload_path, blank=True, null=True
     )
-    # Allows for a user to be associated with one or multiple groups
-    groups = models.ManyToManyField('api.Group', blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

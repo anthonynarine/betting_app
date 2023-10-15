@@ -1,0 +1,36 @@
+classDiagram
+  class CustomUser {
+    +email: EmailField
+    +profile_picture: FileField
+    +groups: ManyToManyField
+  }
+  class Group {
+    +name: CharField
+    +location: CharField
+    +description: TextField
+    +creator: ForeignKey
+    +created_at: DateTimeField
+    +updated_at: DateTimeField
+  }
+  class Event {
+    +team1: CharField
+    +team2: CharField
+    +team1_score: IntegerField
+    +team2_score: IntegerField
+    +time: DateTimeField
+    +organizer: ForeignKey
+    +group: ForeignKey
+    +participants: ManyToManyField
+  }
+  class Member {
+    +group: ForeignKey
+    +user: ForeignKey
+    +admin: CharField
+    +joined_at: DateTimeField
+  }
+  CustomUser --|> Group : creator
+  CustomUser --|> Event : organizer
+  CustomUser --|> Member : user
+  Group --|> Event : group
+  Group --|> Member : group
+  Event --|> CustomUser : participants

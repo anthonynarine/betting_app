@@ -1,11 +1,11 @@
 from typing import Self
 from rest_framework import viewsets
-from .models import Group, Event
+from .models import Group, Event, Member
 from rest_framework.response import Response
-from .serializer import GroupSerializer, EventSerializer, FullGroupSerializer
+from .serializer import GroupSerializer, EventSerializer, FullGroupSerializer, MemberSerializer
 
 class GroupViewset(viewsets.ModelViewSet):
-    queryset = Group.objects.all().order_by("name")
+    queryset = Group.objects.prefetch_related("members__user").all()
     serializer_class = GroupSerializer
     
     # def get_serializer_class(self):
@@ -17,12 +17,15 @@ class GroupViewset(viewsets.ModelViewSet):
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
+        print("Members:", instance.members.all())  # Debugging line
         serializer = FullGroupSerializer(instance, many=False, context={"request": request})
+        print("Serialized Data:", serializer.data)  # Debugging line
         return Response(serializer.data )
        
-
-
-
 class EventViewset(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
+    
+class MemberViewSet(viewsets.ModelViewSet):
+    queryset = Member.objects.all()
+    serializer_class = MemberSerializer
