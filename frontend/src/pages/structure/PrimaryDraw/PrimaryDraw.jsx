@@ -4,20 +4,20 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useTheme } from "@mui/material/styles";
 import DrawerToggle from "./Drawer/DrawToggle";
 
-function PrimaryDraw() {
+function PrimaryDraw({ children }) {
   const theme = useTheme();
   const below600 = useMediaQuery("(max-width:599px)");
   const [open, setOpen] = useState(!below600);
 
-// Mixin for styles when the drawer is open
-const openedMixin = () => ({
+  // Mixin for styles when the drawer is open
+  const openedMixin = () => ({
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflow: "auto", // Enables scroll when the content overflows
   });
-  
+
   // Mixin for styles when the drawer is closed
   const closedMixin = () => ({
     transition: theme.transitions.create("width", {
@@ -27,19 +27,19 @@ const openedMixin = () => ({
     overflow: "auto", // Enables scroll when the content overflows
     width: theme.primaryDraw.closed, // Sets the width of the closed drawer
   });
-  
+
   // Custom styled Drawer component
   const CustomDrawer = styled(MuiDrawer)(({ theme, open }) => ({
     width: theme.primaryDraw.width, // Sets the default width of the drawer
     whiteSpace: "nowrap", // Prevents text from wrapping
     boxSizing: "border-box", // Ensures padding and border are included in the width calculation
-  
+
     // Styles applied when the drawer is open
     ...(open && {
       ...openedMixin(),
       "& .MuiDrawer-paper": openedMixin(), // Applies the openedMixin to the Drawer's paper component
     }),
-  
+
     // Styles applied when the drawer is closed
     ...(!open && {
       ...closedMixin(),
@@ -60,6 +60,15 @@ const openedMixin = () => ({
   const closeDrawer = useCallback(() => {
     setOpen(false);
   }, []);
+
+  const childrenWithProps = React.Children.map(children, (child) =>
+    /* this code is iterating 
+    over all the children of a component. For each child 
+    that is a valid React element, it clones the element and
+    injects the open prop into it. If the child is not a valid 
+  React element, it just passes it through unchanged.*/
+    React.isValidElement(child) ? React.cloneElement(child, { open }) : child
+  );
 
   return (
     <CustomDrawer
@@ -84,12 +93,13 @@ const openedMixin = () => ({
           }}
         >
           <DrawerToggle open={open} closeDrawer={closeDrawer} openDrawer={openDrawer} />
-          {[...Array(100)].map((_, i) => (
+          {/* {[...Array(100)].map((_, i) => (
             <Typography key={i} paragraph>
               {i + 1}
             </Typography>
-          ))}
+          ))} */}
         </Box>
+        {childrenWithProps}
       </Box>
     </CustomDrawer>
   );

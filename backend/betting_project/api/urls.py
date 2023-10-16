@@ -7,6 +7,7 @@ from django.conf import urls
 router = routers.DefaultRouter()
 router.register("groups", views.GroupViewset)
 router.register("events", views.EventViewset)
+router.register("members", views.EventViewset)
 
 
 urlpatterns = [

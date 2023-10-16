@@ -12,7 +12,7 @@ def profile_picture_upload_path(instance, filename):
 
 
 class CustomUser(AbstractUser):
-    username = None
+    username = models.CharField(_("username"), max_length=30, unique=True)
     email = models.EmailField(_("email address"), unique=True)
 
     profile_picture = models.FileField(
@@ -20,7 +20,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ["username"]
 
     objects = CustomUserManager()
 

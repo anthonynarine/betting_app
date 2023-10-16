@@ -16,6 +16,7 @@ class EventSerializer(serializers.ModelSerializer):
         
 
 class MemberSerializer(serializers.ModelSerializer):
+    user = UserSerializer(many=False)
     class Meta:
         model = Member
         fields = ["user",'group', 'admin', 'joined_at']       
@@ -26,7 +27,7 @@ class FullGroupSerializer(serializers.ModelSerializer):
     members = MemberSerializer(many=True, read_only=True)
     class Meta:
         model = Group
-        fields = ("id", "name", "location", "description", "events", "members")
+        fields = ( "name","id", "location", "description", "events", "members")
         
 
 
