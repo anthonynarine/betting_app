@@ -1,5 +1,5 @@
 
-export const GroupListStyles = (theme) => ({
+export const ListViewStyles = (theme) => ({
   mainBox: {
     height: 50,
     padding: 2,

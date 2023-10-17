@@ -16,6 +16,9 @@ export const createBettingAppTheme = (mode) => {
       width: 250,
       closed: 100,
     },
+    secondaryDraw: {
+      width: 260,
+    },
     palette: {
       mode,
     },

@@ -15,6 +15,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
+import JoinGroupButton from "./JoinGroupBtn";
 
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -91,19 +92,19 @@ export default function GroupDetailsCard({ apiData }) {
       elevation={0}
     >
       <CardHeader
-        avatar={
-          <Avatar
-            src={"https://source.unsplash.com/random/?plant"}
-            aria-label="movie-icon"
-          />
-        }
+        // avatar={
+        //   <Avatar
+        //     src={"https://source.unsplash.com/random/?plant"}
+        //     aria-label="movie-icon"
+        //   />
+        // }
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          <Box sx={{pt:1.25, pr:1}} display="flex" justifyContent="center" flexGrow={1}>
+            <JoinGroupButton />
+          </Box>
         }
         title={<Typography variant="h6">{name}</Typography>}
-        subheader={<Typography variant="h6">Location {location}</Typography>}
+        subheader={<Typography variant="subtitle1">{location}</Typography>}
       />
       <CardMedia
         component="img"
@@ -132,19 +133,6 @@ export default function GroupDetailsCard({ apiData }) {
                   </Typography>
                   {/* <Typography variant="body2"><Moment date={targeTime} fromNow /> remaining time </Typography> */}
                   {/* Add more event details here */}
-                </div>
-              ))}
-            </>
-          )}
-          {members && members.length > 0 && (
-            <>
-              <Typography variant="h6" sx={{mt: 2}}>Members:</Typography>
-              {members.map((member) => (
-                <div key={member.id}>
-                  <Typography sx={{ marginTop: "3px" }}>
-                    {member.user.username}
-                    {member.user.points}
-                  </Typography>
                 </div>
               ))}
             </>

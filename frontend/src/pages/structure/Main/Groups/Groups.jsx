@@ -1,5 +1,5 @@
 import { Typography, Box, Container, Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, } from "react";
 import useCrud from "../../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "./GroupCard";
