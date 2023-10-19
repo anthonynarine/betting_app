@@ -24,7 +24,8 @@ const GroupList = ({ open }) => {
   const classes = ListViewStyles(theme);
 
   useEffect(() => {
-    fetchData();
+    const accessToken = localStorage.getItem("accessToken")
+    fetchData(accessToken);
   }, []);
 
   useEffect(() => {
