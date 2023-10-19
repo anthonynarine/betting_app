@@ -1,9 +1,13 @@
 // import axios from "axios";
-import { BASE_URL } from "../config";
+// import { BASE_URL } from "../config";
 import { useState } from "react";
 import useAxiosWithInterceptor from "./jwtinterceptor";
 
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
 const useCrud = ([], apiURL) => {
+  console.log("TESTBASEURL",BASE_URL)
   const jwtAxios = useAxiosWithInterceptor();
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
