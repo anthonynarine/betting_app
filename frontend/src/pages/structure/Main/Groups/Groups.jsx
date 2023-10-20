@@ -136,7 +136,7 @@ function Groups() {
     if (groupId) {
       return (
         <Box display="flex" justifyContent="center" alignItems="center">
-          <GroupDetailsCard apiData={apiData} />
+          <GroupDetailsCard apiData={apiData} groupId={groupId} />
         </Box>
       );
     } else {

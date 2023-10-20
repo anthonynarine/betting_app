@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Button, Box } from "@mui/material";
+import React from "react";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -7,25 +7,16 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import JoinGroupButton from "./JoinGroupBtn";
-
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
 import useCrud from "../../../../services/useCrud";
-// import RateMovieDialog from "../RateMoive";
-
-// import Moment from "react-moment"
-
 import EventTimestamp from "./EventTimeStamp";
+import { useParams } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -39,12 +30,13 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function GroupDetailsCard({ apiData }) {
-  const { name, location, banner_img, description, events, members } = apiData;
+
+
+  const { name, id, location, banner_img, description, events, members } = apiData;
+  const groupId = id
+
 
   const [expanded, setExpanded] = useState(false);
-
-  // const targeTime = new Date();
-  // targeTime.setHours(targeTime.getHours() + 2)
 
   console.log("GroupDetailsCard DATA", apiData);
 
@@ -100,7 +92,7 @@ export default function GroupDetailsCard({ apiData }) {
         // }
         action={
           <Box sx={{pt:1.25, pr:1}} display="flex" justifyContent="center" flexGrow={1}>
-            <JoinGroupButton />
+            <JoinGroupButton groupId={groupId} />
           </Box>
         }
         title={<Typography variant="h6">{name}</Typography>}
