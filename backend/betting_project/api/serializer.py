@@ -7,14 +7,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ("id", "name", "location", "description",)
+        fields = ("id", "name", "location", "description", "creator")
 
 class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = "__all__"
         
-
 class MemberSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
     class Meta:

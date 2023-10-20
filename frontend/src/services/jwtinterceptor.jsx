@@ -1,6 +1,6 @@
 // Import necessary dependencies
 import axios from "axios";
-import { BASE_URL } from "../config";
+// import { BASE_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 
 /**
@@ -12,6 +12,11 @@ import { useNavigate } from "react-router-dom";
  *
  * @returns {object} An Axios instance with the interceptor applied.
  */
+
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
 const useAxiosWithInterceptor = () => {
 
   // Get the base URL from the config

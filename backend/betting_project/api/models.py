@@ -22,10 +22,10 @@ class Group(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-
     class Meta:
         verbose_name = "Group"
         verbose_name_plural = "Groups"
+
 
     def __str__(self):
         return f"{self.name} - {self.location}"
@@ -50,10 +50,6 @@ class Event(models.Model):
         settings.AUTH_USER_MODEL, related_name="attended_events", blank=True, related_query_name='attended_event'
     )
 
-    class Meta:
-        verbose_name = "Event"
-        verbose_name_plural = "Events"
-
     def __str__(self):
         return f"{self.team1} - {self.team2}"
 
@@ -74,8 +70,6 @@ class Member(models.Model):
     class Meta:
         unique_together = ("user", "group")
         ordering = ["joined_at"]
-        verbose_name = "Member"
-        verbose_name_plural = "Members"
 
     def __str__(self):
         return f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"

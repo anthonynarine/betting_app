@@ -31,11 +31,19 @@ const DetailPage = () => {
       <CssBaseline />
       <PrimaryAppBar />
       <PrimaryDraw>
+<<<<<<< HEAD
         <EventsList members={members} />
       </PrimaryDraw>
       <SecondarDraw>
        
       <GroupMembers events={events} />
+=======
+      <GroupMembers members={members} />
+      </PrimaryDraw>
+      <SecondarDraw>
+       
+        <EventsList events={events} />
+>>>>>>> 30dddc12419eec0c15e39274058158a648af5735
       </SecondarDraw>
       <Main>
         <Groups />

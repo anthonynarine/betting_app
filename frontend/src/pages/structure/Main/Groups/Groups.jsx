@@ -165,7 +165,7 @@ function Groups() {
 
   return (
     <>
-      <Container maxWidth="xxl" sx={{ px: { md: 5, lg: 7 }, width: "100%" }}>
+      <Container maxWidth="xxl" sx={{ px: {sm: 3, md: 5, lg: 7 }, width: "100%" }}>
         <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
         <Box>{renderSubheader()}</Box>
         <Box>{renderGroupList()}</Box>
