@@ -24,7 +24,7 @@ const JoinGroupButton = () => {
       const response = await
       
     } catch (error) {
-      
+      console.log(error)
     }
   }
 
