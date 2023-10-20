@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 import { ListViewStyles } from "../ListViewStyles";
 import React from "react";
 
-const GroupMembers = ({ open, members }) => {
+const EventList = ({ open, events }) => {
     
   const theme = useTheme();
   const classes = ListViewStyles(theme);
@@ -28,23 +28,23 @@ const GroupMembers = ({ open, members }) => {
           variant="h6"
           sx={{ display: open ? "block" : "none", color: "#637C5B" }}
         >
-          Group Members
+          Group Events
         </Typography>
       </Box>
-      {members &&
-        members.map((member) => (
+      {events &&
+        events.map((event) => (
           <ListItem
-            key={member.id}
+            key={events.id}
             disablePadding
             sx={{ display: "block" }}
             dense={true}
           >
             <ListItemButton sx={{ minHeight: 0 }}>
-              <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
+              {/* <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                 <ListItemAvatar sx={{ minWidth: "50px" }}>
-                  <Avatar alt="Group Icon" src={member.user.profile_picture} />
+                  <Avatar alt="Group Icon" src={event.user.profile_picture} />
                 </ListItemAvatar>
-              </ListItemIcon>
+              </ListItemIcon> */}
               {open && ( // Conditionally render ListItemText based on `open`
                 <ListItemText
                   primary={
@@ -59,7 +59,7 @@ const GroupMembers = ({ open, members }) => {
                       }}
                     >
                       {/* <div></div> {member.admin} */}
-                      {member.user.username}
+                      {`${event.team1} vs ${event.team2}`}
                     </Typography>
                   }
                 />
@@ -71,7 +71,7 @@ const GroupMembers = ({ open, members }) => {
   );
 };
 
-export default React.memo(GroupMembers);
+export default React.memo(EventList);
 
 
 

@@ -3,8 +3,8 @@ import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
 import PrimaryDraw from "../structure/PrimaryDraw/PrimaryDraw";
 import Main from "../structure/Main/Main";
 import Groups from "../structure/Main/Groups/Groups";
-import GroupMembers from "../structure/PrimaryDraw/DetailsPageContent/GroupMembers";
-import EventsList from "../structure/SecondaryDraw/Events/EventsList";
+import GroupMembers from "../structure/PrimaryDraw/DetailsPageContent/EventList";
+import EventsList from "../structure/SecondaryDraw/Events/GroupMembers";
 import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
 
 import React, { useEffect } from "react";
@@ -31,11 +31,11 @@ const DetailPage = () => {
       <CssBaseline />
       <PrimaryAppBar />
       <PrimaryDraw>
-      <GroupMembers events={events} />
+        <EventsList members={members} />
       </PrimaryDraw>
       <SecondarDraw>
        
-        <EventsList members={members} />
+      <GroupMembers events={events} />
       </SecondarDraw>
       <Main>
         <Groups />
