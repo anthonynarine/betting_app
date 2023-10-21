@@ -5,7 +5,7 @@ import { useResponsiveDrawer } from "../PrimaryDraw/Drawer/useResponsive";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import AccountButton from "./AccountButton";
+import LoginLogoutButton from "./LoginLogoutButton";
 
 function PrimaryAppBar() {
   const theme = useTheme();
@@ -65,7 +65,7 @@ function PrimaryAppBar() {
           </Link>
           <CasinoIcon sx={{ marginLeft: "3px" }} />
           <Box sx={{ flexGrow: 1 }}></Box>
-          {/* <AccountButton /> */}
+          <LoginLogoutButton />
         </Toolbar>
       </AppBar>
     </>

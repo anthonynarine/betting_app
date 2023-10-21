@@ -8,7 +8,6 @@ import {
   useTheme,
 } from "@mui/material";
 
-import useCrud from "../../../../services/useCrud";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 // import { MEDIA_URL } from "../../config";
@@ -17,9 +16,12 @@ import { ListViewStyles } from "../../PrimaryDraw/ListViewStyles";
 import React from "react";
 
 
-const EventsList = ({ events }) => {
+const EventsList = ({ apiData }) => {
+
   const theme = useTheme();
   const classes = ListViewStyles(theme);
+
+  const { events } = apiData;
 
 
   return (

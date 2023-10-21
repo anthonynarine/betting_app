@@ -10,6 +10,7 @@ import AuthProvider from "./context/AuthContext";
 import LoginPageV0 from "./pages/Login/test/LoginPageV0";
 import TestLogin from "./pages/Login/test/TestLogin";
 import LoginPage from "./pages/Login/LoginPage";
+import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
 
@@ -32,6 +33,7 @@ function App() {
             }
           />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </ToggleColorModeProvider>
       {/* </LoginProvider> */}

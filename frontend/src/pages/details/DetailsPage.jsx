@@ -3,8 +3,8 @@ import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
 import PrimaryDraw from "../structure/PrimaryDraw/PrimaryDraw";
 import Main from "../structure/Main/Main";
 import Groups from "../structure/Main/Groups/Groups";
-import GroupMembers from "../structure/PrimaryDraw/DetailsPageContent/EventList";
-import EventsList from "../structure/SecondaryDraw/Events/GroupMembers";
+import GroupMembers from "../structure/PrimaryDraw/DetailsPageContent/GroupMembers";
+import EventsList from "../structure/SecondaryDraw/Events/EventList";
 import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
 
 import React, { useEffect } from "react";
@@ -15,7 +15,7 @@ const DetailPage = () => {
   const { groupId } = useParams();
   const { apiData, fetchData } = useCrud([], `/groups/${groupId}/`);
 
-  const { name, location, banner_img, description, events, members } = apiData;
+  // const { name, location, banner_img, description, events, members } = apiData;
 
   useEffect(() => {
     fetchData();
@@ -30,10 +30,10 @@ const DetailPage = () => {
       <CssBaseline />
       <PrimaryAppBar />
       <PrimaryDraw>
-        <GroupMembers members={members} />
+        <GroupMembers apiData={apiData} />
       </PrimaryDraw>
       <SecondarDraw>
-        <EventsList events={events} />
+        <EventsList  apiData={apiData} />
       </SecondarDraw>
       <Main>
         <Groups />

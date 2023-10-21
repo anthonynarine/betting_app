@@ -11,12 +11,11 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import JoinGroupButton from "./JoinGroupBtn";
+import { JoinGroupButton, LeaveGroupButton } from "./GroupActionBtns";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useCrud from "../../../../services/useCrud";
 import EventTimestamp from "./EventTimeStamp";
-import { useParams } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -30,21 +29,33 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function GroupDetailsCard({ apiData }) {
-
-
-  const { name, id, location, banner_img, description, events, members } = apiData;
-  const groupId = id
-
-
-  const [expanded, setExpanded] = useState(false);
-
+  const {
+    name,
+    id: groupId,
+    location,
+    banner_img,
+    description,
+    events,
+    members,
+  } = apiData;
   console.log("GroupDetailsCard DATA", apiData);
+
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+  const [isMember, setIsMember] = useState(false);
+
+  useEffect(() => {
+    if (members) {
+      setIsMember(members.some(member => member.user.id === Number(userId)));
+    }
+  }, [members, userId]);
+
   const { deleteData } = useCrud([], "/groups");
 
   const handleDelete = async (id) => {
@@ -91,8 +102,23 @@ export default function GroupDetailsCard({ apiData }) {
         //   />
         // }
         action={
-          <Box sx={{pt:1.25, pr:1}} display="flex" justifyContent="center" flexGrow={1}>
-            <JoinGroupButton groupId={groupId} />
+          <Box
+            sx={{ pt: 1.25, pr: 1 }}
+            display="flex"
+            justifyContent="center"
+            flexGrow={1}
+          >
+            <>
+              {isMember ? (
+                <IconButton aria-label="leave-group">
+                  <LeaveGroupButton groupId={groupId} />
+                </IconButton>
+              ) : (
+                <IconButton aria-label="join-group">
+                  <JoinGroupButton groupId={groupId} />
+                </IconButton>
+              )}
+            </>
           </Box>
         }
         title={<Typography variant="h6">{name}</Typography>}
@@ -111,7 +137,6 @@ export default function GroupDetailsCard({ apiData }) {
           </Typography>
           {events && events.length > 0 && (
             <>
-              {/* <Typography variant="h6">Event:</Typography> */}
               {events.map((event) => (
                 <div key={event.id}>
                   <Typography variant="h6" sx={{ marginTop: 1 }}>
@@ -123,8 +148,6 @@ export default function GroupDetailsCard({ apiData }) {
                   >
                     <EventTimestamp createdAt={new Date(event.time)} />
                   </Typography>
-                  {/* <Typography variant="body2"><Moment date={targeTime} fromNow /> remaining time </Typography> */}
-                  {/* Add more event details here */}
                 </div>
               ))}
             </>
@@ -132,12 +155,6 @@ export default function GroupDetailsCard({ apiData }) {
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        {/* <IconButton onClick={handleOpenRateMovie}><Button variant="contained" >Rate Movie</Button></IconButton>
-        <RateMovieDialog
-          group={apiData}
-          open={isRateMovieOpen}
-          handleClose={handleCloseRateMovie}
-        /> */}
         <IconButton aria-label="share">
           <DeleteSweepIcon onClick={handleDelete} />
         </IconButton>
