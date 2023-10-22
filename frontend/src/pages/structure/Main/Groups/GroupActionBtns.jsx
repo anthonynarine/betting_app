@@ -1,29 +1,8 @@
 import React, { useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import GroupRemoveIcon from "@mui/icons-material/GroupRemove";
-import Tooltip from "@mui/material/Tooltip";
-import { styled } from "@mui/system";
-import Snackbar from "@mui/material/Snackbar";
-import useAxiosWithInterceptor from "../../../../services/jwtinterceptor";
+import { Button, Tooltip, Snackbar, Box } from "@mui/material";
+import useAxiosWithInterceptor from "../../../../services/jwtinterceptor"; // Replace with your actual import
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-
-const CustomIconButton = styled(IconButton)`
-  background-color: #000;
-  color: #fff;
-  &:hover {
-    background-color: #000;
-  }
-`;
-
-const LeaveIconButton = styled(IconButton)`
-  background-color: #ff0000;
-  color: #fff;
-  &:hover {
-    background-color: #cc0000;
-  }
-`;
 
 export const JoinGroupButton = ({ groupId }) => {
   const jwtAxios = useAxiosWithInterceptor();
@@ -49,11 +28,30 @@ export const JoinGroupButton = ({ groupId }) => {
 
   return (
     <>
-      <Tooltip title="Join Group" arrow>
-        <CustomIconButton aria-label="join-group" onClick={handleJoinGroup}>
-          <GroupAddIcon />
-        </CustomIconButton>
-      </Tooltip>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Tooltip title="Join Group" arrow>
+          <Button
+            variant="outlined"
+            sx={{
+              borderColor: "#000",
+              color: "#000",
+              borderRadius: "15px",
+              fontWeight: "500",
+              textShadow: "1px 1px 2px #aaa",
+              padding: "3px 12px", // Smaller padding
+              fontSize: "0.875rem", // Smaller font size
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "#737474",
+                color: "#fff",
+              },
+            }}
+            onClick={handleJoinGroup}
+          >
+            Join
+          </Button>
+        </Tooltip>
+      </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
@@ -96,11 +94,30 @@ export const LeaveGroupButton = ({ groupId }) => {
 
   return (
     <>
-      <Tooltip title="Leave Group" arrow>
-        <LeaveIconButton onClick={handleLeaveGroup}>
-          <GroupRemoveIcon />
-        </LeaveIconButton>
-      </Tooltip>
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Tooltip title="Leave Group" arrow>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "#000",
+              color: "#f2f2f2",
+              borderRadius: "50px",
+              fontWeight: "500",
+              textShadow: "1px 1px 2px #555",
+              padding: "6px 12px", // Smaller padding
+              fontSize: "0.700rem", // Smaller font size
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "#737474",
+                color: "#121214",
+              },
+            }}
+            onClick={handleLeaveGroup}
+          >
+            Leave
+          </Button>
+        </Tooltip>
+      </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={open}
