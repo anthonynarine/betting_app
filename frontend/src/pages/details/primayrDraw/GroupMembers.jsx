@@ -8,22 +8,19 @@ import {
   useTheme,
 } from "@mui/material";
 
-import { useEffect } from "react";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-// import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles"
 import React from "react";
+import { useMembers } from "../../../context/membersContext/MemberContext"
 
-const GroupMembers = ({ open, members }) => {
+
+const GroupMembers = ({ open }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  useEffect(()=> {
-
-  },[members])
-
+  const { members } = useMembers();
 
   return (
     <>

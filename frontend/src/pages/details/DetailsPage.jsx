@@ -4,20 +4,20 @@ import PrimaryDraw from "../structure/PrimaryDraw/Drawer/PrimaryDraw";
 import Main from "../structure/Main/Main";
 
 import GroupMembers from "./primayrDraw/GroupMembers";
-import EventsList from "./secondaryDraw/EventsList"
+import EventsList from "./secondaryDraw/EventsList";
 import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
-import Groups from "./main/Groups"
+import Groups from "./main/Groups";
 
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useCrud from "../../services/useCrud";
-
+import MembersProvider from "../../context/membersContext/MemberProvider";
 
 const DetailPage = () => {
   const { groupId } = useParams();
   const { apiData, fetchData } = useCrud([], `/groups/${groupId}/`);
 
-  const { name, location, banner_img, description, events, members } = apiData;
+  const { members } = apiData;
 
   useEffect(() => {
     fetchData();
@@ -31,15 +31,17 @@ const DetailPage = () => {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <PrimaryAppBar />
-      <PrimaryDraw>
-        <GroupMembers members={members} />
-      </PrimaryDraw>
-      <SecondarDraw>
-        <EventsList  apiData={apiData} />
-      </SecondarDraw>
-      <Main>
-        <Groups />
-      </Main>
+      <MembersProvider groupMembers={members} >
+        <PrimaryDraw>
+          <GroupMembers />
+        </PrimaryDraw>
+        <SecondarDraw>
+          <EventsList apiData={apiData} />
+        </SecondarDraw>
+        <Main>
+          <Groups />
+        </Main>
+      </MembersProvider>
     </Box>
   );
 };
