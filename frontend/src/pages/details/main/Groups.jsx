@@ -1,11 +1,11 @@
 import { Typography, Box, Container, Grid } from "@mui/material";
 import React, { useEffect, } from "react";
-import useCrud from "../../../../services/useCrud";
+import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
-import GroupCard from "./GroupCard";
-import GroupDetailsCard from "./GroupDetailsCard";
+import GroupCard from "../../home/main/GroupCard";
+import GroupDetailsCard from "../main/GroupDetailsCard";
 
-function Groups() {
+function Group() {
   const { groupId } = useParams();
   const url = groupId ? `/groups/${groupId}/` : "/groups/";
 
@@ -174,4 +174,4 @@ function Groups() {
   );
 }
 
-export default Groups;
+export default Group;

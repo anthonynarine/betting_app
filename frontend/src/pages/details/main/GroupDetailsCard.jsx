@@ -14,7 +14,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { JoinGroupButton, LeaveGroupButton } from "./GroupActionBtns";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import useCrud from "../../../../services/useCrud";
+import useCrud from "../../../services/useCrud";
 import EventTimestamp from "./EventTimeStamp";
 
 const ExpandMore = styled((props) => {
@@ -80,10 +80,11 @@ export default function GroupDetailsCard({ apiData }) {
         overflow: "auto",
         // Rounded corners to make it look like a book
         borderRadius: "20px",
+        borderColor: "#000",
         // Shadow to simulate pages
-        boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
+        // boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
         // Light background color like pages of a book
-        background: "#f2f2f2",
+        background: "#fff",
         // CSS media query for larger screens
         "@media (min-width: 768px)": {
           // Adjust maxWidth for wider screens
@@ -92,7 +93,7 @@ export default function GroupDetailsCard({ apiData }) {
           maxHeight: "none",
         },
       }}
-      elevation={0}
+      elevation={20}
     >
       <CardHeader
         // avatar={
@@ -111,11 +112,11 @@ export default function GroupDetailsCard({ apiData }) {
             <>
               {isMember ? (
                 <IconButton aria-label="leave-group">
-                  <LeaveGroupButton groupId={groupId} />
+                  <LeaveGroupButton groupId={groupId} setIsMember={setIsMember} />
                 </IconButton>
               ) : (
                 <IconButton aria-label="join-group">
-                  <JoinGroupButton groupId={groupId} />
+                  <JoinGroupButton groupId={groupId} setIsMember={setIsMember} />
                 </IconButton>
               )}
             </>
@@ -127,7 +128,7 @@ export default function GroupDetailsCard({ apiData }) {
       <CardMedia
         component="img"
         height="300"
-        image={banner_img ? banner_img : "https://source.unsplash.com/random/?football"}
+        image={banner_img ? banner_img : "https://source.unsplash.com/random/?fight"}
         alt="banner image"
       />
       <CardContent>

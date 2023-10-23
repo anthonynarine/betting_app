@@ -12,7 +12,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 // import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../../PrimaryDraw/ListViewStyles";
+import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React from "react";
 
 

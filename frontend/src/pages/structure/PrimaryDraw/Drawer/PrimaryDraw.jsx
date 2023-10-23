@@ -2,7 +2,7 @@ import { Box, useMediaQuery, Typography, styled } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import React, { useState, useEffect, useCallback } from "react";
 import { useTheme } from "@mui/material/styles";
-import DrawerToggle from "./Drawer/DrawToggle";
+import DrawerToggle from "./DrawToggle";
 
 function PrimaryDraw({ children }) {
   const theme = useTheme();

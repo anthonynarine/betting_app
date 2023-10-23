@@ -8,13 +8,13 @@ import {
   useTheme,
 } from "@mui/material";
 
-import useCrud from "../../../../services/useCrud"
+import useCrud from "../../../services/useCrud"
 import { useEffect } from "react";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 // import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../ListViewStyles";
+import { ListViewStyles } from "./ListViewStyles";
 import React from "react";
 
 const GroupList = ({ open }) => {

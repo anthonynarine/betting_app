@@ -6,11 +6,14 @@ import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import LoginLogoutButton from "./LoginLogoutButton";
+import { useAuthServices } from "../../../Auth/AuthServices";
 
 function PrimaryAppBar() {
   const theme = useTheme();
 
   const { isDrawerVisible, toggleDrawer } = useResponsiveDrawer();
+
+  const { isLoggedIn } = useAuthServices();
 
   return (
     <>
@@ -21,7 +24,7 @@ function PrimaryAppBar() {
           borderBottom: `1px solid ${theme.palette.divider}`,
           display: "flex",
           justifyContent: "space-between",
-          // backgroundImage: "url(https://source.unsplash.com/random/?stars)"
+          // backgroundImage: "url(https://source.unsplash.com/random/?green)"
           // backgroundImage: `url(${emblem})`,
         }}
       >
@@ -65,6 +68,7 @@ function PrimaryAppBar() {
           </Link>
           <CasinoIcon sx={{ marginLeft: "3px" }} />
           <Box sx={{ flexGrow: 1 }}></Box>
+   
           <LoginLogoutButton />
         </Toolbar>
       </AppBar>

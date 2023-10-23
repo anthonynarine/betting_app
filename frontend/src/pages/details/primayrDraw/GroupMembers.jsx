@@ -13,14 +13,17 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 // import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../ListViewStyles";
+import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles"
 import React from "react";
 
-const GroupMembers = ({ open, apiData }) => {
+const GroupMembers = ({ open, members }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { members, name } = apiData;
+  useEffect(()=> {
+
+  },[members])
+
 
   return (
     <>

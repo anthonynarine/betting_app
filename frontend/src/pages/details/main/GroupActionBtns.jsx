@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Button, Tooltip, Snackbar, Box } from "@mui/material";
-import useAxiosWithInterceptor from "../../../../services/jwtinterceptor"; // Replace with your actual import
+import useAxiosWithInterceptor from "../../../services/jwtinterceptor"; // Replace with your actual import
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const JoinGroupButton = ({ groupId }) => {
+export const JoinGroupButton = ({ groupId, setIsMember }) => {
   const jwtAxios = useAxiosWithInterceptor();
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -19,22 +20,26 @@ export const JoinGroupButton = ({ groupId }) => {
       const response = await jwtAxios.post(`${BASE_URL}/groups/${groupId}/join/`);
       if (response.status === 200) {
         setOpen(true);
+        setIsMember(true)
+
       }
     } catch (error) {
       console.error("Failed to join group:", error);
       setErrorOpen(true);
+
     }
   };
 
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Tooltip title="Join Group" arrow>
+        {/* <Tooltip title="Join Group" arrow> */}
           <Button
             variant="outlined"
             sx={{
               borderColor: "#000",
-              color: "#000",
+              backgroundColor: "#000",
+              color: "#fff",
               borderRadius: "15px",
               fontWeight: "500",
               textShadow: "1px 1px 2px #aaa",
@@ -42,15 +47,16 @@ export const JoinGroupButton = ({ groupId }) => {
               fontSize: "0.875rem", // Smaller font size
               textTransform: "none",
               "&:hover": {
-                backgroundColor: "#737474",
-                color: "#fff",
+                borderColor: "#00DE49",
+                backgroundColor: "#00DE49",
+                color: "black",
               },
             }}
             onClick={handleJoinGroup}
           >
             Join
           </Button>
-        </Tooltip>
+        {/* </Tooltip> */}
       </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -70,7 +76,7 @@ export const JoinGroupButton = ({ groupId }) => {
   );
 };
 
-export const LeaveGroupButton = ({ groupId }) => {
+export const LeaveGroupButton = ({ groupId, setIsMember }) => {
   const jwtAxios = useAxiosWithInterceptor();
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -85,6 +91,7 @@ export const LeaveGroupButton = ({ groupId }) => {
       const response = await jwtAxios.post(`${BASE_URL}/groups/${groupId}/leave/`);
       if (response.status === 200) {
         setOpen(true);
+        setIsMember(false)
       }
     } catch (error) {
       console.error("Failed:", error);
@@ -95,12 +102,13 @@ export const LeaveGroupButton = ({ groupId }) => {
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center" }}>
-        <Tooltip title="Leave Group" arrow>
+        {/* <Tooltip title="Leave Group" arrow> */}
           <Button
             variant="contained"
             sx={{
+              borderColor: "#000",
               backgroundColor: "#000",
-              color: "#f2f2f2",
+              color: "#fff",
               borderRadius: "50px",
               fontWeight: "500",
               textShadow: "1px 1px 2px #555",
@@ -108,15 +116,16 @@ export const LeaveGroupButton = ({ groupId }) => {
               fontSize: "0.700rem", // Smaller font size
               textTransform: "none",
               "&:hover": {
-                backgroundColor: "#737474",
-                color: "#121214",
+                borderColor: "#00DE49",
+                backgroundColor: "#00DE49",
+                color: "black",
               },
             }}
             onClick={handleLeaveGroup}
           >
             Leave
           </Button>
-        </Tooltip>
+        {/* </Tooltip> */}
       </Box>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

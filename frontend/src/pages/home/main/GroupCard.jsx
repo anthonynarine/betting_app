@@ -37,7 +37,7 @@ const GroupCard = ({ group }) => {
       >
         <CardMedia
           component="img"
-          image={"https://source.unsplash.com/random/?cloud"}
+          image={"https://source.unsplash.com/random/?lebron"}
           alt="random"
           sx={{
             display: { xs: "none", sm: "block" },

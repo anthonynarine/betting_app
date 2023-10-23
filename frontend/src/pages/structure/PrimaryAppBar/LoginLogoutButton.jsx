@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuthServices } from "../../../Auth/AuthServices";
 
 export default function LoginLogoutButton() {
-  const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
-  const { logout } = useAuthServices();
+  // const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
+  const { logout, isLoggedIn, setIsLoggedIn } = useAuthServices();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -16,6 +16,8 @@ export default function LoginLogoutButton() {
 
   const handleLogout = () => {
     logout();
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (
@@ -29,12 +31,13 @@ export default function LoginLogoutButton() {
             backgroundColor: "#000",
             color: "#fff",
             borderRadius: "50px",
+            textTransform: "none",
             "&:hover": {
-              backgroundColor: "#737474",
+              backgroundColor: "#00DE49",
               color: "#121214",
             },
           }}
-          endIcon={<ExitToAppIcon />}
+          // endIcon={<ExitToAppIcon />}
           onClick={handleLogout}
         >
           Logout
@@ -43,11 +46,16 @@ export default function LoginLogoutButton() {
         <Button
           variant="outlined"
           sx={{
-            borderColor: "#000",
-            color: "#000",
+            backgroundColor: "#000",
+            color: "#fff",
             borderRadius: "50px",
+            textTransform: "none",
+            "&:hover": {
+              backgroundColor: "#00DE49",
+              color: "#121214",
+            },
           }}
-          endIcon={<VpnKeyIcon />}
+          // endIcon={<VpnKeyIcon />}
           onClick={handleLogin}
         >
           Login
