@@ -16,16 +16,18 @@ import MembersProvider from "../../context/membersContext/MemberProvider";
 const DetailPage = () => {
   const { groupId } = useParams();
   const { apiData, fetchData } = useCrud([], `/groups/${groupId}/`);
-
   const { members } = apiData;
 
+  const accessToken = localStorage.getItem('accessToken');
+
+
   useEffect(() => {
-    fetchData();
+    fetchData(accessToken);
   }, []);
 
   useEffect(() => {
-    console.log("DATA In DetailsPage to be Passed:", apiData);
-  }, [apiData]);
+    console.log("Initial members:", members);
+  }, [members]);
 
   return (
     <Box sx={{ display: "flex" }}>

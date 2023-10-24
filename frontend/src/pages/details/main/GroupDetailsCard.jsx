@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import useCrud from "../../../services/useCrud";
 import EventTimestamp from "./EventTimeStamp";
+import { useMembers } from "../../../context/membersContext/MemberContext";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,9 +37,11 @@ export default function GroupDetailsCard({ apiData }) {
     banner_img,
     description,
     events,
-    members,
+    // members,
   } = apiData;
   console.log("GroupDetailsCard DATA", apiData);
+
+  const { members, setMembers } = useMembers();
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -48,13 +51,10 @@ export default function GroupDetailsCard({ apiData }) {
   };
 
   const userId = localStorage.getItem("userId");
-  const [isMember, setIsMember] = useState(false);
 
-  useEffect(() => {
-    if (members) {
-      setIsMember(members.some(member => member.user.id === Number(userId)));
-    }
-  }, [members, userId]);
+  const isMember = members
+    ? members.some((member) => member.user.id === Number(userId))
+    : false;
 
   const { deleteData } = useCrud([], "/groups");
 
@@ -112,11 +112,19 @@ export default function GroupDetailsCard({ apiData }) {
             <>
               {isMember ? (
                 <IconButton aria-label="leave-group">
-                  <LeaveGroupButton groupId={groupId} setIsMember={setIsMember} />
+                  <LeaveGroupButton
+                    groupId={groupId}
+                    userId={userId}
+                    setMember={setMembers}
+                  />
                 </IconButton>
               ) : (
                 <IconButton aria-label="join-group">
-                  <JoinGroupButton groupId={groupId} setIsMember={setIsMember} />
+                  <JoinGroupButton
+                    groupId={groupId}
+                    userId={userId}
+                    setMember={setMembers}
+                  />
                 </IconButton>
               )}
             </>
