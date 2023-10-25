@@ -13,14 +13,15 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles"
 import React from "react";
-import { useMembers } from "../../../context/membersContext/MemberContext"
+// import { useMembers } from "../../../context/membersContext/MemberContext"
+import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
 
 const GroupMembers = ({ open }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { members } = useMembers();
+  const { members } = useApiData();
 
 
 
@@ -75,4 +76,4 @@ const GroupMembers = ({ open }) => {
   );
 };
 
-export default React.memo(GroupMembers);
+export default GroupMembers;

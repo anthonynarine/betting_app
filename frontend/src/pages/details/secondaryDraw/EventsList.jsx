@@ -14,14 +14,14 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React from "react";
+import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
-
-const EventsList = ({ apiData }) => {
+const EventsList = () => {
 
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { events } = apiData;
+  const { events } = useApiData
 
 
   return (

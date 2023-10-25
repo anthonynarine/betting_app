@@ -9,42 +9,34 @@ import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
 import Groups from "./main/Groups";
 
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import useCrud from "../../services/useCrud";
 import MembersProvider from "../../context/membersContext/MemberProvider";
+import { ApiDataProvider, useApiData } from "../../context/apiDataProvider/ApiDataProvider";
 
 const DetailPage = () => {
-  const { groupId } = useParams();
-  const { apiData, fetchData } = useCrud([], `/groups/${groupId}/`);
-  const { members } = apiData;
 
-  const accessToken = localStorage.getItem('accessToken');
 
+  const { apiData } = useApiData();
 
   useEffect(() => {
-    fetchData(accessToken);
-  }, []);
-
-  useEffect(() => {
-    console.log("Initial members:", members);
-  }, [members]);
+    console.log("Details Page DATA TEST:", apiData);
+  }, [apiData]); // Refetches data on apiData changes
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <PrimaryAppBar />
-      <MembersProvider groupMembers={members} >
+    <ApiDataProvider>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <PrimaryAppBar />
         <PrimaryDraw>
           <GroupMembers />
         </PrimaryDraw>
         <SecondarDraw>
-          <EventsList apiData={apiData} />
+          <EventsList />
         </SecondarDraw>
         <Main>
           <Groups />
         </Main>
-      </MembersProvider>
-    </Box>
+      </Box>
+    </ApiDataProvider>
   );
 };
 

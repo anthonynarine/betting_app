@@ -4,7 +4,7 @@ import useAxiosWithInterceptor from "../../../services/jwtinterceptor"; // Repla
 import { useMembers } from "../../../context/membersContext/MemberContext";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const accessToken = localStorage.getItem("accessToken")
+
 
 export const JoinGroupButton = ({ groupId }) => {
   const jwtAxios = useAxiosWithInterceptor();
@@ -15,6 +15,7 @@ export const JoinGroupButton = ({ groupId }) => {
 
   useEffect(() => {
     console.log("Current members:", members);
+    console.log("setMembers is a function: ", typeof setMembers === "function");
   }, [members]);  //TEST
 
   const handleClose = () => {
@@ -23,6 +24,7 @@ export const JoinGroupButton = ({ groupId }) => {
   };
 
   const handleJoinGroup = async () => {
+    const accessToken = localStorage.getItem("accessToken")
 
     try {
       const response = await jwtAxios.post(`${BASE_URL}/groups/${groupId}/join/`, {},
@@ -89,12 +91,13 @@ export const JoinGroupButton = ({ groupId }) => {
   );
 };
 
-export const LeaveGroupButton = ({ groupId, userID, setMembers }) => {
+export const LeaveGroupButton = ({ groupId, userID }) => {
+  const accessToken = localStorage.getItem("accessToken")
   const jwtAxios = useAxiosWithInterceptor();
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
 
-  const { members } = useMembers();
+  const { members, setMembers } = useMembers();
 
   const handleClose = () => {
     setOpen(false);
