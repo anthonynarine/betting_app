@@ -21,7 +21,8 @@ const EventsList = () => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { events } = useApiData
+  const { events } = useApiData();
+  console.log("Events Page DAtA:", events) //  TEST
 
 
   return (

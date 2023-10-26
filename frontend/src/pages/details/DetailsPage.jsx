@@ -15,11 +15,11 @@ import { ApiDataProvider, useApiData } from "../../context/apiDataProvider/ApiDa
 const DetailPage = () => {
 
 
-  const { apiData } = useApiData();
+  // const { apiData } = useApiData();
 
-  useEffect(() => {
-    console.log("Details Page DATA TEST:", apiData);
-  }, [apiData]); // Refetches data on apiData changes
+  // useEffect(() => {
+  //   console.log("Details Page DATA TEST:", apiData);
+  // }, [apiData]); // Refetches data on apiData changes
 
   return (
     <ApiDataProvider>

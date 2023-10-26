@@ -13,10 +13,9 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { JoinGroupButton, LeaveGroupButton } from "./GroupActionBtns";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import useCrud from "../../../services/useCrud";
+import { useState } from "react";
 import EventTimestamp from "./EventTimeStamp";
-import { useMembers } from "../../../context/membersContext/MemberContext";
+import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -29,19 +28,12 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function GroupDetailsCard({ apiData }) {
-  const {
-    name,
-    id: groupId,
-    location,
-    banner_img,
-    description,
-    events,
-    // members,
-  } = apiData;
-  console.log("GroupDetailsCard DATA", apiData);
+export default function GroupDetailsCard() {
 
-  const { members, setMembers } = useMembers();
+  const { events, group, members, userId } = useApiData();
+
+  console.log("GroupDetailsCard DATA", group);
+
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -50,25 +42,10 @@ export default function GroupDetailsCard({ apiData }) {
     setExpanded(!expanded);
   };
 
-  const userId = localStorage.getItem("userId");
-
   const isMember = members
     ? members.some((member) => member.user.id === Number(userId))
     : false;
 
-  const { deleteData } = useCrud([], "/groups");
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteData(apiData.id);
-      console.log(apiData.id, apiData.title, "DELETED");
-      navigate("/");
-      // Maybe show a success message after deletion
-    } catch (error) {
-      console.error("Failed to delete:", error);
-      // Handle error (maybe show an error message to the user)
-    }
-  };
 
   return (
     <Card
@@ -112,37 +89,32 @@ export default function GroupDetailsCard({ apiData }) {
             <>
               {isMember ? (
                 <IconButton aria-label="leave-group">
-                  <LeaveGroupButton
-                    groupId={groupId}
-                    userId={userId}
-                    setMember={setMembers}
-                  />
+                  <LeaveGroupButton/>
                 </IconButton>
               ) : (
                 <IconButton aria-label="join-group">
                   <JoinGroupButton
-                    groupId={groupId}
-                    userId={userId}
-                    setMember={setMembers}
-                  />
+/>
                 </IconButton>
               )}
             </>
           </Box>
         }
-        title={<Typography variant="h6">{name}</Typography>}
-        subheader={<Typography variant="subtitle1">{location}</Typography>}
+        title={<Typography variant="h6">{group.name}</Typography>}
+        subheader={<Typography variant="subtitle1">{group.description}</Typography>}
       />
       <CardMedia
         component="img"
         height="300"
-        image={banner_img ? banner_img : "https://source.unsplash.com/random/?fight"}
+        image={
+          group.banner_img ? group.banner_img : "https://source.unsplash.com/random/?fight"
+        }
         alt="banner image"
       />
       <CardContent>
         <Box sx={{ margin: 2 }}>
           <Typography variant="body2" color="text.secondary">
-            {description}
+            {group.description}
           </Typography>
           {events && events.length > 0 && (
             <>
@@ -165,7 +137,7 @@ export default function GroupDetailsCard({ apiData }) {
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="share">
-          <DeleteSweepIcon onClick={handleDelete} />
+          <DeleteSweepIcon />
         </IconButton>
         <ExpandMore
           expand={expanded}
@@ -179,7 +151,9 @@ export default function GroupDetailsCard({ apiData }) {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {/* Additional details can go here */}
-          <Typography paragraph>Additional details can be added here.</Typography>
+          <Typography paragraph>
+            Additional details can be added here.
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>

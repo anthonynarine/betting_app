@@ -2,28 +2,41 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import useCrud from "../../services/useCrud";
 import { useParams } from "react-router-dom";
 
-// Context creation
+// === Context Creation ===
+// Create a new context for API data
 export const ApiDataContext = createContext();
 
-//
+// Custom hook to use the ApiDataContext
 export const useApiData = () => {
-    const context = useContext(ApiDataContext);
-    if(!context) {
-        throw new Error("useApiData must be used within a MemberProvider ")
-    }
-    return context;
-}
+  const context = useContext(ApiDataContext);
+  // Ensure the hook is used within a Provider
+  if (!context) {
+    throw new Error("useApiData must be used within a MemberProvider");
+  }
+  return context;
+};
+
+// Export the context for use in other components
 export default ApiDataContext;
 
-// Provider Creation
+// === Provider Creation ===
+// The Provider component that wraps parts of the app
 export const ApiDataProvider = ({ children }) => {
+  // Get the groupId from the URL
   const { groupId } = useParams();
+  
+  // Determine the API endpoint based on the groupId
   const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
-  const { apiData, fetchData, isLoading, error } = useCrud([], apiEndpoint);
+  
+  // Use the custom CRUD hook to fetch data
+  const { apiData, fetchData, isLoading, error } = useCrud([], `/groups/${groupId}`);
+  
+  // State variables for events, members, and groups
   const [events, setEvents] = useState([]);
   const [members, setMembers] = useState([]);
-  const [groups, setGroups] = useState([]);
+  const [group, setGroup] = useState([]);
 
+  // Fetch group data when groupId changes
   useEffect(() => {
     const fetchGroupData = async () => {
       const accessToken = localStorage.getItem("accessToken");
@@ -31,34 +44,41 @@ export const ApiDataProvider = ({ children }) => {
         const data = await fetchData(accessToken);
         setEvents(data.events);
         setMembers(data.members);
-        setGroups(data.groups)
+        setGroup(data);
+        console.log("Groups DATA ApiDataProvider:", data)
       } catch (error) {
-        console.error("Error fetchign group data:", error);
+        console.error("Error fetching group data:", error);
       }
     };
     fetchGroupData();
-  }, [groupId, groups, events, members]); // Refetches data on groupId changes
+  }, [groupId]); // refetches data when groupId changes
 
+  // Functions to update events, members, and groups
   const updateEvents = (newEvents) => {
     setEvents(newEvents);
   };
-
   const updateMembers = (newMembers) => {
     setMembers(newMembers);
   };
-
-  const value = {
-    apiData,
-    groups,
-    setGroups,
-    events,
-    setEvents,
-    members,
-    setMembers,
-    updateEvents,
-    updateMembers,
-    groupId,
+  const updateGroup = (newGroup) => {
+    setGroup(newGroup);
   };
 
+  // The value that will be available to components wrapped in this Provider
+  const value = {
+    apiData,
+    groupId,
+    group,
+    setGroup,
+    updateGroup,
+    events,
+    setEvents,
+    updateEvents,
+    members,
+    setMembers,
+    updateMembers,
+  };
+
+  // Provide the value to the children components
   return <ApiDataContext.Provider value={value}>{children}</ApiDataContext.Provider>;
 };

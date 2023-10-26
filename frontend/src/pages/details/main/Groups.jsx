@@ -9,6 +9,7 @@ import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 function Group() {
   
   const { groupId, groups } = useApiData()
+  console.log("Groups DetailPage DATA:", groups)
   // const { groupId } = useParams();
   // const url = groupId ? `/groups/${groupId}/` : "/groups/";
 
