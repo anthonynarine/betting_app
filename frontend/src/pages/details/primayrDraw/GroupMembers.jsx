@@ -8,29 +8,22 @@ import {
   useTheme,
 } from "@mui/material";
 
-import useCrud from "../../../../services/useCrud"
-import { useEffect } from "react";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-// import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../ListViewStyles";
+import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles"
 import React from "react";
+// import { useMembers } from "../../../context/membersContext/MemberContext"
+import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
-const GroupList = ({ open }) => {
-  const { apiData, fetchData } = useCrud([], "/groups/");
 
+const GroupMembers = ({ open }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken")
-    fetchData(accessToken);
-  }, []);
+  const { members } = useApiData();
 
-  useEffect(() => {
-    console.log("DATA IN GropList component:", apiData);
-  }, [apiData]);
+
 
   return (
     <>
@@ -39,27 +32,25 @@ const GroupList = ({ open }) => {
           variant="h6"
           sx={{ display: open ? "block" : "none", color: "#637C5B" }}
         >
-         Group List
+         {/* {`${name} members`} */}
+         Group Members
         </Typography>
       </Box>
-      {apiData &&
-        apiData.map((group) => (
+      {members &&
+        members.map((member) => (
           <ListItem
-            key={group.id}
+            key={member.id}
             disablePadding
             sx={{ display: "block" }}
             dense={true}
           >
-            <Link
-              to={`/group/${group.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              <ListItemButton sx={{ minHeight: 0 }}>
-                <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
-                  <ListItemAvatar sx={{ minWidth: "50px" }}>
-                    <Avatar alt="Group Icon" src={group.icon} />
-                  </ListItemAvatar>
-                </ListItemIcon>
+            <ListItemButton sx={{ minHeight: 0 }}>
+              <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
+                <ListItemAvatar sx={{ minWidth: "50px" }}>
+                  <Avatar alt="Group Icon" src={member.user.profile_picture} />
+                </ListItemAvatar>
+              </ListItemIcon>
+              {open && ( // Conditionally render ListItemText based on `open`
                 <ListItemText
                   primary={
                     <Typography
@@ -72,18 +63,17 @@ const GroupList = ({ open }) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      {group.name}
+                      {/* <div></div> {member.admin} */}
+                      {member.user.username}
                     </Typography>
                   }
                 />
-              </ListItemButton>
-            </Link>
+              )}
+            </ListItemButton>
           </ListItem>
         ))}
     </>
   );
 };
 
-export default React.memo(GroupList);
-
-  
+export default GroupMembers;

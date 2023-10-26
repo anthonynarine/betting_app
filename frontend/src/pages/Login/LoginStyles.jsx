@@ -1,13 +1,18 @@
 export const LoginStyles = (theme) => ({
+  root: {
+    backgroundColor: '#F3F4EF',
+    // backgroundImage: "url(https://source.unsplash.com/random/?gambling)",
+    height: '100vh',
+  },
   container: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#F3F4EF",
     height: "100vh",
     display: "flex",
     maxWidth: "60%",
     justifyContent: "center",
     alignItems: "flex-start",
     paddingTop: 25,
-    backgroundImage: "url(https://source.unsplash.com/random/?plants)",
+    // backgroundImage: "url(https://source.unsplash.com/random/?plants)",
     backgroundPosition: "center",
     backgroundSize: "cover",
   },

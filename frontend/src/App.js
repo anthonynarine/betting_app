@@ -10,31 +10,36 @@ import AuthProvider from "./context/AuthContext";
 import LoginPageV0 from "./pages/Login/test/LoginPageV0";
 import TestLogin from "./pages/Login/test/TestLogin";
 import LoginPage from "./pages/Login/LoginPage";
+import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
+import MemberProvider from "./context/membersContext/MemberProvider";
 
 function App() {
   return (
     <AuthProvider>
-      {/* <LoginProvider> */}
-      <ToggleColorModeProvider>
-        <CssBaseline />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/group/:groupId" element={<DetailPage />} />
-          {/* <Route path="/login" element={<LoginPageV0 />} /> */}
-          <Route
-            path="/testlogin"
-            element={
-              <ProtectedRoute>
-                <TestLogin />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-      </ToggleColorModeProvider>
-      {/* </LoginProvider> */}
+      <MemberProvider>
+        {/* <LoginProvider> */}
+        <ToggleColorModeProvider>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/group/:groupId" element={<DetailPage />} />
+            {/* <Route path="/login" element={<LoginPageV0 />} /> */}
+            <Route
+              path="/testlogin"
+              element={
+                <ProtectedRoute>
+                  <TestLogin />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
+        </ToggleColorModeProvider>
+        {/* </LoginProvider> */}
+      </MemberProvider>
     </AuthProvider>
   );
 }

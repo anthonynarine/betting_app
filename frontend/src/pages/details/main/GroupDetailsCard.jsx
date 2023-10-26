@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Button, Box } from "@mui/material";
+import React from "react";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -7,25 +7,16 @@ import CardMedia from "@mui/material/CardMedia";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
-import JoinGroupButton from "./JoinGroupBtn";
-
+import { JoinGroupButton, LeaveGroupButton } from "./GroupActionBtns";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-
-import useCrud from "../../../../services/useCrud";
-// import RateMovieDialog from "../RateMoive";
-
-// import Moment from "react-moment"
-
+import { useState, useEffect } from "react";
+import useCrud from "../../../services/useCrud";
 import EventTimestamp from "./EventTimeStamp";
+import { useMembers } from "../../../context/membersContext/MemberContext";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -39,20 +30,32 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function GroupDetailsCard({ apiData }) {
-  const { name, location, banner_img, description, events, members } = apiData;
-
-  const [expanded, setExpanded] = useState(false);
-
-  // const targeTime = new Date();
-  // targeTime.setHours(targeTime.getHours() + 2)
-
+  const {
+    name,
+    id: groupId,
+    location,
+    banner_img,
+    description,
+    events,
+    // members,
+  } = apiData;
   console.log("GroupDetailsCard DATA", apiData);
+
+  const { members, setMembers } = useMembers();
+
+  const navigate = useNavigate();
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
-  const navigate = useNavigate();
+  const userId = localStorage.getItem("userId");
+
+  const isMember = members
+    ? members.some((member) => member.user.id === Number(userId))
+    : false;
+
   const { deleteData } = useCrud([], "/groups");
 
   const handleDelete = async (id) => {
@@ -77,10 +80,11 @@ export default function GroupDetailsCard({ apiData }) {
         overflow: "auto",
         // Rounded corners to make it look like a book
         borderRadius: "20px",
+        borderColor: "#000",
         // Shadow to simulate pages
-        boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
+        // boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
         // Light background color like pages of a book
-        background: "#f2f2f2",
+        background: "#fff",
         // CSS media query for larger screens
         "@media (min-width: 768px)": {
           // Adjust maxWidth for wider screens
@@ -89,7 +93,7 @@ export default function GroupDetailsCard({ apiData }) {
           maxHeight: "none",
         },
       }}
-      elevation={0}
+      elevation={20}
     >
       <CardHeader
         // avatar={
@@ -99,8 +103,31 @@ export default function GroupDetailsCard({ apiData }) {
         //   />
         // }
         action={
-          <Box sx={{pt:1.25, pr:1}} display="flex" justifyContent="center" flexGrow={1}>
-            <JoinGroupButton />
+          <Box
+            sx={{ pt: 1.25, pr: 1 }}
+            display="flex"
+            justifyContent="center"
+            flexGrow={1}
+          >
+            <>
+              {isMember ? (
+                <IconButton aria-label="leave-group">
+                  <LeaveGroupButton
+                    groupId={groupId}
+                    userId={userId}
+                    setMember={setMembers}
+                  />
+                </IconButton>
+              ) : (
+                <IconButton aria-label="join-group">
+                  <JoinGroupButton
+                    groupId={groupId}
+                    userId={userId}
+                    setMember={setMembers}
+                  />
+                </IconButton>
+              )}
+            </>
           </Box>
         }
         title={<Typography variant="h6">{name}</Typography>}
@@ -109,7 +136,7 @@ export default function GroupDetailsCard({ apiData }) {
       <CardMedia
         component="img"
         height="300"
-        image={banner_img ? banner_img : "https://source.unsplash.com/random/?football"}
+        image={banner_img ? banner_img : "https://source.unsplash.com/random/?fight"}
         alt="banner image"
       />
       <CardContent>
@@ -119,7 +146,6 @@ export default function GroupDetailsCard({ apiData }) {
           </Typography>
           {events && events.length > 0 && (
             <>
-              {/* <Typography variant="h6">Event:</Typography> */}
               {events.map((event) => (
                 <div key={event.id}>
                   <Typography variant="h6" sx={{ marginTop: 1 }}>
@@ -131,8 +157,6 @@ export default function GroupDetailsCard({ apiData }) {
                   >
                     <EventTimestamp createdAt={new Date(event.time)} />
                   </Typography>
-                  {/* <Typography variant="body2"><Moment date={targeTime} fromNow /> remaining time </Typography> */}
-                  {/* Add more event details here */}
                 </div>
               ))}
             </>
@@ -140,12 +164,6 @@ export default function GroupDetailsCard({ apiData }) {
         </Box>
       </CardContent>
       <CardActions disableSpacing>
-        {/* <IconButton onClick={handleOpenRateMovie}><Button variant="contained" >Rate Movie</Button></IconButton>
-        <RateMovieDialog
-          group={apiData}
-          open={isRateMovieOpen}
-          handleClose={handleCloseRateMovie}
-        /> */}
         <IconButton aria-label="share">
           <DeleteSweepIcon onClick={handleDelete} />
         </IconButton>

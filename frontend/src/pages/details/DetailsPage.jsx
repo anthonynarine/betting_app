@@ -1,46 +1,42 @@
 import { Box, CssBaseline, useTheme } from "@mui/material";
 import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
-import PrimaryDraw from "../structure/PrimaryDraw/PrimaryDraw";
+import PrimaryDraw from "../structure/PrimaryDraw/Drawer/PrimaryDraw";
 import Main from "../structure/Main/Main";
-import Groups from "../structure/Main/Groups/Groups";
-import GroupMembers from "../structure/PrimaryDraw/DetailsPageContent/GroupMembers";
-import EventsList from "../structure/SecondaryDraw/Events/EventsList";
+
+import GroupMembers from "./primayrDraw/GroupMembers";
+import EventsList from "./secondaryDraw/EventsList";
 import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
+import Groups from "./main/Groups";
 
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import useCrud from "../../services/useCrud";
+import MembersProvider from "../../context/membersContext/MemberProvider";
+import { ApiDataProvider, useApiData } from "../../context/apiDataProvider/ApiDataProvider";
 
 const DetailPage = () => {
-  const { groupId } = useParams();
-  const { apiData, fetchData } = useCrud([], `/groups/${groupId}/`);
 
-  const { name, location, banner_img, description, events, members } = apiData;
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { apiData } = useApiData();
 
   useEffect(() => {
-    console.log("DATA In DetailsPage to be Passed:", apiData);
-  }, [apiData]);
-
+    console.log("Details Page DATA TEST:", apiData);
+  }, [apiData]); // Refetches data on apiData changes
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <PrimaryAppBar />
-      <PrimaryDraw>
-      <GroupMembers members={members} />
-      </PrimaryDraw>
-      <SecondarDraw>
-       
-        <EventsList events={events} />
-      </SecondarDraw>
-      <Main>
-        <Groups />
-      </Main>
-    </Box>
+    <ApiDataProvider>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <PrimaryAppBar />
+        <PrimaryDraw>
+          <GroupMembers />
+        </PrimaryDraw>
+        <SecondarDraw>
+          <EventsList />
+        </SecondarDraw>
+        <Main>
+          <Groups />
+        </Main>
+      </Box>
+    </ApiDataProvider>
   );
 };
 
