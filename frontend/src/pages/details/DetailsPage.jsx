@@ -1,4 +1,4 @@
-import { Box, CssBaseline, useTheme } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
 import PrimaryDraw from "../structure/PrimaryDraw/Drawer/PrimaryDraw";
 import Main from "../structure/Main/Main";
@@ -6,20 +6,19 @@ import Main from "../structure/Main/Main";
 import GroupMembers from "./primayrDraw/GroupMembers";
 import EventsList from "./secondaryDraw/EventsList";
 import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
-import Groups from "./main/Groups";
+import GroupDetails from "./main/GroupDetails";
 
 import React, { useEffect } from "react";
-import MembersProvider from "../../context/membersContext/MemberProvider";
-import { ApiDataProvider, useApiData } from "../../context/apiDataProvider/ApiDataProvider";
+import { ApiDataProvider } from "../../context/apiDataProvider/ApiDataProvider";
 
 const DetailPage = () => {
-
-
-  // const { apiData } = useApiData();
-
-  // useEffect(() => {
-  //   console.log("Details Page DATA TEST:", apiData);
-  // }, [apiData]); // Refetches data on apiData changes
+  
+  //EASER EGG
+  useEffect(() => {
+    console.log(
+      "👋 😂 I used to play sports. Then I realized you can buy trophies. Now I'm good at everything. - Demetri Martin 🏆🌟"
+    );
+  }, []);
 
   return (
     <ApiDataProvider>
@@ -33,7 +32,7 @@ const DetailPage = () => {
           <EventsList />
         </SecondarDraw>
         <Main>
-          <Groups />
+          <GroupDetails />
         </Main>
       </Box>
     </ApiDataProvider>

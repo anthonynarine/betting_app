@@ -22,8 +22,10 @@ export default ApiDataContext;
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
 export const ApiDataProvider = ({ children }) => {
+  console.log("ApiDataProvider is re-rendering");  // DEBUG TEST
   // Get the groupId from the URL
   const { groupId } = useParams();
+  const userId = localStorage.getItem("userId")
   
   // Determine the API endpoint based on the groupId
   const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
@@ -45,19 +47,24 @@ export const ApiDataProvider = ({ children }) => {
         setEvents(data.events);
         setMembers(data.members);
         setGroup(data);
-        console.log("Groups DATA ApiDataProvider:", data)
+        console.log("Groups DATA ApiDataProvider:", data)  // CONSOLE TEST
       } catch (error) {
-        console.error("Error fetching group data:", error);
+        console.error("Error fetching group data:", error); // CONSOLE TEST
       }
     };
     fetchGroupData();
-  }, [groupId]); // refetches data when groupId changes
+  }, [groupId,]); // refetches data when groupId changes
+
+  useEffect(() => {
+    console.log("Current Member State: ", members);
+  }, [members]);
 
   // Functions to update events, members, and groups
   const updateEvents = (newEvents) => {
     setEvents(newEvents);
   };
   const updateMembers = (newMembers) => {
+    console.log("New members to set:", newMembers);
     setMembers(newMembers);
   };
   const updateGroup = (newGroup) => {
@@ -67,6 +74,7 @@ export const ApiDataProvider = ({ children }) => {
   // The value that will be available to components wrapped in this Provider
   const value = {
     apiData,
+    userId,
     groupId,
     group,
     setGroup,

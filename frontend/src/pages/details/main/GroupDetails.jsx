@@ -3,10 +3,10 @@ import React, { useEffect, } from "react";
 import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "../../home/main/GroupCard";
-import GroupDetailsCard from "../main/GroupDetailsCard";
+import GroupDetailsCard from "./GroupDetailsCard";
 import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
-function Group() {
+function GroupDetails() {
   
   const { groupId, groups } = useApiData()
   console.log("Groups DetailPage DATA:", groups)
@@ -179,4 +179,4 @@ function Group() {
   );
 }
 
-export default Group;
+export default GroupDetails;

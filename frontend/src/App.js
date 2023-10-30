@@ -13,12 +13,11 @@ import LoginPage from "./pages/Login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
-import MemberProvider from "./context/membersContext/MemberProvider";
+
 
 function App() {
   return (
     <AuthProvider>
-      <MemberProvider>
         {/* <LoginProvider> */}
         <ToggleColorModeProvider>
           <CssBaseline />
@@ -39,7 +38,6 @@ function App() {
           </Routes>
         </ToggleColorModeProvider>
         {/* </LoginProvider> */}
-      </MemberProvider>
     </AuthProvider>
   );
 }

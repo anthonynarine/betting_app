@@ -10,13 +10,17 @@ from .managers import CustomUserManager
 def profile_picture_upload_path(instance, filename):
     return f"user/{instance.id}/profile_picture/{filename}"
 
+def default_icon_image():
+    return "user/default/account.png"
+
 
 class CustomUser(AbstractUser):
     username = models.CharField(_("username"), max_length=30, unique=True)
     email = models.EmailField(_("email address"), unique=True)
 
     profile_picture = models.FileField(
-        upload_to=profile_picture_upload_path, blank=True, null=True
+        upload_to=profile_picture_upload_path, blank=True, null=True,
+        default=default_icon_image
     )
 
     USERNAME_FIELD = "email"

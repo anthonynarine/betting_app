@@ -11,11 +11,12 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import { JoinGroupButton, LeaveGroupButton } from "./GroupActionBtns";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import EventTimestamp from "./EventTimeStamp";
 import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { JoinGroupBtn } from "./JoinGroupBtn";
+import { LeaveGroupBtn } from "./LeaveGroupBtn";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,6 +34,8 @@ export default function GroupDetailsCard() {
   const { events, group, members, userId } = useApiData();
 
   console.log("GroupDetailsCard DATA", group);
+  console.log("GroupDetailsCard Members:", members);
+  console.log("GroupDetailsCard User ID:", userId);
 
 
   const navigate = useNavigate();
@@ -43,8 +46,9 @@ export default function GroupDetailsCard() {
   };
 
   const isMember = members
-    ? members.some((member) => member.user.id === Number(userId))
-    : false;
+  ? members.some((member) => member?.user?.id === Number(userId))
+  : false;
+
 
 
   return (
@@ -89,12 +93,12 @@ export default function GroupDetailsCard() {
             <>
               {isMember ? (
                 <IconButton aria-label="leave-group">
-                  <LeaveGroupButton/>
+                  <LeaveGroupBtn/>
                 </IconButton>
               ) : (
                 <IconButton aria-label="join-group">
-                  <JoinGroupButton
-/>
+                  < JoinGroupBtn />
+
                 </IconButton>
               )}
             </>
