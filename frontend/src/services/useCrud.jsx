@@ -1,12 +1,9 @@
 import { useState } from "react";
 import useAxiosWithInterceptor from "./jwtinterceptor";
 
-
-
 const useCrud = ([], apiURL) => {
-  
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  console.log("TESTBASEURL", BASE_URL);   //TEST
+  console.log("TESTBASEURL", BASE_URL); //TEST
 
   const jwtAxios = useAxiosWithInterceptor();
   const [apiData, setApiData] = useState([]);
@@ -16,6 +13,9 @@ const useCrud = ([], apiURL) => {
   const fetchData = async (accessToken) => {
     setIsLoading(true);
     try {
+      if (!BASE_URL) {
+        throw new Error("BASE_URL is not defined");
+      }
       // Set the authorization header only if an access token is provided
       if (accessToken) {
         jwtAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;

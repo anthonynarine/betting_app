@@ -22,17 +22,17 @@ export default ApiDataContext;
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
 export const ApiDataProvider = ({ children }) => {
-  console.log("ApiDataProvider is re-rendering");  // DEBUG TEST
+  console.log("ApiDataProvider is re-rendering"); // DEBUG TEST
   // Get the groupId from the URL
   const { groupId } = useParams();
-  const userId = localStorage.getItem("userId")
-  
+  const userId = localStorage.getItem("userId");
+
   // Determine the API endpoint based on the groupId
   const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
-  
+
   // Use the custom CRUD hook to fetch data
   const { apiData, fetchData, isLoading, error } = useCrud([], `/groups/${groupId}`);
-  
+
   // State variables for events, members, and groups
   const [events, setEvents] = useState([]);
   const [members, setMembers] = useState([]);
@@ -40,20 +40,22 @@ export const ApiDataProvider = ({ children }) => {
 
   // Fetch group data when groupId changes
   useEffect(() => {
-    const fetchGroupData = async () => {
-      const accessToken = localStorage.getItem("accessToken");
-      try {
-        const data = await fetchData(accessToken);
-        setEvents(data.events);
-        setMembers(data.members);
-        setGroup(data);
-        console.log("Groups DATA ApiDataProvider:", data)  // CONSOLE TEST
-      } catch (error) {
-        console.error("Error fetching group data:", error); // CONSOLE TEST
-      }
-    };
-    fetchGroupData();
-  }, [groupId,]); // refetches data when groupId changes
+    if (groupId) {
+      const fetchGroupData = async () => {
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+          const data = await fetchData(accessToken);
+          setEvents(data.events);
+          setMembers(data.members);
+          setGroup(data);
+          console.log("Groups DATA ApiDataProvider:", data); // CONSOLE TEST
+        } catch (error) {
+          console.error("Error fetching group data:", error);
+        }
+      };
+      fetchGroupData();
+    }
+  }, [groupId]); // refetches data when groupId changes
 
   useEffect(() => {
     console.log("Current Member State: ", members);

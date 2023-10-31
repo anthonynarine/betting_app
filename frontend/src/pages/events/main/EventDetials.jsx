@@ -4,22 +4,17 @@ import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "../../home/main/GroupCard";
 import GroupDetailsCard from "../../details/main/GroupDetailsCard";
+import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
-function Group() {
-  const { groupId } = useParams();
-  const url = groupId ? `/groups/${groupId}/` : "/groups/";
+function EventDetails() {
 
-  const { apiData, fetchData } = useCrud([], url);
 
-  useEffect(() => {
-    fetchData();
-  }, [groupId]);
+const { events,  userId, groupId } = useApiData();
 
-  useEffect(() => {
-    console.log("Group ID:", apiData, "data test in GroupsComp");
-  }, [groupId]);
+console.log("EventDetail Component DATA TEST", events)
+console.log("EventDetail Component DATA TEST", groupId)
 
-  
+    
   const renderHeader = () => {
     if (groupId) {
       return null;
@@ -39,41 +34,12 @@ function Group() {
             textAlign: { xs: "center", sm: "left" },
           }}
         >
-          Active Groups
+          Event Details
         </Typography>
       );
     }
   };
 
-  const renderGroupList = () => {
-    if (groupId) {
-      return null;
-    } else {
-      return (
-        <Grid
-          container
-          spacing={{ xs: 2, sm: 3, md: 4, lg: 5 }}
-          style={{ width: "100%" }}
-        >
-          {Array.isArray(apiData) &&
-            apiData.map((group) => (
-              <Grid
-                item
-                key={group.id}
-                xs={12}
-                sm={6}
-                md={4}
-                lg={3}
-                xl={2}
-                style={{ width: "100%" }}
-              >
-                <GroupCard group={group} />
-              </Grid>
-            ))}
-        </Grid>
-      );
-    }
-  };
 
   const renderSubheader = () => {
     if (groupId) {
@@ -117,4 +83,4 @@ function Group() {
   );
 }
 
-export default Group;
+export default EventDetails;

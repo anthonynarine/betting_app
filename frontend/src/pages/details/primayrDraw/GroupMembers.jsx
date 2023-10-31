@@ -21,7 +21,7 @@ const GroupMembers = ({ open }) => {
   const classes = ListViewStyles(theme);
 
   const { members } = useApiData();
-  console.log("GroupMembers Full member object:", members)
+  // console.log("GroupMembers Full member object:", members)  //DEBUG TEST
 
   useEffect(()=>{},[members])
 
@@ -39,9 +39,9 @@ const GroupMembers = ({ open }) => {
       </Box>
       {members &&
         members.map((member, index) => {
-          console.log(`Current member object at index ${index}:`, member);
+          // console.log(`Current member object at index ${index}:`, member);
           if (!member.user) {
-            console.error("member.user is undefined for member:", member);
+            // console.error("member.user is undefined for member:", member);
             return null; // Skip this iteration
           }
           return (

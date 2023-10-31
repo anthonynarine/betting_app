@@ -17,10 +17,6 @@ export const JoinGroupBtn = () => {
 //     console.log("updateMembers is a function: ", typeof updateMembers === "function");
 //   }, [members]); //DEBUT TESTS
 
-//   useEffect(() => {
-//     console.log("Received updateMembers function: ", updateMembers);
-//     console.log("Received members state: ", members);
-//   }, []);  //DEGUG TESTS
 
   const handleClose = () => {
     setOpen(false);

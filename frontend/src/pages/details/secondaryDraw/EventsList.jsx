@@ -17,13 +17,11 @@ import React from "react";
 import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
 
 const EventsList = () => {
-
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
   const { events } = useApiData();
-  console.log("Events Page DAtA:", events) //  TEST
-
+  console.log("Events Page DATA:", events); //  TEST
 
   return (
     <>
@@ -40,6 +38,10 @@ const EventsList = () => {
             sx={{ display: "block" }}
             dense={true}
           >
+            <Link
+              to={`/event/${event.id}`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
             <ListItemButton sx={{ minHeight: 0 }}>
               <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                 <ListItemAvatar sx={{ minWidth: "50px" }}>
@@ -66,6 +68,7 @@ const EventsList = () => {
                 }
               />
             </ListItemButton>
+            </Link>
           </ListItem>
         ))}
     </>

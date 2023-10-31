@@ -33,9 +33,9 @@ export default function GroupDetailsCard() {
 
   const { events, group, members, userId } = useApiData();
 
-  console.log("GroupDetailsCard DATA", group);
-  console.log("GroupDetailsCard Members:", members);
-  console.log("GroupDetailsCard User ID:", userId);
+  // console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
+  // console.log("GroupDetailsCard Members:", members); //DEBUG TESTS
+  // console.log("GroupDetailsCard User ID:", userId); //DEBUG TESTS
 
 
   const navigate = useNavigate();
@@ -50,14 +50,13 @@ export default function GroupDetailsCard() {
   : false;
 
 
-
   return (
     <Card
       sx={{
         // Set initial maxWidth (for smaller screens)
         maxWidth: 300,
         // Set maxHeight for scrolling on smaller screens
-        maxHeight: 650,
+        maxHeight: 400,
         overflow: "auto",
         // Rounded corners to make it look like a book
         borderRadius: "20px",
@@ -69,12 +68,12 @@ export default function GroupDetailsCard() {
         // CSS media query for larger screens
         "@media (min-width: 768px)": {
           // Adjust maxWidth for wider screens
-          maxWidth: 700, // You can adjust this value
+          maxWidth: 400, // You can adjust this value
           // Remove maxHeight for wider screens (no scrolling)
           maxHeight: "none",
         },
       }}
-      elevation={20}
+      elevation={0}
     >
       <CardHeader
         // avatar={

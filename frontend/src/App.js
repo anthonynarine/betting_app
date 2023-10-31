@@ -13,17 +13,20 @@ import LoginPage from "./pages/Login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
-
+import EventPage from "./pages/events/EventPage";
+import { ApiDataProvider } from "./context/apiDataProvider/ApiDataProvider";
 
 function App() {
   return (
     <AuthProvider>
-        {/* <LoginProvider> */}
-        <ToggleColorModeProvider>
+      {/* <LoginProvider> */}
+      <ToggleColorModeProvider>
+        <ApiDataProvider>
           <CssBaseline />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/group/:groupId" element={<DetailPage />} />
+            <Route path="/event/:eventId" element={<EventPage />} />
             {/* <Route path="/login" element={<LoginPageV0 />} /> */}
             <Route
               path="/testlogin"
@@ -36,8 +39,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<Signup />} />
           </Routes>
-        </ToggleColorModeProvider>
-        {/* </LoginProvider> */}
+        </ApiDataProvider>
+      </ToggleColorModeProvider>
+      {/* </LoginProvider> */}
     </AuthProvider>
   );
 }
