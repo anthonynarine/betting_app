@@ -1,11 +1,12 @@
 import { Box, CssBaseline } from "@mui/material";
-import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
-import PrimaryDraw from "../structure/PrimaryDraw/Drawer/PrimaryDraw";
-import Main from "../structure/Main/Main";
+import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
+import PrimaryDraw from "../../components/primaryDraw/PrimaryDraw";
+import Main from "../../components/main/Main"
+
 
 import GroupMembers from "./primayrDraw/GroupMembers";
 import EventsList from "./secondaryDraw/EventsList";
-import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
+import SecondaryDraw from "../../components/secondaryDraw/SecondaryDraw"
 import GroupDetails from "./main/GroupDetails";
 
 import React, { useEffect } from "react";
@@ -28,9 +29,9 @@ const DetailPage = () => {
         <PrimaryDraw>
           <GroupMembers />
         </PrimaryDraw>
-        <SecondarDraw>
+        <SecondaryDraw>
           <EventsList />
-        </SecondarDraw>
+        </SecondaryDraw>
         <Main>
           <GroupDetails />
         </Main>

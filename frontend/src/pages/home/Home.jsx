@@ -1,7 +1,7 @@
 import { Box, CssBaseline } from "@mui/material";
-import PrimaryAppBar from "../structure/PrimaryAppBar/PrimaryAppBar";
-import PrimaryDraw from "../structure/PrimaryDraw/Drawer/PrimaryDraw";
-import Main from "../structure/Main/Main";
+import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
+import PrimaryDraw from "../../components/primaryDraw/PrimaryDraw"
+import Main from "../../components/main/Main";
 import Groups from "./primaryDraw/Groups"
 import GroupList from "./primaryDraw/GroupList";
 
