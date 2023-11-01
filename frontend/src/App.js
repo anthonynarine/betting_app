@@ -6,12 +6,12 @@ import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
-import AuthProvider from "./context/AuthContext";
+import AuthProvider from "./context/Auth/AuthContext";
 import LoginPageV0 from "./pages/Login/test/LoginPageV0";
 import TestLogin from "./pages/Login/test/TestLogin";
 import LoginPage from "./pages/Login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
-import ProtectedRoute from "./Auth/ProtectedRoute";
+import ProtectedRoute from "./context/Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
 import EventPage from "./pages/events/EventPage";
 

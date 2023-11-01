@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import LoginLogoutButton from "./LoginLogoutButton";
-import { useAuthServices } from "../../../Auth/AuthServices";
+import { useAuthServices } from "../../../context/Auth/AuthServices";
 
 function PrimaryAppBar() {
   const theme = useTheme();

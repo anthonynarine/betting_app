@@ -1,6 +1,6 @@
 // --- IMPORTS ---
 import { createContext, useContext } from "react";
-import { useAuthServices } from "../Auth/AuthServices";
+import { useAuthServices } from "./AuthServices";
 
 
 

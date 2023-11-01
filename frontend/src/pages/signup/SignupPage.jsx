@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, TextField, Container, Typography, Box, useTheme } from "@mui/material";
-import { useAuthServices } from "../../Auth/AuthServices";
+import { useAuthServices } from "../../context/Auth/AuthServices";
 import { useNavigate } from "react-router-dom";
 import { LoginStyles } from "../Login/LoginStyles";
 import { validateSignupPassword, validateEmail } from "../Login/validators/SingupValidators.jsx";

@@ -3,7 +3,7 @@ import { Button, Box } from "@mui/material";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useNavigate } from "react-router-dom";
-import { useAuthServices } from "../../../Auth/AuthServices";
+import { useAuthServices } from "../../../context/Auth/AuthServices";
 
 export default function LoginLogoutButton() {
   // const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
