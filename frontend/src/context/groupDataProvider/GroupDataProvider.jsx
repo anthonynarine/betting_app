@@ -4,11 +4,11 @@ import { useParams } from "react-router-dom";
 
 // === Context Creation ===
 // Create a new context for API data
-export const ApiDataContext = createContext();
+export const GroupDataContext = createContext();
 
-// Custom hook to use the ApiDataContext
-export const useApiData = () => {
-  const context = useContext(ApiDataContext);
+// Custom hook to use the GroupDataContext
+export const useGroupData = () => {
+  const context = useContext(GroupDataContext);
   // Ensure the hook is used within a Provider
   if (!context) {
     throw new Error("useApiData must be used within a MemberProvider");
@@ -17,18 +17,18 @@ export const useApiData = () => {
 };
 
 // Export the context for use in other components
-export default ApiDataContext;
+export default GroupDataContext;
 
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
-export const ApiDataProvider = ({ children }) => {
-  console.log("ApiDataProvider is re-rendering"); // DEBUG TEST
+export const GroupDataProvider = ({ children }) => {
+  console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
   // Get the groupId from the URL
   const { groupId } = useParams();
   const userId = localStorage.getItem("userId");
 
   // Determine the API endpoint based on the groupId
-  const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
+  // const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
 
   // Use the custom CRUD hook to fetch data
   const { apiData, fetchData, isLoading, error } = useCrud([], `/groups/${groupId}`);
@@ -62,9 +62,6 @@ export const ApiDataProvider = ({ children }) => {
   }, [members]);
 
   // Functions to update events, members, and groups
-  const updateEvents = (newEvents) => {
-    setEvents(newEvents);
-  };
   const updateMembers = (newMembers) => {
     console.log("New members to set:", newMembers);
     setMembers(newMembers);
@@ -82,13 +79,11 @@ export const ApiDataProvider = ({ children }) => {
     setGroup,
     updateGroup,
     events,
-    setEvents,
-    updateEvents,
     members,
     setMembers,
     updateMembers,
   };
 
   // Provide the value to the children components
-  return <ApiDataContext.Provider value={value}>{children}</ApiDataContext.Provider>;
+  return <GroupDataContext.Provider value={value}>{children}</GroupDataContext.Provider>;
 };

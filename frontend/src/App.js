@@ -14,14 +14,13 @@ import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
 import EventPage from "./pages/events/EventPage";
-import { ApiDataProvider } from "./context/apiDataProvider/ApiDataProvider";
+
 
 function App() {
   return (
     <AuthProvider>
       {/* <LoginProvider> */}
       <ToggleColorModeProvider>
-        <ApiDataProvider>
           <CssBaseline />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -39,7 +38,6 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<Signup />} />
           </Routes>
-        </ApiDataProvider>
       </ToggleColorModeProvider>
       {/* </LoginProvider> */}
     </AuthProvider>

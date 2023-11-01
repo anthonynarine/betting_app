@@ -14,13 +14,13 @@ import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React, { useEffect } from "react";
 // import { useMembers } from "../../../context/membersContext/MemberContext"
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
 
 const GroupMembers = ({ open }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { members } = useApiData();
+  const { members } = useGroupData();
   // console.log("GroupMembers Full member object:", members)  //DEBUG TEST
 
   useEffect(()=>{},[members])

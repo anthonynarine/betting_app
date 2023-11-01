@@ -5,21 +5,15 @@ import SecondaryDraw from "../structure/SecondaryDraw/SecondaryDraw";
 import Main from "../structure/Main/Main";
 // import EventDetails from "../events/main/EventDetials";
 
-import { ApiDataProvider } from "../../context/apiDataProvider/ApiDataProvider";
-
 const EventsPage = () => {
   return (
-    <ApiDataProvider>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <PrimaryAppBar />
-        <PrimaryDraw></PrimaryDraw>
-        <SecondaryDraw></SecondaryDraw>
-        <Main>
-          {/* <EventDetails /> */}
-        </Main>
-      </Box>
-    </ApiDataProvider>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <PrimaryAppBar />
+      <PrimaryDraw></PrimaryDraw>
+      <SecondaryDraw></SecondaryDraw>
+      <Main>{/* <EventDetails /> */}</Main>
+    </Box>
   );
 };
 

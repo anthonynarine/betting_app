@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Tooltip, Snackbar, Box } from "@mui/material";
 import useAxiosWithInterceptor from "../../../services/jwtinterceptor"; // Replace with your actual import
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -12,7 +12,7 @@ export const LeaveGroupBtn = () => {
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
 
-  const { members, updateMembers, groupId, userId } = useApiData();
+  const { members, updateMembers, groupId, userId } = useGroupData();
 
   useEffect(() => {
     console.log("Received updateMembers function: ", updateMembers);

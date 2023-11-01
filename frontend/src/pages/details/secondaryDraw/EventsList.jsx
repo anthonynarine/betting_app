@@ -14,13 +14,13 @@ import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React from "react";
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
 
 const EventsList = () => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
-  const { events } = useApiData();
+  const { events } = useGroupData();
   console.log("Events Page DATA:", events); //  TEST
 
   return (

@@ -9,7 +9,7 @@ import SecondarDraw from "../structure/SecondaryDraw/SecondaryDraw";
 import GroupDetails from "./main/GroupDetails";
 
 import React, { useEffect } from "react";
-import { ApiDataProvider } from "../../context/apiDataProvider/ApiDataProvider";
+import { GroupDataProvider } from "../../context/groupDataProvider/GroupDataProvider";
 
 const DetailPage = () => {
   
@@ -21,7 +21,7 @@ const DetailPage = () => {
   }, []);
 
   return (
-    <ApiDataProvider>
+    <GroupDataProvider>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <PrimaryAppBar />
@@ -35,7 +35,7 @@ const DetailPage = () => {
           <GroupDetails />
         </Main>
       </Box>
-    </ApiDataProvider>
+    </GroupDataProvider>
   );
 };
 

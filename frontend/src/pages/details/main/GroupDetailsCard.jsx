@@ -14,7 +14,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import EventTimestamp from "./EventTimeStamp";
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
 import { JoinGroupBtn } from "./JoinGroupBtn";
 import { LeaveGroupBtn } from "./LeaveGroupBtn";
 
@@ -31,7 +31,7 @@ const ExpandMore = styled((props) => {
 
 export default function GroupDetailsCard() {
 
-  const { events, group, members, userId } = useApiData();
+  const { events, group, members, userId } = useGroupData();
 
   // console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
   // console.log("GroupDetailsCard Members:", members); //DEBUG TESTS

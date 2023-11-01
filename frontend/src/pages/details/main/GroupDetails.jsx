@@ -2,11 +2,11 @@ import { Typography, Box, Container, Grid } from "@mui/material";
 import React, { useEffect, } from "react";
 import GroupCard from "../../home/main/GroupCard";
 import GroupDetailsCard from "./GroupDetailsCard";
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
 
 function GroupDetails() {
   
-  const { groupId, groups } = useApiData()
+  const { groupId, groups } = useGroupData()
   console.log("Groups DetailPage DATA:", groups)
 
 
