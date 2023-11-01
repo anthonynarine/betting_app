@@ -8,47 +8,43 @@ export const EventDataContext = createContext();
 
 // Custom hook to use the EventDataProvider
 export const useEventData = () => {
-    const context = useContext(EventDataContext);
-    // ensure the hook is used within a provider
-    if(!context) {
-        throw new Error("useEventData must be used within a EventProovider")
-    }
-    return context;
+  const context = useContext(EventDataContext);
+  // ensure the hook is used within a provider
+  if (!context) {
+    throw new Error("useEventData must be used within an EventProovider");
+  }
+  return context;
 };
-export default EventDataContext
-
+export default EventDataContext;
 
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
 export const EventDataProvider = ({ children }) => {
-    console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
+  console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
 
-    const { groupId } = useParams();
-    const { eventId } = useParams();
-    const userId = localStorage.getItemI("userId");
+  const { eventId } = useParams();
+  const { fetchData } = useCrud([], `/groups/${eventId}`);
 
-    const { apiData, fetchData } = useCrud([], `/groups/${groupId}`);
+  //State to needed for Events
+  const [events, setEvents] = useState([]);
+  const [group, setGroups] = useState([]);
+  const [participants, setParticipants] = useState([]);
 
+  // Feth event data when eventId changes
 
-    //State to needed for Events
-    const [events, setEvents] = useState([]);
-    const [group, setGroups] = useState([]);
-    const [participants, setParticipants] = useState([]);
-
-    // Feth event data when eventId changes
-
-    useEffect(()=> {
-        if(eventId) {
-            const fetchEventData = async () => {
-                const accessToken = localStorage.getItem("accessToken");
-                try {
-                    const evenData = await fetchData(accessToken)
-                    
-                } catch (error) {
-                    
-                }
-            }
+  useEffect(() => {
+    if (eventId) {
+      const fetchEventData = async () => {
+        const accessToken = localStorage.getItem("accessToken");
+        try {
+          const data = await fetchData(accessToken);
+          setEvents(data);
+          setGroups(data.group);
+        } catch (error) {
+          console.error("Error fetching event data:", error);
         }
-    })
-
-}
+      };
+      fetchEventData();
+    }
+  }, [eventId]);
+};
