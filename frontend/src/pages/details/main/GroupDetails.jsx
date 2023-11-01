@@ -2,7 +2,7 @@ import { Typography, Box, Container, Grid } from "@mui/material";
 import React, { useEffect, } from "react";
 import GroupCard from "../../home/main/GroupCard";
 import GroupDetailsCard from "./GroupDetailsCard";
-import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
 function GroupDetails() {
   

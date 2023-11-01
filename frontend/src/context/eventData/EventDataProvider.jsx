@@ -24,7 +24,31 @@ export const EventDataProvider = ({ children }) => {
     console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
 
     const { groupId } = useParams();
+    const { eventId } = useParams();
     const userId = localStorage.getItemI("userId");
 
     const { apiData, fetchData } = useCrud([], `/groups/${groupId}`);
+
+
+    //State to needed for Events
+    const [events, setEvents] = useState([]);
+    const [group, setGroups] = useState([]);
+    const [participants, setParticipants] = useState([]);
+
+    // Feth event data when eventId changes
+
+    useEffect(()=> {
+        if(eventId) {
+            const fetchEventData = async () => {
+                const accessToken = localStorage.getItem("accessToken");
+                try {
+                    const evenData = await fetchData(accessToken)
+                    
+                } catch (error) {
+                    
+                }
+            }
+        }
+    })
+
 }

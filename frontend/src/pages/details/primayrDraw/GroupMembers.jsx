@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React, { useEffect } from "react";
 // import { useMembers } from "../../../context/membersContext/MemberContext"
-import { useGroupData } from "../../../context/groupDataProvider/GroupDataProvider";
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
 const GroupMembers = ({ open }) => {
   const theme = useTheme();

@@ -10,7 +10,7 @@ import SecondaryDraw from "../../components/secondaryDraw/SecondaryDraw"
 import GroupDetails from "./main/GroupDetails";
 
 import React, { useEffect } from "react";
-import { GroupDataProvider } from "../../context/groupDataProvider/GroupDataProvider";
+import { GroupDataProvider } from "../../context/groupData/GroupDataProvider";
 
 const DetailPage = () => {
   
