@@ -7,9 +7,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
 import AuthProvider from "./context/Auth/AuthContext";
-import LoginPageV0 from "./pages/Login/test/LoginPageV0";
-import TestLogin from "./pages/Login/test/TestLogin";
-import LoginPage from "./pages/Login/LoginPage";
+import LoginPageV0 from "./pages/login/test/LoginPageV0";
+import TestLogin from "./pages/login/test/TestLogin"
+import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./context/Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE

@@ -2,7 +2,7 @@ import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
 import PrimaryDraw from "../../components/primaryDraw/PrimaryDraw"
 import Main from "../../components/main/Main";
-import Groups from "./primaryDraw/Groups"
+import GroupListCard from "./main/GroupListCard";
 import GroupList from "./primaryDraw/GroupList";
 
 const Home = () => {
@@ -14,7 +14,7 @@ const Home = () => {
         <GroupList />
       </PrimaryDraw>
       <Main>
-        <Groups />
+        <GroupListCard />
       </Main>
     </Box>
   );
