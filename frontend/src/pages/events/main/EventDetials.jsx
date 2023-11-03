@@ -4,19 +4,20 @@ import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "../../home/main/GroupCard";
 import GroupDetailsCard from "../../details/main/GroupDetailsCard";
-import { useApiData } from "../../../context/apiDataProvider/ApiDataProvider";
+import { useEventData } from "../../../context/eventData/EventDataProvider"
 
 function EventDetails() {
 
 
-const { events,  userId, groupId } = useApiData();
+const { event, group, eventId } = useEventData();
 
-console.log("EventDetail Component DATA TEST", events)
-console.log("EventDetail Component DATA TEST", groupId)
+console.log("EventDetail Component event DATA TEST", event)
+console.log("EventDetail Component group DATA TEST", group)
+console.log("EventDetail Component eventId DATA TEST", eventId)
 
     
   const renderHeader = () => {
-    if (groupId) {
+    if (eventId) {
       return null;
     } else {
       return (
@@ -42,10 +43,10 @@ console.log("EventDetail Component DATA TEST", groupId)
 
 
   const renderSubheader = () => {
-    if (groupId) {
+    if (eventId) {
       return (
         <Box display="flex" justifyContent="center" alignItems="center">
-          <GroupDetailsCard apiData={apiData} groupId={groupId} />
+          {/* <GroupDetailsCard  /> */}
         </Box>
       );
     } else {
@@ -66,7 +67,7 @@ console.log("EventDetail Component DATA TEST", groupId)
             paddingBottom: 1,
           }}
         >
-          Groups
+          Event unavailabe 
         </Typography>
       );
     }
@@ -77,7 +78,9 @@ console.log("EventDetail Component DATA TEST", groupId)
       <Container maxWidth="xxl" sx={{ px: {sm: 3, md: 5, lg: 7 }, width: "100%" }}>
         <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
         <Box>{renderSubheader()}</Box>
-        <Box>{renderGroupList()}</Box>
+        {/* <Box>{renderGroupList()}</Box> */}
+
+        test
       </Container>
     </>
   );
