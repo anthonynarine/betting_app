@@ -23,11 +23,11 @@ export const EventDataProvider = ({ children }) => {
   console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
 
   const { eventId } = useParams();
-  const { fetchData } = useCrud([], `/groups/${eventId}`);
+  const { fetchData } = useCrud([], `/events/${eventId}`);
 
   //State to needed for Events
-  const [events, setEvents] = useState([]);
-  const [group, setGroups] = useState([]);
+  const [event, setEvent] = useState([]);
+  const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
 
   // Feth event data when eventId changes
@@ -35,11 +35,12 @@ export const EventDataProvider = ({ children }) => {
   useEffect(() => {
     if (eventId) {
       const fetchEventData = async () => {
-        const accessToken = localStorage.getItem("accessToken");
+        // const accessToken = localStorage.getItem("accessToken"); // 
         try {
-          const data = await fetchData(accessToken);
-          setEvents(data);
-          setGroups(data.group);
+          const data = await fetchData();
+          setEvent(data);
+          setGroup(data.group);
+          setParticipants(data.participants);
         } catch (error) {
           console.error("Error fetching event data:", error);
         }
@@ -47,4 +48,18 @@ export const EventDataProvider = ({ children }) => {
       fetchEventData();
     }
   }, [eventId]);
+
+  const value = {
+    event, 
+    eventId,
+    group,
+    participants
+  };
+
+  return (
+    <EventDataContext.Provider value={value}>
+        { children }
+    </EventDataContext.Provider>
+  )
+
 };
