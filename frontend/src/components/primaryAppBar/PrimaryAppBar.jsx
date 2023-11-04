@@ -65,7 +65,7 @@ function PrimaryAppBar() {
                 display: { fontWeight: 900, letterSpacing: "0.25px", color: "black" },
               }}
             >
-              Bet On This
+              Bet on This
             </Typography>
           </Link>
           <CasinoIcon sx={{ marginLeft: "3px" }} />

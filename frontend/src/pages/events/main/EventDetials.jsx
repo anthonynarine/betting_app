@@ -1,13 +1,9 @@
-import { Typography, Box, Container, Grid } from "@mui/material";
-import React, { useEffect, } from "react";
-import useCrud from "../../../services/useCrud";
-import { useParams } from "react-router-dom";
-import GroupCard from "../../home/main/GroupCard";
-import GroupDetailsCard from "../../details/main/GroupDetailsCard";
+import { Typography, Box, Container, } from "@mui/material";
 import { useEventData } from "../../../context/eventData/EventDataProvider"
 
-function EventDetails() {
+import EventDetailsCard from "./EventDetailCard";
 
+function EventDetails() {
 
 const { event, group, eventId } = useEventData();
 
@@ -35,7 +31,7 @@ console.log("EventDetail Component eventId DATA TEST", eventId)
             textAlign: { xs: "center", sm: "left" },
           }}
         >
-          Event Details
+          Event unavailable
         </Typography>
       );
     }
@@ -46,7 +42,7 @@ console.log("EventDetail Component eventId DATA TEST", eventId)
     if (eventId) {
       return (
         <Box display="flex" justifyContent="center" alignItems="center">
-          {/* <GroupDetailsCard  /> */}
+          <EventDetailsCard  />
         </Box>
       );
     } else {
@@ -80,7 +76,7 @@ console.log("EventDetail Component eventId DATA TEST", eventId)
         <Box>{renderSubheader()}</Box>
         {/* <Box>{renderGroupList()}</Box> */}
 
-        test
+
       </Container>
     </>
   );
