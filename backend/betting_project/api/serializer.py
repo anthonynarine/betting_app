@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from users.serializer import UserSerializer
-from .models import Group, Event, Member
+from .models import Group, Event, Member, Bet
+from django.utils import timezone
+
 
 class GroupSerializer(serializers.ModelSerializer):
 
@@ -40,6 +42,23 @@ class FullGroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ( "name","id", "location", "description", "events", "members")
+
+class BetSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Bet
+        fields = [
+            'id', 'user', 'event', 'team1_score', 'team2_score', 'points', 'created_at', 'updated_at', 'status'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']  
+
+    def validate(self, data):
+        """
+        Check that the bet is valid.
+        """
+        if data['event'].time < timezone.now():
+            raise serializers.ValidationError("Cannot place a bet on a past event.")
+        return data
         
 
 
