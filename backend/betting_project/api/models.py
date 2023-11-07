@@ -98,6 +98,9 @@ class Event(models.Model):
         related_query_name="attended_event",
         help_text="The users who are participating in the event."
     )
+    is_archived = models.BooleanField(
+        default=False,
+        help_text="Indicates whether the event is archived.")
 
     def __str__(self):
         return f"{self.team1} vs {self.team2} at {self.time.strftime('%Y-%m-%d %H:%M')}"

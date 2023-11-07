@@ -6,12 +6,13 @@ from rest_framework import viewsets, status
 from rest_framework.decorators import action, permission_classes
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Group, Event, Member
+from .models import Bet, Group, Event, Member
 from .serializer import (
     GroupSerializer,
     EventSerializer,
     FullGroupSerializer,
     MemberSerializer,
+    # BetSerializer, 
 )
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
@@ -104,3 +105,24 @@ class MemberViewSet(viewsets.ModelViewSet):
     serializer_class = MemberSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+    
+    
+# class BetViewset(viewsets.ModelViewSet):
+
+#     queryset = Bet.objects.all()
+#     serializer_class = BetSerializer
+#     authentication_classes = [JWTAuthentication]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+#     def perform_create(self, serializer):
+#         serializer.save(creator=self.request.user)
+
+#     def retrieve(self, request, *args, **kwargs):
+#         """
+#         Retrieve the event along with its bets.
+#         """
+#         instance = self.get_object()
+#         serializer = EventSerializer(
+#             instance, many=False, context={"request": request}
+#         )
+#         return Response(serializer.data)

@@ -20,6 +20,12 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = ('id', 'team1', 'team2', 'team1_score', 'team2_score', 'time', 'organizer', 'group', 'participants')
+class EventBriefSerializer(serializers.ModelSerializer):
+    group = GroupBriefSerializer(read_only=True)
+
+    class Meta:
+        model = Event
+        fields = ('id', 'team1', 'team2', 'team1_score', 'team2_score', 'time', 'organizer', 'group', 'participants')
 
 class MemberSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
