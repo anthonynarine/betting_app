@@ -1,19 +1,13 @@
-from tokenize import group
-from django.conf import settings
+
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
-from rest_framework.decorators import action, permission_classes
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .models import Bet, Group, Event, Member
-from .serializer import (
-    GroupSerializer,
-    EventSerializer,
-    FullGroupSerializer,
-    MemberSerializer,
-    BetSerializer, 
-)
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+
+from ..models import Group, Member
+from ..serializer import GroupSerializer, FullGroupSerializer
 
 
 class GroupViewset(viewsets.ModelViewSet):
@@ -84,26 +78,4 @@ class GroupViewset(viewsets.ModelViewSet):
                 {"message": "You are not a member of this group"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-
-
-class EventViewset(viewsets.ModelViewSet):
-    """
-    API endpoint that allows events to be viewed or edited.
-    """
-
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
-
-class MemberViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows members to be viewed or edited.
-    """
-
-    queryset = Member.objects.all()
-    serializer_class = MemberSerializer
-    authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated]
-    
-    
 
