@@ -1,6 +1,5 @@
 from tokenize import group
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, permission_classes
@@ -12,7 +11,7 @@ from .serializer import (
     EventSerializer,
     FullGroupSerializer,
     MemberSerializer,
-    # BetSerializer, 
+    BetSerializer, 
 )
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 
@@ -107,22 +106,4 @@ class MemberViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     
     
-# class BetViewset(viewsets.ModelViewSet):
 
-#     queryset = Bet.objects.all()
-#     serializer_class = BetSerializer
-#     authentication_classes = [JWTAuthentication]
-#     permission_classes = [IsAuthenticatedOrReadOnly]
-
-#     def perform_create(self, serializer):
-#         serializer.save(creator=self.request.user)
-
-#     def retrieve(self, request, *args, **kwargs):
-#         """
-#         Retrieve the event along with its bets.
-#         """
-#         instance = self.get_object()
-#         serializer = EventSerializer(
-#             instance, many=False, context={"request": request}
-#         )
-#         return Response(serializer.data)

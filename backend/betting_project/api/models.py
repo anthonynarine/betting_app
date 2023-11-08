@@ -172,7 +172,7 @@ class Bet(models.Model):
         The `ordering` option ensures that queries for bets will return the newest first.
     """
 
-    user = models.ForeignKey(
+    creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="user_bets",
         on_delete=models.CASCADE,
@@ -216,9 +216,9 @@ class Bet(models.Model):
     )
 
     class Meta:
-        unique_together = ("user", "event")
+        unique_together = ("creator", "event")
         # index_together = ("user", "event") # no longer necesary since django v1.11
         ordering = ["-created_at"]  # newest bets first
     
     def __str__(self):
-        return f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"
+        return f"{self.creator.username} in {self.group.name} as {self.get_admin_display()}"
