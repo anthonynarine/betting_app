@@ -31,7 +31,7 @@ class Group(models.Model):
         null=False,
         help_text="A detailed description of the group and its purpose."
     )
-    creator = models.ForeignKey(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="created_groups",
         on_delete=models.SET_NULL,
@@ -172,7 +172,7 @@ class Bet(models.Model):
         The `ordering` option ensures that queries for bets will return the newest first.
     """
 
-    creator = models.ForeignKey(
+    user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="user_bets",
         on_delete=models.CASCADE,
@@ -216,9 +216,9 @@ class Bet(models.Model):
     )
 
     class Meta:
-        unique_together = ("creator", "event")
+        unique_together = ("user", "event")
         # index_together = ("user", "event") # no longer necesary since django v1.11
         ordering = ["-created_at"]  # newest bets first
     
     def __str__(self):
-        return f"{self.creator.username} in {self.group.name} as {self.get_admin_display()}"
+        return f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"

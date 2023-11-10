@@ -1,10 +1,10 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets,status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from ..models import Bet
 from ..serializer import BetSerializer
-from rest_framework.exceptions import NotFound
+from django.utils import timezone
 
 import logging
 
@@ -41,4 +41,34 @@ class BetViewset(viewsets.ModelViewSet):
         it in the request payload
         """
         serializer.save(user=self.request.user)
-       
+    
+    
+    def destroy(self, request, *args, **kwargs):
+        """
+        Deletes a bet instance.
+
+        This method overrides the default destroy method to add a custom
+        validation step. It ensures that a bet cannot be deleted after the
+        event associated with it has started.
+
+        Args:
+            request: The HTTP request object.
+
+        Returns:
+            Response: A DRF Response object with either a success status (if deletion is allowed)
+            or an error status (if the event has already started).
+        """
+        # Retrieve the bet instance that is requested to be deleted.
+        bet = self.get_object()
+
+        # Check if the event time associated with the bet is in the past.
+        if bet.event.time <= timezone.now():
+            # If the event has started, respond with a 400 Bad Request, indicating
+            # that the bet cannot be deleted.
+            return Response(
+                {"details": "Cannot delete a bet after the associated event has started."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # If the event has not started, proceed with the default deletion process.
+        return super().destroy(request, *args, **kwargs)

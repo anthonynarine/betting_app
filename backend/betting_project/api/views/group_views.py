@@ -21,7 +21,7 @@ class GroupViewset(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        serializer.save(user=self.request.user)
 
     def retrieve(self, request, *args, **kwargs):
         """
