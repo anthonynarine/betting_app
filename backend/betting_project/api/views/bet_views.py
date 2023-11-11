@@ -1,4 +1,7 @@
-from rest_framework import viewsets,status
+from sched import Event
+import stat
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -8,8 +11,10 @@ from django.utils import timezone
 
 import logging
 
-class BetViewset(viewsets.ModelViewSet):
+from backend.betting_project.api import serializer
 
+
+class BetViewset(viewsets.ModelViewSet):
     # queryset = Bet.objects.all()
     serializer_class = BetSerializer
     authentication_classes = [JWTAuthentication]
@@ -30,19 +35,71 @@ class BetViewset(viewsets.ModelViewSet):
 
         # If the user is not a staff member, filter the bets so that only those belonging to the user are returned.
         return Bet.objects.filter(user=user)
-    
+
     def perform_create(self, serializer):
         """
-        Cutsom create of a new Bet instance.
-        
+        Cutsom save behavior create of a new Bet instance.
+
         Associates the new Bet w/ the currently authenticated user. Will maintain
         referential integrity, ensure security by preventing manual override of the "user"
-        feild, and provide convenience by automatically setting the "user" without requiring 
+        feild, and provide convenience by automatically setting the "user" without requiring
         it in the request payload
         """
         serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=["post"], permission_classes=[IsAuthenticated])
+    def place_bet(self, request):
+        
+        """Custom action to place a bet
+        Action will ensure that a bet cannto be placed after the event assoc w/
+        it has started
+        """
+        #Deserialize the input data
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        #Retrieve the event based on the provided data
+        event_id = serializer.validated_data.get("event")
+        try:
+            event = Event.objects.get(id=event_id)
+        except Event.DoesNotExist:
+            return Response(
+                {"details": "Event does not exist"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        #check if the event has already started
+        if event.time <= timezone.now():
+            return Response(
+                {"details": "Cannot place a bet after the event has started"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        #save to db 
+        self.perform_create(serializer)
+        # serializer.save()
+        
+        #Return the serialized data with a 201 Created status. 
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
+    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    def update_bet(self, request, pk=None):
+        
+        bet = self.get_object()
+        if bet.event.time <= timezone.now():
+            return Response(
+                {"details": "Cannot plac a bet after the event has started"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        serializer = self.get_serializer(bet, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)  
+        
+        serializer.save()
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)      
     
+        
     def destroy(self, request, *args, **kwargs):
         """
         Deletes a bet instance.
@@ -66,8 +123,10 @@ class BetViewset(viewsets.ModelViewSet):
             # If the event has started, respond with a 400 Bad Request, indicating
             # that the bet cannot be deleted.
             return Response(
-                {"details": "Cannot delete a bet after the associated event has started."},
-                status=status.HTTP_400_BAD_REQUEST
+                {
+                    "details": "Cannot delete a bet after the associated event has started."
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
         # If the event has not started, proceed with the default deletion process.
