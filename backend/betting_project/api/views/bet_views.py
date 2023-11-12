@@ -11,8 +11,6 @@ from django.utils import timezone
 
 import logging
 
-from backend.betting_project.api import serializer
-
 
 class BetViewset(viewsets.ModelViewSet):
     # queryset = Bet.objects.all()

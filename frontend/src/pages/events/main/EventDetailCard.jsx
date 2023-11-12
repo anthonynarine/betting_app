@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -12,9 +12,12 @@ import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
+
+//bet
+import { PlaceBetBtn } from './PlaceBetBtn';
+import BetDialog from './bet_dialog/BetDialog';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -28,6 +31,12 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function EventDetailsCard() {
+
+  
+  const [openBetDialog, setBetDialogOpen] = useState(false);
+  const handleOpenBetDialog = () => setBetDialogOpen(true);
+  const handleCloseBetDialog = () => setBetDialogOpen(false);
+
   const { event, group, participants, userId, eventId } = useEventData();
 
   console.log("EventDetail Component event DATA TEST", event);
@@ -71,8 +80,29 @@ export default function EventDetailsCard() {
       elevation={1}
     >
       <CardHeader
-        title={<Typography variant="h6">{`Event Host: ${group.name}`}</Typography>}
+        title={<Typography variant="h6">{`Hosted by ${group.name}`}</Typography>}
+        action={
+          <Box
+            sx={{ pt: 1, pr: 1, pb:1 }}
+            display="flex"
+            justifyContent="center"
+            flexGrow={1}
+          >
+            <>
+              <PlaceBetBtn setBetDialogOpen={setBetDialogOpen} />
+
+              <BetDialog 
+              open={openBetDialog}
+              onClose={handleCloseBetDialog}
+              onPlaceBet={(betAmount) => {
+                console.log("plancing bet: betAmount");
+              }}
+              />
+            </>
+          </Box>
+        }
       />
+      
       <CardMedia
         component="img"
         height="300"

@@ -221,4 +221,4 @@ class Bet(models.Model):
         ordering = ["-created_at"]  # newest bets first
     
     def __str__(self):
-        return f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"
+        return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
