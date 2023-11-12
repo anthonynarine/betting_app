@@ -100,6 +100,7 @@ class StripeConfigView(APIView):
         return Response({"publicKey": settings.STRIPE_PUBLISHABLE_KEY})
 
 class CreateChargeView(APIView):
+    permission_classes = [IsAuthenticated]
     """
     API view to create a charge using stripe
     
