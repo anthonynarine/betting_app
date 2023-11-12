@@ -5,13 +5,17 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+DEBUG = True
 
 from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+if DEBUG:
+    STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
+    STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
