@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 load_dotenv()
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
+#  ADDED....for STRIPE
 if DEBUG:
     STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY')
     STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
