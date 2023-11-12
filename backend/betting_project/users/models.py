@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.dispatch import receiver
@@ -25,9 +26,11 @@ class CustomUser(AbstractUser):
         null=True,
         default=default_icon_image,
     )
-    points = models.IntegerField(
-        default=0,
-        help_text="Total points accumulated by the user."
+    availabe_funds = models.DecimalField(
+        default=Decimal("0.00"),
+        max_digits=10,
+        decimal_places=2,
+        help_text="Availabe funds for the user"
     )
 
     USERNAME_FIELD = "email"
