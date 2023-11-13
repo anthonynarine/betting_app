@@ -11,6 +11,7 @@ const AccountMenuBtn = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
+  console.log(userDetails)
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -39,7 +40,7 @@ const AccountMenuBtn = () => {
       >
         <AccountCircleIcon />
       </IconButton>
-      <Menu
+      <Menu   
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
