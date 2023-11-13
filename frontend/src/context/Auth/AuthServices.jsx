@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 export function useAuthServices() {
 
   const navigate = useNavigate();
-
-  const BASE_URL = "http://127.0.0.1:8000";
-
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
   const loggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [isLoggedIn,  setIsLoggedIn] = useState(loggedIn)
 
@@ -15,7 +14,7 @@ export function useAuthServices() {
   const signup = async (username, email, password, confirmPassword) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/signup/`,
+        `${BASE_URL}/signup/`,
         {
           username,
           email,
@@ -39,7 +38,7 @@ export function useAuthServices() {
   // Request tokens
   const obtainTokens = async (email, password) => {
     try {
-      const response = await axios.post(`${BASE_URL}/api/token/`, {
+      const response = await axios.post(`${BASE_URL}/token/`, {
         email,
         password,
       });
@@ -102,12 +101,12 @@ const login = () => {
   localStorage.setItem("isLoggedIn", "true");
 };
 
-  // Use the userId in localstorage to get get the user's email
+  // Use the userId in localstorage to get the user's email field
   const getUserDetails = async () => {
     try {
       const userId = localStorage.getItem("userId");
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}`, {
+      const response = await axios.get(`${BASE_URL}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -116,12 +115,28 @@ const login = () => {
       const userDetails = response.data;
       console.log("User Details:", userDetails);
       const userEmail = userDetails.email;
-      console.log("Extracted Email:", userEmail);
+      console.log("User Email:", userEmail);
       localStorage.setItem("email", userEmail);
     } catch (error) {
       console.log("Error obtaining user details:", error.message);
       return error;
     }
+  };
+
+  const initialUserDetials = {
+    email: "",
+    username: "",
+    availabel_funds: "0.00",
+    profile_picture: `${MEDIA_URL}/user/default/account.png`
+  };
+
+  // State for user details
+  const [userDetails, setUserDetials] = useState(initialUserDetials);
+
+  //Func to update user details
+  const updateUserDetial = async () =>{
+    const updatedUserDetials = await getUserDetails();
+    setUserDetials(updatedUserDetials)
   };
 
   const logout = () => {
@@ -143,6 +158,8 @@ const login = () => {
     isLoggedIn,
     login,
     getUserDetails,
+    updateUserDetial,
+    userDetails,
     logout
   };
 }

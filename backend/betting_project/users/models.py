@@ -32,7 +32,7 @@ class CustomUser(AbstractUser):
         decimal_places=2,
         help_text="Availabe funds for the user"
     )
-
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 

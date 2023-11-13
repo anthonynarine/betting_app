@@ -4,10 +4,11 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useNavigate } from "react-router-dom";
 import { useAuthServices } from "../../context/Auth/AuthServices";
+import AccountMenuBtn from "./AccountMenuBtn";
 
 export default function LoginLogoutButton() {
   // const isLoggedIn = Boolean(localStorage.getItem("isLoggedIn"));
-  const { logout, isLoggedIn, setIsLoggedIn } = useAuthServices();
+  const { logout, isLoggedIn, setIsLoggedIn, } = useAuthServices();
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -21,28 +22,31 @@ export default function LoginLogoutButton() {
   };
 
   return (
+    
     <Box
       sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center", height: 100 }}
     >
       {isLoggedIn ? (
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#000",
-            color: "#fff",
-            borderRadius: "50px",
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "#00DE49",
-              color: "#121214",
-            },
-          }}
-          // endIcon={<ExitToAppIcon />}
-          onClick={handleLogout}
-        >
-          Logout
-        </Button>
+        <AccountMenuBtn />
+        // <Button
+        //   variant="contained"
+        //   sx={{
+        //     backgroundColor: "#000",
+        //     color: "#fff",
+        //     borderRadius: "50px",
+        //     textTransform: "none",
+        //     "&:hover": {
+        //       backgroundColor: "#00DE49",
+        //       color: "#121214",
+        //     },
+        //   }}
+        //   // endIcon={<ExitToAppIcon />}
+        //   onClick={handleLogout}
+        // >
+        //   Logout
+        // </Button>
       ) : (
+        <>
         <Button
           variant="outlined"
           sx={{
@@ -60,6 +64,7 @@ export default function LoginLogoutButton() {
         >
           Login
         </Button>
+      </>
       )}
     </Box>
   );

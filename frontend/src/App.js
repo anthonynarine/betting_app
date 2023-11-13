@@ -15,6 +15,7 @@ import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./context/Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
 import EventPage from "./pages/events/EventPage";
+import StripeChargeComponent from "./stripe/StripeChargeComponent";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/addfunds" element={<StripeChargeComponent />} />
           </Routes>
       </ToggleColorModeProvider>
       {/* </LoginProvider> */}
