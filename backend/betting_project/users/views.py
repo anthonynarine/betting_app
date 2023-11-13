@@ -1,4 +1,6 @@
+from decimal import Decimal
 from email.policy import HTTP
+import logging
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
 
@@ -10,6 +12,7 @@ from rest_framework.permissions import (
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.shortcuts import get_object_or_404
 
+import logging
 
 from .models import CustomUser
 from .serializer import UserSerializer, UserSignupSerializer
@@ -18,6 +21,8 @@ from django.conf import settings
 from rest_framework.views import APIView
 from django.db import transaction
 import stripe
+
+logger = logging.getLogger(__name__)
 
 
 class UserViewSet(viewsets.ViewSet):
@@ -99,7 +104,7 @@ class StripeConfigView(APIView):
         # Return the Stripe publishable key in the response
         return Response({"publicKey": settings.STRIPE_PUBLISHABLE_KEY})
 
-class CreateChargeView(APIView):
+class DepositFundsView(APIView):
     permission_classes = [IsAuthenticated]
     """
     API view to create a charge using stripe
@@ -109,6 +114,7 @@ class CreateChargeView(APIView):
     funds upon successful charge.  
     """
     def post(self, request, *args, **kwargs):
+        logger.debug(f"Received deposit request with data: {request.data}")
         """
             Handles The POST request to create a charge
             
@@ -125,15 +131,20 @@ class CreateChargeView(APIView):
         
         try:
             # Create a charge using Stripe's API
-            charge = stripe.Charge.create(
+            logger.debug(f"Creating payment intent with amount {request.data.get('amount')} and source: {request.data.get('source')}")
+            payment_intent = stripe.PaymentIntent.create(
                 amount=request.data.get("amount"), # amount in cents
                 currency="usd",
-                source=request.data.get("source"), # Card information
-                description=f"Deposit for user {request.user.email}"
+                payment_method=request.data.get("source"), # Payment method ID
+                confirm=True,  # Automically confirm the payment
+                description=f"Deposit for user {request.user.email}",
+                return_url="http://localhost:3000/"
             )
             
+            logger.debug(f"Stripe Payment intent create: {payment_intent}")
+            
             # Convert the charged amount to dollars(Stripe uses cents)
-            amount_in_dollars = charge["amount"] / 100
+            amount_in_dollars = payment_intent["amount_received"] / Decimal(100)
             
             # Update user's availabel Funds in a transaction-safe way
             with transaction.atomic():
@@ -141,12 +152,15 @@ class CreateChargeView(APIView):
                 user.availabe_funds += amount_in_dollars
                 user.save()
                 
-            # Return a success response    
+            # Return a success response   
+            logger.debug("Charge Successful, sending response") 
             return Response({"message": "Charge successful"}, status=status.HTTP_201_CREATED)
         
         except stripe.error.StripeError as e: 
+            logger.error(f"Stripe error occoured: {e}")
             #Handle Stripe-specifice errors
             # "e" captures the exception instance thrown by Stripe
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            logger.error(f"General error occured: {e}")
             return Response({"error": "An error occured while processing your request."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

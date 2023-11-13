@@ -2,7 +2,7 @@ from users import views
 from rest_framework import routers
 from django.urls import path, include
 from django.conf import urls
-from .views import UserSignupView, UserViewSet, StripeConfigView, CreateChargeView
+from .views import UserSignupView, UserViewSet, StripeConfigView, DepositFundsView
 
 
 router = routers.DefaultRouter()
@@ -15,5 +15,5 @@ urlpatterns = [
     path("signup/", UserSignupView.as_view(), name="signup"),
     #Stripe 
     path("stripe/config/", StripeConfigView.as_view(), name="stripe-config"),
-    path("stripe/charge/", CreateChargeView.as_view(), name="stripe-charge")
+    path("stripe/charge/", DepositFundsView.as_view(), name="stripe-charge")
 ]
