@@ -3,7 +3,6 @@ import useAxiosWithInterceptor from "./jwtinterceptor";
 
 const useCrud = ([], apiURL) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  console.log("TESTBASEURL", BASE_URL); //TEST
 
   const jwtAxios = useAxiosWithInterceptor();
   const [apiData, setApiData] = useState([]);
@@ -23,7 +22,7 @@ const useCrud = ([], apiURL) => {
 
       const response = await jwtAxios.get(`${BASE_URL}${apiURL}`);
       const data = response.data;
-      console.log("API Data:", data);
+      // console.log("API Data:", data);  //TEST
       setApiData(data);
       setError(null);
       setIsLoading(false);

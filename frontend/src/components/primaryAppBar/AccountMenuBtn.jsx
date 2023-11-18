@@ -1,17 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useAuthServices } from "../../context/Auth/AuthServices";
+// import { useUserDetails } from "../../context/user/UserContext_v1";
 import { useNavigate } from "react-router-dom";
+import UserServices from "../../context/user/UserContext";
+import { useUserData } from "../../context/user/UserContext";
 
 const AccountMenuBtn = () => {
 
   const navitage  = useNavigate();  
-  const { logout, userDetails } = useAuthServices();
+  const { logout, } = useAuthServices();
+  const { userData } = useUserData();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  console.log(userDetails)
+  // useEffect(() => {
+  //   fetchUserDetails();
+  // }, []); // run once
+
+  // if (isLoading) {
+  //     return <div>Loading...</div>; // Or any other loading indicator
+  // }
+
+
+
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -55,8 +69,8 @@ const AccountMenuBtn = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem >{`Available funds ${userDetails.availabel_funds}`}</MenuItem>
+        <MenuItem onClick={handleClose}>{`${userData.username}'s Account`}</MenuItem>
+        <MenuItem >{`Available funds $${userData.available_funds}`}</MenuItem>
         <MenuItem onClick={()=> navitage("/addfunds")}>Add Funds</MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>

@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
 import AuthProvider from "./context/Auth/AuthContext";
+import UserServices from "./context/user/UserContext";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 import TestLogin from "./pages/login/test/TestLogin";
@@ -22,43 +23,42 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
-
-  //THIS NEEDS TO BE CHANGE DTO A REQUEST TO THE BACKEND TO OBTAIN THIS 
-  //WILL STORE IT LOCAL STORAGE FOR ACCESS. 
+  //THIS NEEDS TO BE CHANGE DTO A REQUEST TO THE BACKEND TO OBTAIN THIS
+  //WILL STORE IT LOCAL STORAGE FOR ACCESS.
   const REACT_APP_STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
   const stripePromise = loadStripe(REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
   return (
     <AuthProvider>
-      {/* <LoginProvider> */}
-      <ToggleColorModeProvider>
-        <CssBaseline />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/group/:groupId" element={<DetailPage />} />
-          <Route path="/event/:eventId" element={<EventPage />} />
-          {/* <Route path="/login" element={<LoginPageV0 />} /> */}
-          <Route
-            path="/testlogin"
-            element={
-              <ProtectedRoute>
-                <TestLogin />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route
-            path="/addfunds"
-            element={
-              <Elements stripe={stripePromise}>
-                <StripeChargeComponent />
-              </Elements>
-            }
-          />
-        </Routes>
-      </ToggleColorModeProvider>
-      {/* </LoginProvider> */}
+      <UserServices>
+        <ToggleColorModeProvider>
+          <CssBaseline />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/group/:groupId" element={<DetailPage />} />
+            <Route path="/event/:eventId" element={<EventPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<Signup />} />
+            {/* <Route path="/login" element={<LoginPageV0 />} /> */}
+            <Route
+              path="/testlogin"
+              element={
+                <ProtectedRoute>
+                  <TestLogin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/addfunds"
+              element={
+                <Elements stripe={stripePromise}>
+                  <StripeChargeComponent />
+                </Elements>
+              }
+            />
+          </Routes>
+        </ToggleColorModeProvider>
+      </UserServices>
     </AuthProvider>
   );
 }

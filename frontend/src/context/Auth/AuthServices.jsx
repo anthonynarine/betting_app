@@ -101,43 +101,6 @@ const login = () => {
   localStorage.setItem("isLoggedIn", "true");
 };
 
-  // Use the userId in localstorage to get the user's email field
-  const getUserDetails = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get(`${BASE_URL}/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log("API Response:", response.data);
-      const userDetails = response.data;
-      console.log("User Details:", userDetails);
-      const userEmail = userDetails.email;
-      console.log("User Email:", userEmail);
-      localStorage.setItem("email", userEmail);
-    } catch (error) {
-      console.log("Error obtaining user details:", error.message);
-      return error;
-    }
-  };
-
-  const initialUserDetials = {
-    email: "",
-    username: "",
-    availabel_funds: "0.00",
-    profile_picture: `${MEDIA_URL}/user/default/account.png`
-  };
-
-  // State for user details
-  const [userDetails, setUserDetials] = useState(initialUserDetials);
-
-  //Func to update user details
-  const updateUserDetial = async () =>{
-    const updatedUserDetials = await getUserDetails();
-    setUserDetials(updatedUserDetials)
-  };
 
   const logout = () => {
     setIsLoggedIn(false);
@@ -157,9 +120,6 @@ const login = () => {
     setIsLoggedIn,
     isLoggedIn,
     login,
-    getUserDetails,
-    updateUserDetial,
-    userDetails,
     logout
   };
 }

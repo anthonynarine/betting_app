@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
-import { useAuthServices } from "../context/Auth/AuthServices";
+// import { useAuthServices } from "../context/Auth/AuthServices";
+// import { useUserServices } from "../context/user/UserServices";
 import { Button, Box, Typography, Container } from "@mui/material";
 
 function StripeChargeComponent() {
@@ -12,7 +13,7 @@ function StripeChargeComponent() {
   const [error, setError] = useState(null);
 
   const [amount, setAmount] = useState("");
-  const { updateUserDetial } = useAuthServices();
+  // const { updateUserDetial } = useAuthServices();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,7 +57,7 @@ function StripeChargeComponent() {
         setError(response.data.error);
       } else {
         // call updaateUserDetails to update user's availabe funds
-        await updateUserDetial();
+        // await updateUserDetial();
         setIsloading(false);
       }
     } catch (error) {

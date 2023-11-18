@@ -16,6 +16,7 @@ function PrimaryAppBar() {
 
   const { isLoggedIn } = useAuthServices();
 
+
   return (
     <>
       <AppBar

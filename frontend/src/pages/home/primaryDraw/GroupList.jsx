@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import { ListViewStyles } from "./ListViewStyles";
 import React from "react";
 
+
 const GroupList = ({ open }) => {
   const { apiData, fetchData } = useCrud([], "/groups/");
 
@@ -28,9 +29,10 @@ const GroupList = ({ open }) => {
     fetchData(accessToken);
   }, []);
 
-  useEffect(() => {
-    console.log("DATA IN GropList component:", apiData);
-  }, [apiData]);
+  //DATA TEST
+  // useEffect(() => {
+  //   console.log("DATA IN GropList component:", apiData);
+  // }, [apiData]);
 
   return (
     <>
