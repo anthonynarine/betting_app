@@ -7,7 +7,7 @@ export const UserContext = createContext();
 
 
 
-export function useUserData() {
+export function useUserServices() {
     const context = useContext(UserContext)
 
     if (!context) {
@@ -17,7 +17,7 @@ export function useUserData() {
 }
 
 // Define Provider
-export function UserServices ({ children }) {
+export function UserServiceProvider ({ children }) {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
 
@@ -61,6 +61,7 @@ export function UserServices ({ children }) {
         }
     };
 
+
     // useEffect to fetch user data when the components moutns
     useEffect(()=>{
         fetchUserData();
@@ -78,4 +79,4 @@ export function UserServices ({ children }) {
     )
 
 }
-export default UserServices;
+export default UserServiceProvider;

@@ -1,22 +1,17 @@
-export const LoginStyles = (theme) => ({
-  root: {
-    backgroundColor: '#F3F4EF',
-    // backgroundImage: "url(https://source.unsplash.com/random/?gambling)",
-    height: '100vh',
-  },
+export const StripeStyles = (theme) => ({
   container: {
     backgroundColor: "#F3F4EF",
     height: "100vh",
     display: "flex",
-    maxWidth: "60%",
+    maxWidth: "80%",
     justifyContent: "center",
     alignItems: "flex-start",
     paddingTop: 25,
-    backgroundImage: "url(https://source.unsplash.com/random/?plants)",
+    // backgroundImage: "url(https://source.unsplash.com/random/?plants)",
     backgroundPosition: "center",
     backgroundSize: "cover",
   },
-  loginBox: {
+  addFundsBox: { // Name the box "addFundsBox"
     backgroundColor: "#ffffff",
     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
     borderRadius: 3,
@@ -40,9 +35,3 @@ export const LoginStyles = (theme) => ({
     fontSize: 18,
   },
 });
-
-//   to acces in component needed
-//   import { useTheme } from "@mui/material";
-//   const theme = useTheme();
-//   const classes = LoginStyles(theme);
-// example sx={classes.mainBox}

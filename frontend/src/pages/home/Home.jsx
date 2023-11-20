@@ -4,7 +4,7 @@ import PrimaryDraw from "../../components/primaryDraw/PrimaryDraw";
 import Main from "../../components/main/Main";
 import GroupListCard from "./main/GroupListCard";
 import GroupList from "./primaryDraw/GroupList";
-import UserServices from "../../context/user/UserContext";
+
 
 
 
@@ -13,7 +13,6 @@ const Home = () => {
 
 
   return (
-    <UserServices>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <PrimaryAppBar />
@@ -24,7 +23,7 @@ const Home = () => {
           <GroupListCard />
         </Main>
       </Box>
-    </UserServices>
+
   );
 };
 

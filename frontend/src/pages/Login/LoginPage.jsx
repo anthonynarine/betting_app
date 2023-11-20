@@ -5,8 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import { useLogin } from "../../context/login/LoginContext";
 import { LoginStyles } from "./LoginStyles";
 import { validatePasswordLogin, validateEmail } from "./validators/LoginValidators";
-// import { useUserServices } from "../../context/user/UserServices";
-import { useUserData } from "../../context/user/UserContext";
+import { useUserServices } from "../../context/user/UserContext";
 
 const LoginPage = () => {
   //  Handles for textfields/inputfields
@@ -20,9 +19,9 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
 
-  const { obtainTokens, getUserIdFromToken, isLoggedIn, login, logout, } = useAuthServices();
+  const { obtainTokens, getUserIdFromToken, login, logout, } = useAuthServices();
   // const { fetchUserDetails, setUserDetails } = useUserServices();
-  const { fetchUserData } = useUserData()
+  const { fetchUserData } = useUserServices()
  
   const theme = useTheme();
   const classes = LoginStyles(theme);

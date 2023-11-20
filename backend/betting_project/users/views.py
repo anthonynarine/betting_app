@@ -149,7 +149,7 @@ class DepositFundsView(APIView):
             # Update user's availabel Funds in a transaction-safe way
             with transaction.atomic():
                 user = request.user
-                user.availabe_funds += amount_in_dollars
+                user.available_funds += amount_in_dollars
                 user.save()
                 
             # Return a success response   

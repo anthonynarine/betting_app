@@ -1,11 +1,25 @@
 import React, { useState } from "react";
+import {
+  useTheme,
+  Button,
+  Box,
+  Typography,
+  Container,
+  TextField,
+  useMediaQuery,
+} from "@mui/material";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
-// import { useAuthServices } from "../context/Auth/AuthServices";
-// import { useUserServices } from "../context/user/UserServices";
-import { Button, Box, Typography, Container } from "@mui/material";
+import { StripeStyles } from "./StripeStyles";
+import { useUserServices } from "../context/user/UserContext";
+
+
 
 function StripeChargeComponent() {
+  const theme = useTheme();
+  const classes = StripeStyles(theme);
+  const isLargeScreen = useMediaQuery("(min-width: 800px)");
+
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const stripe = useStripe();
   const elements = useElements();
@@ -13,7 +27,7 @@ function StripeChargeComponent() {
   const [error, setError] = useState(null);
 
   const [amount, setAmount] = useState("");
-  // const { updateUserDetial } = useAuthServices();
+  const { fetchUserData } = useUserServices();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -56,8 +70,7 @@ function StripeChargeComponent() {
       if (response.data.error) {
         setError(response.data.error);
       } else {
-        // call updaateUserDetails to update user's availabe funds
-        // await updateUserDetial();
+        fetchUserData()  // Refetch data // to updated ui
         setIsloading(false);
       }
     } catch (error) {
@@ -68,19 +81,57 @@ function StripeChargeComponent() {
 
   return (
     <>
-      <form onSubmit={handleSubmit}>
-        <CardElement />
-        <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount in USD"
-        />
-        <button type="submit" disabled={!stripe || loading}>
-          Pay
-        </button>
-        {error && <div className="error-message">{error}</div>}
-      </form>
+      <Container
+        maxWidth={isLargeScreen ? "xs" : "sm"}
+        style={{ marginTop: "25vh", height: "100vh" }}
+      >
+        <Box
+          alignItems="center"
+          textAlign="center"
+          sx={{
+            border: "1px solid #000",
+            borderRadius: "5px",
+            padding: "1rem",
+            paddingBottom: "2rem",
+            marginTop: "1rem",
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Add Funds
+          </Typography>
+
+          <Box component="form" onSubmit={handleSubmit} noValidate>
+            <TextField
+              label="Amount in USD"
+              variant="outlined"
+              fullWidth
+              type="number"
+              id="amount"
+              name="amount"
+              autoFocus
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              // Add state and onChange handler for this field
+            />
+
+            <Box
+              sx={{
+                border: "1px solid #ccc",
+                padding: "1rem",
+                borderRadius: "4px",
+                marginTop: "1rem",
+                marginBottom: "1rem",
+              }}
+            >
+              <CardElement />
+            </Box>
+
+            <Button variant="contained" color="primary" fullWidth type="submit">
+              Add Funds
+            </Button>
+          </Box>
+        </Box>
+      </Container>
     </>
   );
 }

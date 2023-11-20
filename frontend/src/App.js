@@ -7,7 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
 
 import AuthProvider from "./context/Auth/AuthContext";
-import UserServices from "./context/user/UserContext";
+import UserServiceProvider from "./context/user/UserContext";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 import TestLogin from "./pages/login/test/TestLogin";
@@ -30,7 +30,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <UserServices>
+      <UserServiceProvider>
         <ToggleColorModeProvider>
           <CssBaseline />
           <Routes>
@@ -58,7 +58,7 @@ function App() {
             />
           </Routes>
         </ToggleColorModeProvider>
-      </UserServices>
+      </UserServiceProvider>
     </AuthProvider>
   );
 }

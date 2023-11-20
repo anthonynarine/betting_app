@@ -5,13 +5,13 @@ import { useAuthServices } from "../../context/Auth/AuthServices";
 // import { useUserDetails } from "../../context/user/UserContext_v1";
 import { useNavigate } from "react-router-dom";
 import UserServices from "../../context/user/UserContext";
-import { useUserData } from "../../context/user/UserContext";
+import { useUserServices } from "../../context/user/UserContext";
 
 const AccountMenuBtn = () => {
 
   const navitage  = useNavigate();  
   const { logout, } = useAuthServices();
-  const { userData } = useUserData();
+  const { userData } = useUserServices();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
