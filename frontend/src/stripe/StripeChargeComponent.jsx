@@ -14,7 +14,6 @@ import { StripeStyles } from "./StripeStyles";
 import { useUserServices } from "../context/user/UserContext";
 
 
-
 function StripeChargeComponent() {
   const theme = useTheme();
   const classes = StripeStyles(theme);
@@ -83,18 +82,12 @@ function StripeChargeComponent() {
     <>
       <Container
         maxWidth={isLargeScreen ? "xs" : "sm"}
-        style={{ marginTop: "25vh", height: "100vh" }}
+        sx={classes.container}
       >
         <Box
           alignItems="center"
           textAlign="center"
-          sx={{
-            border: "1px solid #000",
-            borderRadius: "5px",
-            padding: "1rem",
-            paddingBottom: "2rem",
-            marginTop: "1rem",
-          }}
+          sx={classes.box1}
         >
           <Typography variant="h5" gutterBottom>
             Add Funds
@@ -115,13 +108,7 @@ function StripeChargeComponent() {
             />
 
             <Box
-              sx={{
-                border: "1px solid #ccc",
-                padding: "1rem",
-                borderRadius: "4px",
-                marginTop: "1rem",
-                marginBottom: "1rem",
-              }}
+              sx={classes.card_element_box}
             >
               <CardElement />
             </Box>

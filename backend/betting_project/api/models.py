@@ -22,15 +22,18 @@ class Group(models.Model):
         null=False,
         help_text="The name of the group. Must be unique."
     )
+    
     location = models.CharField(
         max_length=32, 
         null=False,
         help_text="The location associated with the group."
     )
+    
     description = models.TextField(
         null=False,
         help_text="A detailed description of the group and its purpose."
     )
+    
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="created_groups",
@@ -58,6 +61,7 @@ class Event(models.Model):
         null=False,
         help_text="The name of the first team participating in the event."
     )
+    
     team2 = models.CharField(
         max_length=32,
         null=False,
@@ -68,14 +72,17 @@ class Event(models.Model):
         blank=True,
         help_text="The final score for team 1. Can be left blank initially."
     )
+    
     team2_score = models.IntegerField(
         null=True,
         blank=True,
         help_text="The final score for team 2. Can be left blank initially."
     )
+    
     time = models.DateTimeField(
         help_text="The scheduled start time of the event."
     )
+    
     organizer = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="organized_events",
@@ -84,6 +91,7 @@ class Event(models.Model):
         related_query_name="organized_event",
         help_text="The user who is organizing the event. Can be null if the organizer is no longer a member."
     )
+    
     group = models.ForeignKey(
         Group,
         related_name="events",
@@ -91,6 +99,7 @@ class Event(models.Model):
         related_query_name="event",
         help_text="The group under which this event is organized."
     )
+    
     participants = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="attended_events",
@@ -98,6 +107,7 @@ class Event(models.Model):
         related_query_name="attended_event",
         help_text="The users who are participating in the event."
     )
+    
     is_archived = models.BooleanField(
         default=False,
         help_text="Indicates whether the event is archived.")
@@ -115,6 +125,7 @@ class Member(models.Model):
         related_name="members",
         help_text="The group to which the member belongs."
     )
+    
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="member_of",
@@ -122,12 +133,14 @@ class Member(models.Model):
         related_query_name="membership",
         help_text="The user who is a member of the group."
     )
+    
     admin = models.CharField(
         max_length=10,
         choices=[(tag.value, tag.name) for tag in UserType],
         default=UserType.NORMAL.value,
         help_text="The role of the member within the group. Defaults to 'normal'."
     )
+    
     joined_at = models.DateTimeField(auto_now_add=True,)
 
     class Meta:
@@ -142,6 +155,7 @@ class Member(models.Model):
 
 class Bet(models.Model):
     """
+    
     Represents a bet made by a user on a particular event.
 
     Attributes:
@@ -170,32 +184,51 @@ class Bet(models.Model):
     Note:
         The `unique_together` meta option ensures that a user can only have one bet per event.
         The `ordering` option ensures that queries for bets will return the newest first.
-    """
-
+    """   
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         related_name="user_bets",
         on_delete=models.CASCADE,
         help_text="The user who made the bet."
     )
+    
     event = models.ForeignKey(
         Event, 
         related_name="bets",
         on_delete=models.CASCADE,
         help_text="The event on which the bet is placed."
     )
+    
     team1_score = models.IntegerField(
         null=True,
         blank=True,
         validators=[MinValueValidator(0)],
         help_text="The predicted score for team 1. Optional."
     )
+    
     team2_score = models.IntegerField(
         null=True,
         blank=True,
         validators=[MinValueValidator(0)],
         help_text="The predicted score for team 2. Optional."
     )
+    
+    team_choice = models.CharField(
+        max_length=15,
+        choices=[("Team 1", "Team 1"), ("Team 2", "Team 2")], 
+        help_text="Select the team you want to bet on"
+    )
+    
+    BET_TYPE_CHOICES = [
+        ("Win", "Win"),
+        ("Lose", "Lose"),
+    ]
+    bet_type = models.CharField(
+        max_length=4,
+        choices=BET_TYPE_CHOICES,
+        help_text="Select the bet type ('Win' or 'Lose')"
+    )
+    
     points = models.IntegerField(
         default=0,
         null=True,
@@ -203,12 +236,15 @@ class Bet(models.Model):
         validators=[MinValueValidator(0)],
         help_text="The number of points wagered on the bet. Defaults to 0."
     )
+    
     created_at = models.DateTimeField(
         auto_now_add=True,
     )
+    
     updated_at = models.DateTimeField(
         auto_now=True,
     )
+    
     status = models.CharField(
         max_length=10,
         choices=[("Pending", "Pending"), ("WON", "Won"), ("LOST", "Lost")],

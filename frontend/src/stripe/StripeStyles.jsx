@@ -1,37 +1,23 @@
 export const StripeStyles = (theme) => ({
   container: {
-    backgroundColor: "#F3F4EF",
+    backgroundColor: "#FFFFFF",
     height: "100vh",
-    display: "flex",
-    maxWidth: "80%",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingTop: 25,
-    // backgroundImage: "url(https://source.unsplash.com/random/?plants)",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
+    marginTop: "25vh",
+    // backgroundImage: "url(https://source.unsplash.com/random/?black)",
   },
-  addFundsBox: { // Name the box "addFundsBox"
-    backgroundColor: "#ffffff",
-    boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-    borderRadius: 3,
-    padding: theme.spacing(4),
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+  box1: {
+    border: "1px solid #000",
+    borderRadius: "5px",
+    padding: "1rem",
+    paddingBottom: "2rem",
+    marginTop: "1rem",
   },
-  title: {
-    textAlign: "center",
-    fontWeight: 700,
-    color: "#333",
-    marginBottom: theme.spacing(3),
-  },
-  button: {
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(1.5),
-    color: '#0A0F11',
-    fontWeight: 500,
-    fontSize: 18,
-  },
+  card_element_box: {
+    border: "1px solid #000",
+    padding: "1rem",
+    borderRadius: "4px",
+    marginTop: "1rem", 
+    marginBottom: "1rem", 
+  }
+
 });
