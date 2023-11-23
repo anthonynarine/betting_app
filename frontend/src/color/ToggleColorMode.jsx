@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from "react";
 import { CssBaseline, useMediaQuery, createTheme } from "@mui/material";
-import { ColorModeContext } from "../context/ColorModeContext";
+import { ColorModeContext } from "../context/color/ColorModeContext";
 import ThemeWrapper from "../theme/ThemeProvider";
 
 const ToggleColorModeProvider = ({ children }) => {

@@ -8,6 +8,5 @@ export const ListViewStyles = (theme) => ({
     flex: "1 1 100%"
   },
 
-
 });
 

@@ -64,11 +64,9 @@ export function AuthProvider({ children }) {
 }
 
 
-
 // --- EXPORTS ---
 // Export the AuthProvider component as the default export for this module.
 export default AuthProvider;
-
 
 
 

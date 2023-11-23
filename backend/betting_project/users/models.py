@@ -26,13 +26,13 @@ class CustomUser(AbstractUser):
         null=True,
         default=default_icon_image,
     )
-    availabe_funds = models.DecimalField(
+    available_funds = models.DecimalField(
         default=Decimal("0.00"),
         max_digits=10,
         decimal_places=2,
         help_text="Availabe funds for the user"
     )
-
+    
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
 

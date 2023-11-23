@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 export function useAuthServices() {
 
   const navigate = useNavigate();
-
-  const BASE_URL = "http://127.0.0.1:8000";
-
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
   const loggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [isLoggedIn,  setIsLoggedIn] = useState(loggedIn)
 
@@ -15,7 +14,7 @@ export function useAuthServices() {
   const signup = async (username, email, password, confirmPassword) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/signup/`,
+        `${BASE_URL}/signup/`,
         {
           username,
           email,
@@ -39,7 +38,7 @@ export function useAuthServices() {
   // Request tokens
   const obtainTokens = async (email, password) => {
     try {
-      const response = await axios.post(`${BASE_URL}/api/token/`, {
+      const response = await axios.post(`${BASE_URL}/token/`, {
         email,
         password,
       });
@@ -102,27 +101,6 @@ const login = () => {
   localStorage.setItem("isLoggedIn", "true");
 };
 
-  // Use the userId in localstorage to get get the user's email
-  const getUserDetails = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      console.log("API Response:", response.data);
-      const userDetails = response.data;
-      console.log("User Details:", userDetails);
-      const userEmail = userDetails.email;
-      console.log("Extracted Email:", userEmail);
-      localStorage.setItem("email", userEmail);
-    } catch (error) {
-      console.log("Error obtaining user details:", error.message);
-      return error;
-    }
-  };
 
   const logout = () => {
     setIsLoggedIn(false);
@@ -142,7 +120,6 @@ const login = () => {
     setIsLoggedIn,
     isLoggedIn,
     login,
-    getUserDetails,
     logout
   };
 }

@@ -65,7 +65,6 @@ class BetSerializer(serializers.ModelSerializer):
         return data
         
 
-
         
 
 

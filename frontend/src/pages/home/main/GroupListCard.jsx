@@ -15,9 +15,11 @@ function GroupListCard() {
     fetchData();
   }, [groupId]);
 
-  useEffect(() => {
-    console.log("Group ID:", apiData, "data test in GroupsComp");
-  }, [groupId]);
+
+  // DATA TEST
+  // useEffect(() => {
+  //   console.log("Group ID:", apiData, "data test in GroupsComp");
+  // }, [groupId]);
 
   
   const renderHeader = () => {

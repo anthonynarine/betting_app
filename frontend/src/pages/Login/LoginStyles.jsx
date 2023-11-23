@@ -12,7 +12,7 @@ export const LoginStyles = (theme) => ({
     justifyContent: "center",
     alignItems: "flex-start",
     paddingTop: 25,
-    // backgroundImage: "url(https://source.unsplash.com/random/?plants)",
+    backgroundImage: "url(https://source.unsplash.com/random/?plants)",
     backgroundPosition: "center",
     backgroundSize: "cover",
   },
