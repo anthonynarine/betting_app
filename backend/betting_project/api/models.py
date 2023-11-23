@@ -6,6 +6,11 @@ from django.db import models
 from enum import Enum
 from django.core.validators import MinValueValidator
 
+
+
+
+from api.validators.bet_validators import team_choice_validator, bet_type_validator
+
 class UserType(Enum):
     ADMIN = "admin"
     NORMAL = "normal"
@@ -216,6 +221,8 @@ class Bet(models.Model):
     team_choice = models.CharField(
         max_length=15,
         choices=[("Team 1", "Team 1"), ("Team 2", "Team 2")], 
+        default="",
+        validators=[team_choice_validator],
         help_text="Select the team you want to bet on"
     )
     
@@ -226,6 +233,8 @@ class Bet(models.Model):
     bet_type = models.CharField(
         max_length=4,
         choices=BET_TYPE_CHOICES,
+        default="",
+        validators=[bet_type_validator],
         help_text="Select the bet type ('Win' or 'Lose')"
     )
     

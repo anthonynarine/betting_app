@@ -47,7 +47,7 @@ class BetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bet
         fields = [
-            'id', 'user', 'event', 'team1_score', 'team2_score', 'points', 'created_at', 'updated_at', 'status'
+            'id', 'user', 'event', "team_choice", "bet_type",  'team1_score', 'team2_score', 'points', 'created_at', 'updated_at', 'status'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']  
 
