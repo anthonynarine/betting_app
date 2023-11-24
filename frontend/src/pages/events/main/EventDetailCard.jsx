@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -16,8 +16,8 @@ import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 //bet
-import { PlaceBetBtn } from './PlaceBetBtn';
-import BetDialog from './bet_dialog/BetDialog';
+import { PlaceBetBtn } from "./PlaceBetBtn";
+import BetForm from "./bet_dialog/BetForm";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -31,11 +31,10 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function EventDetailsCard() {
+  const [openBetForm, setBetFormOpen] = useState(false);
 
-  
-  const [openBetDialog, setBetDialogOpen] = useState(false);
-  const handleOpenBetDialog = () => setBetDialogOpen(true);
-  const handleCloseBetDialog = () => setBetDialogOpen(false);
+  const handleOpenBetForm = () => setBetFormOpen(true);
+  const handleCloseBetForm = () => setBetFormOpen(false);
 
   const { event, group, participants, userId, eventId } = useEventData();
 
@@ -83,26 +82,22 @@ export default function EventDetailsCard() {
         title={<Typography variant="h6">{`Hosted by ${group.name}`}</Typography>}
         action={
           <Box
-            sx={{ pt: 1, pr: 1, pb:1 }}
+            sx={{ pt: 1, pr: 1, pb: 1 }}
             display="flex"
             justifyContent="center"
             flexGrow={1}
           >
             <>
-              <PlaceBetBtn setBetDialogOpen={setBetDialogOpen} />
-
-              <BetDialog 
-              open={openBetDialog}
-              onClose={handleCloseBetDialog}
-              onPlaceBet={(betAmount) => {
-                console.log("plancing bet: betAmount");
-              }}
+              <PlaceBetBtn setBetFormOpen={setBetFormOpen} />
+              <BetForm
+              open={openBetForm}
+              onClose={handleCloseBetForm}
               />
             </>
           </Box>
         }
       />
-      
+
       <CardMedia
         component="img"
         height="300"
@@ -120,7 +115,7 @@ export default function EventDetailsCard() {
           </Typography>
 
           <Typography sx={{ display: "flex", alignItems: "center", marginTop: 2 }}>
-            <EventTimeStamp createdAt={new Date(event.time)} />
+            <EventTimeStamp createdAt={event.time} />
           </Typography>
         </Box>
       </CardContent>

@@ -8,7 +8,7 @@ export default function EventTimestamp({ createdAt }) {
   return (
     <>
       <CalendarMonthIcon sx={{ marginRight: "4px" }} />
-      <Moment format="MM/DD/YYYY" />
+      <Moment format="MM/DD/YYYY">{createdAt}</Moment>
       <AccessTimeIcon sx={{marginLeft:1.5, marginRight: "4px"}} /> 
       <Moment format="hh:mm A">{createdAt}</Moment> {/* A for AM/PM */}
     </>

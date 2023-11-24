@@ -1,7 +1,7 @@
 import { Button, Tooltip, Box } from "@mui/material";
 
 
-export const PlaceBetBtn = ({setBetDialogOpen}) => {
+export const PlaceBetBtn = ({setBetFormOpen}) => {
 
   return (
     <>
@@ -25,7 +25,7 @@ export const PlaceBetBtn = ({setBetDialogOpen}) => {
               color: "black",
             },
           }}
-          onClick={() => setBetDialogOpen(true)}
+          onClick={() => setBetFormOpen(true)}
         >
           Place Bet
         </Button>

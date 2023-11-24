@@ -238,12 +238,12 @@ class Bet(models.Model):
         help_text="Select the bet type ('Win' or 'Lose')"
     )
     
-    points = models.IntegerField(
+    amount = models.IntegerField(
         default=0,
         null=True,
         blank=True,
         validators=[MinValueValidator(0)],
-        help_text="The number of points wagered on the bet. Defaults to 0."
+        help_text="The amount wagered on the bet. Defaults to 0."
     )
     
     created_at = models.DateTimeField(

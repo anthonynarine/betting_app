@@ -36,7 +36,7 @@ class BetViewset(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         """
-        Cutsom save behavior create of a new Bet instance.
+        Cutsom save behavior to create a new Bet instance.
 
         Associates the new Bet w/ the currently authenticated user. Will maintain
         referential integrity, ensure security by preventing manual override of the "user"
@@ -49,7 +49,7 @@ class BetViewset(viewsets.ModelViewSet):
     def place_bet(self, request):
         
         """Custom action to place a bet
-        Action will ensure that a bet cannto be placed after the event assoc w/
+        Action will ensure that a bet cannot be placed after the event assoc w/
         it has started
         """
         #Deserialize the input data

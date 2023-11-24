@@ -1,7 +1,10 @@
 import time
 from django.test import TestCase
 from api.models import Bet, Event, Group
-from django.contrib.auth import get_user_model 
+from django.contrib.auth import get_user_model
+
+# running test in this module
+# python manage.py test api.tests.models.test_bets
 
 class BetModelTestCase(TestCase):
     def setUp(self):
