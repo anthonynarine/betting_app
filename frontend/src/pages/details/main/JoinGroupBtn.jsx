@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Tooltip, Snackbar, Box } from "@mui/material";
-import useAxiosWithInterceptor from "../../../services/jwtinterceptor"; // Replace with your actual import
+import useAxiosWithInterceptor from "../../../services/jwtinterceptor-jwtNotReq"; // Replace with your actual import
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;

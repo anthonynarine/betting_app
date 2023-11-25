@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import useAxiosWithInterceptor from "../../../../services/jwtinterceptor";
+import useAxiosWithInterceptor from "../../../../../services/jwtinterceptor-jwtNotReq";
 import { Button } from "@mui/material";
 
 const BetRequest = ({ betDetails, onSuccess, onError }) => {
     const [isLoading, setIsLoading] = useState(false);
     const jwtAxios = useAxiosWithInterceptor();
 
-    const palaceBet = async ()=> {
+    const createBet = async ()=> {
         setIsLoading(true);
         console.log("Bet details before sending:", betDetails); // bet details prior to request
         try {
@@ -24,7 +24,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
 
     return (
         <>
-        <Button onClick={palaceBet} disabled={isLoading}>
+        <Button onClick={createBet} disabled={isLoading}>
             {isLoading ? "Placing Bet..." : "Place Bet"}
         </Button>
         </>

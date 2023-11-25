@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAxiosWithInterceptor from "./jwtinterceptor";
+import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
 
 const useCrud = ([], apiURL) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;

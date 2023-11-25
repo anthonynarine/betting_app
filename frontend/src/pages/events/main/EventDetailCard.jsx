@@ -33,8 +33,9 @@ const ExpandMore = styled((props) => {
 export default function EventDetailsCard() {
   const [openBetForm, setBetFormOpen] = useState(false);
 
-  const handleOpenBetForm = () => setBetFormOpen(true);
-  const handleCloseBetForm = () => setBetFormOpen(false);
+  //func to open and close the form
+  const toggleBetForm = () => setBetFormOpen(!openBetForm)
+
 
   const { event, group, participants, userId, eventId } = useEventData();
 
@@ -88,10 +89,10 @@ export default function EventDetailsCard() {
             flexGrow={1}
           >
             <>
-              <PlaceBetBtn setBetFormOpen={setBetFormOpen} />
+              <PlaceBetBtn toggleBetForm={toggleBetForm} />
               <BetForm
               open={openBetForm}
-              onClose={handleCloseBetForm}
+              onClose={toggleBetForm}
               />
             </>
           </Box>

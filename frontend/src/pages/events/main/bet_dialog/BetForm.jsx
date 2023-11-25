@@ -1,7 +1,7 @@
 //modal
 
 import React, { useState } from "react";
-import BetRequest from "./BetRequest";
+import BetRequest from "./bet-api-requests/BetRequest";
 import { useEventData } from "../../../../context/eventData/EventDataProvider";
 import { useUserServices } from "../../../../context/user/UserContext";
 import { useParams } from "react-router-dom";

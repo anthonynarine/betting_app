@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAxiosWithInterceptor from "../../../services/jwtinterceptor";
+import useAxiosWithInterceptor from "../../../services/jwtinterceptor-jwtNotReq";
 import { useAuthServices } from "../../../context/Auth/AuthServices";
 
 const TestLogin = () => {
