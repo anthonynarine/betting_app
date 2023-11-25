@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import BetRequest from "./BetRequest";
 import { useEventData } from "../../../../context/eventData/EventDataProvider";
 import { useUserServices } from "../../../../context/user/UserContext";
+import { useParams } from "react-router-dom";
 
 import {
   Button,
@@ -20,13 +21,15 @@ import {
 
 const BetForm = ({ open, onClose }) => {
   const { event } = useEventData();
-  const eventId = event.id
+
+  const { eventId } = useParams()
+  const userId = localStorage.getItem("userId")
   console.log(eventId)
 
   // State for managing  bet amoount input
   const [betDetials, setBetDetails] = useState({
     event: eventId,
-    user: localStorage.getItem("userId"),
+    user: userId,
     team_choice: "",
     bet_type: "",
     amount: "",

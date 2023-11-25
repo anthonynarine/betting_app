@@ -8,6 +8,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
 
     const palaceBet = async ()=> {
         setIsLoading(true);
+        console.log("Bet details before sending:", betDetails); // bet details prior to request
         try {
             const response = await jwtAxios.post('/bet/', betDetails)
             setIsLoading(false);
