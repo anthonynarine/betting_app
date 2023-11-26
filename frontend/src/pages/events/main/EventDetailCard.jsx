@@ -16,7 +16,7 @@ import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 //bet
-import { PlaceBetBtn } from "./PlaceBetBtn";
+import { PlaceBetBtn } from "./bet_dialog/placeBetBtn/PlaceBetBtn";
 import BetForm from "./bet_dialog/BetForm";
 
 const ExpandMore = styled((props) => {
