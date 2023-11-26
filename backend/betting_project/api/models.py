@@ -84,8 +84,17 @@ class Event(models.Model):
         help_text="The final score for team 2. Can be left blank initially."
     )
     
-    time = models.DateTimeField(
+    start_time = models.DateTimeField(
         help_text="The scheduled start time of the event."
+    )
+    
+    end_time = models.DateTimeField(
+        help_text="The scheduled end time of the event."
+    )
+    
+    is_complete = models.BooleanField(
+        default=False,
+        help_text="Indicates whether the event has been completed."
     )
     
     organizer = models.ForeignKey(
