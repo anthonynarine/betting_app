@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from enum import Enum
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 
 
@@ -89,6 +90,7 @@ class Event(models.Model):
     )
     
     end_time = models.DateTimeField(
+        default=timezone.now,
         help_text="The scheduled end time of the event."
     )
     

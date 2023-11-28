@@ -130,7 +130,7 @@ export default function GroupDetailsCard() {
                   <Typography
                     sx={{ display: "flex", alignItems: "center", marginTop: 2 }}
                   >
-                    <EventTimestamp createdAt={new Date(event.time)} />
+                    <EventTimestamp createdAt={new Date(event.start_time)} />
                   </Typography>
                 </div>
               ))}

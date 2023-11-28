@@ -14,10 +14,11 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
-
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 //bet
-import { PlaceBetBtn } from "./bet_dialog/placeBetBtn/PlaceBetBtn";
-import BetForm from "./bet_dialog/BetForm";
+import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
+import BetForm from "./bet_crud/BetForm";
+import CreateEventForm from "./event_crud/CreateEventForm";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -32,10 +33,11 @@ const ExpandMore = styled((props) => {
 
 export default function EventDetailsCard() {
   const [openBetForm, setBetFormOpen] = useState(false);
+  const [openCreateEventForm, setCreateEventFormOpen] = useState(false);
 
   //func to open and close the form
-  const toggleBetForm = () => setBetFormOpen(!openBetForm)
-
+  const toggleBetForm = () => setBetFormOpen(!openBetForm);
+  const toggleCreateEventForm = () => setCreateEventFormOpen(!openCreateEventForm); 
 
   const { event, group, participants, userId, eventId } = useEventData();
 
@@ -57,30 +59,33 @@ export default function EventDetailsCard() {
   return (
     <Card
       sx={{
-        // Set initial maxWidth (for smaller screens)
         maxWidth: 300,
-        // Set maxHeight for scrolling on smaller screens
         maxHeight: 700,
         overflow: "auto",
-        // Rounded corners to make it look like a book
         borderRadius: "20px",
         borderColor: "#000",
-        // Shadow to simulate pages
-        // boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
-        // Light background color like pages of a book
         background: "#fff",
-        // CSS media query for larger screens
         "@media (min-width: 768px)": {
-          // Adjust maxWidth for wider screens
-          maxWidth: 400, // You can adjust this value
-          // Remove maxHeight for wider screens (no scrolling)
+          maxWidth: 400,
           maxHeight: "none",
         },
       }}
       elevation={1}
     >
       <CardHeader
-        title={<Typography variant="h6">{`Hosted by ${group.name}`}</Typography>}
+        title={
+          <Typography
+            variant="h6"
+            sx={{
+              fontFamily: "Garamond, serif",
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+              ml: "2%",
+              // textDecorationLine: "underline",
+              // textDecorationColor: "#00DE49",
+            }}
+          >{`${group.name}`}</Typography>
+        }
         action={
           <Box
             sx={{ pt: 1, pr: 1, pb: 1 }}
@@ -88,41 +93,97 @@ export default function EventDetailsCard() {
             justifyContent="center"
             flexGrow={1}
           >
-            <>
-              <PlaceBetBtn toggleBetForm={toggleBetForm} />
-              <BetForm
-              open={openBetForm}
-              onClose={toggleBetForm}
-              />
-            </>
+            <PlaceBetBtn toggleBetForm={toggleBetForm} />
+            <BetForm open={openBetForm} onClose={toggleBetForm} />
           </Box>
         }
       />
 
+      {/* Card Media: Displaying the banner image */}
       <CardMedia
         component="img"
         height="300"
         image={
           group.banner_img
             ? group.banner_img
-            : "https://source.unsplash.com/random/?event"
+            : "https://source.unsplash.com/random/?vintage,event"
         }
         alt="banner image"
       />
+
+      {/* Card Content: Displaying event details */}
       <CardContent>
         <Box sx={{ margin: 2 }}>
-          <Typography variant="h6" sx={{ marginTop: 1 }}>
+          {/* Event Title */}
+          <Typography
+            // variant="h3"
+            sx={{
+              marginTop: 1,
+              fontFamily: "Garamond, serif",
+              fontSize: "1.3rem",
+              fontWeight: "bold",
+            }}
+          >
             {event.team1} Vs {event.team2}
           </Typography>
 
-          <Typography sx={{ display: "flex", alignItems: "center", marginTop: 2 }}>
-            <EventTimeStamp createdAt={event.time} />
-          </Typography>
+          {/* Event Time Display: Start and End Time */}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "start",
+              marginTop: 2,
+            }}
+          >
+            <Typography sx={{ display: "flex", alignItems: "center" }}>
+              <EventTimeStamp
+                createdAt={event.start_time}
+                timezone="America/New_York"
+              />
+              <span style={{ marginLeft: "8px" }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    textDecorationLine: "underline",
+                    textDecorationColor: "#00DE49",
+                  }}
+                >
+                  Starts
+                </Typography>
+              </span>{" "}
+              {/* Start time label */}
+            </Typography>
+            <Typography sx={{ display: "flex", alignItems: "center", marginTop: 1 }}>
+              <EventTimeStamp createdAt={event.end_time} timezone="America/New_York" />
+              <span style={{ marginLeft: "8px" }}>
+                <Typography
+                  variant="caption"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    textDecorationLine: "underline",
+                    textDecorationColor: "#DE0000",
+                  }}
+                >
+                  Ends
+                </Typography>
+              </span>{" "}
+            </Typography>
+          </Box>
         </Box>
       </CardContent>
+
+      {/* Card Actions: Share and Expand */}
       <CardActions disableSpacing>
         <IconButton aria-label="share">
           <DeleteSweepIcon />
+        </IconButton>
+        <IconButton aria-label="add">
+          <AddCircleOutlineIcon onClick={toggleCreateEventForm} />
+          <CreateEventForm openCreateEventForm={openCreateEventForm} toggleCreateEventForm={toggleCreateEventForm} />
         </IconButton>
         <ExpandMore
           expand={expanded}
@@ -133,10 +194,15 @@ export default function EventDetailsCard() {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
+
+      {/* Collapse Section: Additional Event Details */}
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {/* Additional details can go here */}
-          <Typography paragraph>Additional details can be added here.</Typography>
+          <Typography paragraph sx={{ fontFamily: "Georgia, serif" }}>
+            Dive into the details of this thrilling event where {event.team1} faces off
+            against {event.team2}. Experience the excitement, the anticipation, and the
+            spirit of the game.
+          </Typography>
         </CardContent>
       </Collapse>
     </Card>

@@ -16,3 +16,10 @@ router.register("bet", bet_views.BetViewset, basename="bet")
 urlpatterns = [
     path("", include(router.urls)),
 ]
+
+
+
+#  to view all URL patterns 
+# from django.urls import get_resolver
+# for url in get_resolver().url_patterns:
+#     print(url)

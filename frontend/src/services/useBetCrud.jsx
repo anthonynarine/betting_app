@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAxiosWithInterceptor from "../../../../../services/jwtinterceptor-jwtNotReq";
+import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
 
 const useBetCrud = (apiURL) => {
   const jwtAxios = useAxiosWithInterceptor();
