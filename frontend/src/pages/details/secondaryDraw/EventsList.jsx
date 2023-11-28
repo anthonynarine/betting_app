@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   ListItem,
   ListItemIcon,
@@ -15,33 +16,51 @@ import { Link } from "react-router-dom";
 import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import CreateEventForm from "../../events/main/event_crud/CreateEventForm";
 
 const EventsList = () => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
+
+  const [openCreateEventForm, setCreateEventFormOpen] = useState(false);
+  const toggleCreateEventForm = () => setCreateEventFormOpen(!openCreateEventForm); 
 
   const { events } = useGroupData();
   console.log("Events Page DATA:", events); //  TEST
 
   return (
     <>
-      <Box sx={classes.mainBox}>
-        <Typography variant="h6" sx={{ color: "#637C5B" }}>
-          Group Events
-        </Typography>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between", // This will align the items at opposite ends
+      }}
+    >
+      <Typography variant="h6" sx={{ color: "#637C5B" }}>
+        Group Events
+      </Typography>
+      <Box>
+        <AddCircleOutlineIcon onClick={toggleCreateEventForm} />
+        <CreateEventForm
+          openCreateEventForm={openCreateEventForm}
+          toggleCreateEventForm={toggleCreateEventForm}
+        />
       </Box>
-      {events &&
-        events.map((event) => (
-          <ListItem
-            key={event.id}
-            disablePadding
-            sx={{ display: "block" }}
-            dense={true}
+    </Box>
+    {events &&
+      events.map((event) => (
+        <ListItem
+          key={event.id}
+          disablePadding
+          sx={{ display: "block" }}
+          dense={true}
+        >
+          <Link
+            to={`/event/${event.id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
           >
-            <Link
-              to={`/event/${event.id}`}
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
             <ListItemButton sx={{ minHeight: 0 }}>
               <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                 <ListItemAvatar sx={{ minWidth: "50px" }}>
@@ -68,10 +87,10 @@ const EventsList = () => {
                 }
               />
             </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-    </>
+          </Link>
+        </ListItem>
+      ))}
+  </>
   );
 };
 

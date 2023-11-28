@@ -33,11 +33,10 @@ const ExpandMore = styled((props) => {
 
 export default function EventDetailsCard() {
   const [openBetForm, setBetFormOpen] = useState(false);
-  const [openCreateEventForm, setCreateEventFormOpen] = useState(false);
+
 
   //func to open and close the form
   const toggleBetForm = () => setBetFormOpen(!openBetForm);
-  const toggleCreateEventForm = () => setCreateEventFormOpen(!openCreateEventForm); 
 
   const { event, group, participants, userId, eventId } = useEventData();
 
@@ -180,10 +179,6 @@ export default function EventDetailsCard() {
       <CardActions disableSpacing>
         <IconButton aria-label="share">
           <DeleteSweepIcon />
-        </IconButton>
-        <IconButton aria-label="add">
-          <AddCircleOutlineIcon onClick={toggleCreateEventForm} />
-          <CreateEventForm openCreateEventForm={openCreateEventForm} toggleCreateEventForm={toggleCreateEventForm} />
         </IconButton>
         <ExpandMore
           expand={expanded}
