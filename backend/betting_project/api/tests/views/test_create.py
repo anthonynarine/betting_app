@@ -1,3 +1,8 @@
+
+
+# TO RUN THESE TESTS
+# python manage.py test api.tests.views.test_mark_as_complete
+
 import imp
 from django.urls import reverse
 from rest_framework import status
@@ -20,32 +25,62 @@ class EventCompleteTest(APITestCase):
             "password": "bluepill123",
             "password2": "bluepill123",
         }
+
+        # Make a POST request to create a user
+        url = reverse('signup')
+        response = self.client.post(url, user_data, format="json")
+
+        # Assertions for user Creations
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNotNone(CustomUser.objects.get(username="anto"))
+
+
+    def test_create_group(self):
+        # create a user instance using the create user method
+        self.test_create_user()
+        user = CustomUser.objects.get(username="anto")
+
+        # Authenticate as the user
+        self.client.force_authenticarte(user=user)
+
+        # Create a group data dictionary
+        group_data = {
+            "name": "The Unplugged",
+            "location": "Earth",
+            "description": "The red pill will set you free"
+        }
         
-        # Use the serializer to create a user
-        serializer = UserSerializer(data=user_data)
-        if serializer.is_valid():
-            serializer.save()
-            
-        # Retrieve the created user
-        self.user = serializer.instance
+        # Make a POST request to create a group
+        url = reverse("group-list")
+        response = self.client.post(url, group_data, format="json")
         
-        # Create a Group instance
-        group = Group.objects.create(
-            name="unplugged",
-            location="earth",
-            description="take the red pill",
-            user=self.user, 
-        )
-        
+        # Assertion for group creation
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIsNotNone(Group.objects.get(name="The Unplugged"))
+
+
+    def test_create_event(self):
         # Create an event
-        self.event = Event.objects.create(
-            group=group,
-            team1="Lakers",
-            team2="76ers",
-            start_time=timezone.now(),
-            end_time=timezone.now() + timedelta(hours=2),
-            organizer=self.user,
-        )
+        event_data = {
+            "group": self.group.id,
+            "team1": "Lakers",
+            "team2": "Pistons",
+            "start_time": timezone.now(),
+            "end_time": timezone.now() + timedelta(hours=2),
+            "organizer": self.user.id
+        }
+
+        # Authenticate as the user
+        self.client.force_authenticate(user=self.user)
+
+        # set the URL for creating an event
+        url = reverse("event-list")
+
+        # Make the POST request to create the event
+        response = self.client.post(url, event_data, format="json")
+
+        # Assertions
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_complete_event_by_organizer(self):
         # Authenticate as the organizer
@@ -88,4 +123,3 @@ class EventCompleteTest(APITestCase):
         # Assertions
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertFalse(self.event.is_complete)
-

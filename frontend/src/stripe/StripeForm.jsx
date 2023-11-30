@@ -34,12 +34,6 @@ const StripeForm = ({ onSubmit, loading, error }) => {
 
     };
 
-
-
-
-
-
-
   return (
     <>
       <Box component="form" onSubmit={handleSubmit} noValidate>

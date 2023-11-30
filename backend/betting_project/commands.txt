@@ -6,3 +6,6 @@ python manage.py test myapp.tests
 runs all test in project
 python manage.py test .
 
+pip install -r requirements.txt
+
+

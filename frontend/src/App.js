@@ -18,7 +18,7 @@ import ProtectedRoute from "./context/Auth/ProtectedRoute";
 import EventPage from "./pages/events/EventPage";
 
 //Stripe
-import StripeChargeComponent from "./stripe/StripeChargeComponent";
+import StripeChargeComponent from "./stripe/StripeChargeRequest";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 
