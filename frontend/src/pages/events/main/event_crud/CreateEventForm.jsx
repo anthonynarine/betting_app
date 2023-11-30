@@ -48,7 +48,7 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
           background: "#fff",
           borderRadius: "10px",
           padding: "20px",
-          maxWidth: "400px", // Adjust the width as needed
+          maxWidth: "438.13px", // Adjust the width as needed
         },
       }}
     >
