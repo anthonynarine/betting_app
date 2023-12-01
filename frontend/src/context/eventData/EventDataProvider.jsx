@@ -11,7 +11,7 @@ export const useEventData = () => {
   const context = useContext(EventDataContext);
   // ensure the hook is used within a provider
   if (!context) {
-    throw new Error("useEventData must be used within an EventProovider");
+    throw new Error("useEventData must be used within an EventProvider");
   }
   return context;
 };

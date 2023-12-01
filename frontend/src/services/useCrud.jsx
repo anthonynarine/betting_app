@@ -1,10 +1,12 @@
 import { useState } from "react";
 import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
+import useAxiosWithInterceptorJwt from "./jwtinterceptor-jwtReq";
 
 const useCrud = ([], apiURL) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const jwtAxios = useAxiosWithInterceptor();
+  const jwtReqAxios = useAxiosWithInterceptorJwt;
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +19,9 @@ const useCrud = ([], apiURL) => {
       }
       // Set the authorization header only if an access token is provided
       if (accessToken) {
-        jwtAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+        jwtAxios.defaults.headers.common[
+          "Authorization"
+        ] = `Bearer ${accessToken}`;
       }
 
       const response = await jwtAxios.get(`${BASE_URL}${apiURL}`);
@@ -38,7 +42,28 @@ const useCrud = ([], apiURL) => {
     }
   };
 
-  return { apiData, error, isLoading, fetchData };
+  const createData = async (url, data) => {
+    setIsLoading(true);
+    try {
+      const response = await jwtReqAxios.post(url, data);
+      const createdData = response.data;
+      setApiData([...apiData, createdData]); // Add the created data to the list
+      setError(null);
+      setIsLoading(false);
+      return createdData;
+    } catch (error) {
+      console.error("Error:", error);
+      setIsLoading(false);
+      throw error;
+    }
+    // EXAMPLE USING THIS FUNCTION 
+    // createData(groupData, '/groups/)
+    // createData(eventData, '/events/)
+  };
+
+
+
+  return { apiData, error, isLoading, fetchData, createData };
 };
 
 export default useCrud;

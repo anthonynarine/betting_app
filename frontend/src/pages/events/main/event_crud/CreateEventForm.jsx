@@ -10,8 +10,16 @@ import {
 } from "@mui/material";
 
 const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
+
+  const userId = localStorage.getItem("userId")
+  const { groupId } = useEventData();
+
+  console.log(userId, groupId, "testing user and group id")
+
   // State for managing event input
   const [eventDetails, setEventDetails] = useState({
+    grouId: groupId,
+    organizer: userId, 
     team1: "",
     team2: "",
     start_time: "", // You may want to use a DatePicker component for date and time selection
