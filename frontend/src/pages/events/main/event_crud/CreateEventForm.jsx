@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useEventData } from "../../../../context/eventData/EventDataProvider";
+import { useParams } from "react-router-dom"; 
 import {
   Button,
   Dialog,
@@ -9,12 +9,13 @@ import {
   TextField,
 } from "@mui/material";
 
-const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
+const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, eventId }) => {
 
+  // Get the userId from local storage, this is needed to create a new event.
   const userId = localStorage.getItem("userId")
-  const { groupId } = useEventData();
+  const { groupId } = useParams();
 
-  console.log(userId, groupId, "testing user and group id")
+  // console.log(userId, groupId, "testing user and group id")
 
   // State for managing event input
   const [eventDetails, setEventDetails] = useState({
