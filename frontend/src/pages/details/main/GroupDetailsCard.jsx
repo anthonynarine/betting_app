@@ -116,8 +116,8 @@ export default function GroupDetailsCard() {
       />
       <CardContent>
         <Box sx={{ margin: 2 }}>
-          <Typography variant="body2" color="text.secondary">
-            {group.description}
+          <Typography variant="h6" color="text.secondary">
+           Current Events
           </Typography>
           {events && events.length > 0 && (
             <>

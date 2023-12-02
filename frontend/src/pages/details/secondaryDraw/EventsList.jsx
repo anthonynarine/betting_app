@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ListItem,
   ListItemIcon,
@@ -19,7 +19,7 @@ import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
 import React from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CreateEventForm from "../../events/main/event_crud/CreateEventForm";
+import CreateEventForm from "../../events/crud-forms/CreateEventForm";
 
 const EventsList = () => {
   const theme = useTheme();
@@ -31,6 +31,9 @@ const EventsList = () => {
 
   const { events } = useGroupData();
   console.log("Events Page DATA:", events); //  TEST
+
+  useEffect(()=>{},[events])
+
 
   return (
     <>
@@ -51,7 +54,7 @@ const EventsList = () => {
         <Box>
           <Tooltip title="Create Event" arrow placement="left" >
             <IconButton>
-              <AddCircleOutlineIcon onClick={toggleCreateEventForm} />
+              <AddCircleOutlineIcon onClick={toggleCreateEventForm} sx={{ color: "#000"}} />
             </IconButton>
           </Tooltip>
           <CreateEventForm

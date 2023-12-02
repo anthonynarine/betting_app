@@ -2,11 +2,14 @@ import { useState } from "react";
 import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
 import useAxiosWithInterceptorJwt from "./jwtinterceptor-jwtReq";
 
+// Accessing this hoook in a component. 
+// Import 
+
 const useCrud = ([], apiURL) => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const jwtAxios = useAxiosWithInterceptor();
-  const jwtReqAxios = useAxiosWithInterceptorJwt;
+  const jwtReqAxios = useAxiosWithInterceptorJwt();
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +45,7 @@ const useCrud = ([], apiURL) => {
     }
   };
 
-  const createData = async (url, data) => {
+  const createObject = async (url, data) => {
     setIsLoading(true);
     try {
       const response = await jwtReqAxios.post(url, data);
@@ -63,7 +66,7 @@ const useCrud = ([], apiURL) => {
 
 
 
-  return { apiData, error, isLoading, fetchData, createData };
+  return { apiData, error, isLoading, fetchData, createObject };
 };
 
 export default useCrud;

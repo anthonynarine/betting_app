@@ -31,10 +31,17 @@ const useAxiosWithInterceptorJwt = () => {
   // Add a request interceptor to attach the authorization header
   jwtReqAxios.interceptors.request.use(
     (config) => {
-      const accessToken = localStorage.get("accessToken");
+      const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
       }
+
+      // Optionally set the Content-Type header for POST requests 
+      // Axios does this automatically it's not really needed.  
+      if (config.method === 'post') {
+        config.headers['Content-Type'] = 'application/json';
+      }
+
       return config;
     },
     (error) => {

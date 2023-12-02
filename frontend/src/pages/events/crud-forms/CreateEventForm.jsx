@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom"; 
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import {
   Button,
   Dialog,
@@ -7,44 +7,82 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
+  Typography
 } from "@mui/material";
+import useCrud from "../../../services/useCrud";
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
-const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, eventId }) => {
 
+const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
   // Get the userId from local storage, this is needed to create a new event.
-  const userId = localStorage.getItem("userId")
+  const userId = localStorage.getItem("userId");
+  // Get the GroupID from the URL
   const { groupId } = useParams();
-
-  // console.log(userId, groupId, "testing user and group id")
+  console.log("groupId", groupId)
+  // func to update context of Event List
+  const { updateEventList } = useGroupData();
 
   // State for managing event input
   const [eventDetails, setEventDetails] = useState({
-    grouId: groupId,
-    organizer: userId, 
+    group_id: parseInt(groupId),
+    organizer: parseInt(userId),
     team1: "",
     team2: "",
-    start_time: "", // You may want to use a DatePicker component for date and time selection
-    end_time: "", // You may want to use a DatePicker component for date and time selection
+    start_time: "",
+    end_time: "",
   });
 
+  // State for managing the success message
+  const [showSuccessMessage, setShowSuccessfulMessage] = useState(false);
+
+  // Initialize the useCrud hook with the desired API URL
+  const { createObject } = useCrud("/events/");
+
+  // Event handler for input changes in the form
   const handleInputChange = (event) => {
     setEventDetails({ ...eventDetails, [event.target.name]: event.target.value });
   };
 
   const handleSuccess = (data) => {
     console.log("Event created:", data);
+    // Close the form
     toggleCreateEventForm();
+    // Show a successful message
+    setShowSuccessfulMessage(true);
+    // Clear the form
+    setEventDetails({
+      groupId: groupId,
+      organizer: userId,
+      team1: "",
+      team2: "",
+      start_time: "",
+      end_time: "",
+    });
   };
+
+  // Use effect to hide the success message after a few seconds.
+  useEffect(() => {
+    if (showSuccessMessage) {
+      const timer = setTimeout(() => {
+        setShowSuccessfulMessage(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showSuccessMessage]);
 
   const handleError = (error) => {
     console.error("Error creating event:", error);
   };
 
-  const handleSubmit = () => {
-    // Add logic here to send a POST request with eventDetails to create an event
-    // You can use Axios or your preferred method for API calls
-    // After successfully creating the event, call handleSuccess
-    // After handling any errors, call handleError
+  const handleSubmit = async () => {
+    try {
+      const createdEventObject = await createObject("/events/", eventDetails);
+      handleSuccess(createdEventObject);
+      updateEventList(createdEventObject)
+
+    } catch (error) {
+      handleError(error);
+    }
   };
 
   return (
@@ -66,6 +104,12 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, eventId }
         Create Event
       </DialogTitle>
       <DialogContent>
+      {showSuccessMessage && (
+  <DialogContent>
+    <Typography color="green">Event created successfully!</Typography>
+  </DialogContent>
+)}
+        
         {/* Team 1 Field */}
         <TextField
           autoFocus
@@ -120,7 +164,11 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, eventId }
           Cancel
         </Button>
         {/* Create Button */}
-        <Button onClick={handleSubmit} color="primary" variant="contained">
+        <Button
+          onClick={handleSubmit}
+          color="primary"
+          variant="contained"
+        >
           Create
         </Button>
       </DialogActions>

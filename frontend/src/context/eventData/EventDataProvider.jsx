@@ -2,6 +2,10 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useCrud from "../../services/useCrud";
 
+//  To Use this context 
+//  import { useEventData } from "somedir"
+// const { updateGroupData } = useEventData();  Access the treasures 
+
 // === Context Creation ===
 // Create a new context for API data
 export const EventDataContext = createContext();
@@ -49,11 +53,19 @@ export const EventDataProvider = ({ children }) => {
     }
   }, [eventId]);
 
+
+  // const updateEventList = (newEventData) => {
+  //   console.log("updatingGroupData function called")
+  //   setEvents((preEvents) => [...preEvents, newEventData]);
+  // }
+
+
+
   const value = {
     event, 
     eventId,
     group,
-    participants
+    participants,
   };
 
   return (

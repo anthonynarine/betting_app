@@ -18,7 +18,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 //bet
 import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
 import BetForm from "./bet_crud/BetForm";
-import CreateEventForm from "./event_crud/CreateEventForm";
+import CreateEventForm from "../crud-forms/CreateEventForm";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

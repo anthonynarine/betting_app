@@ -13,6 +13,10 @@ class EventViewset(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     
+    def create(self, request, *args, **kwargs):
+        print("Received data for Event creation:", request.data)
+        return super().create(request, *args, **kwargs)
+
     
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def complete_event(self, request, pk=None):

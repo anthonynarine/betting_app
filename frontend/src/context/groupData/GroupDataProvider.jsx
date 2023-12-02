@@ -61,14 +61,21 @@ export const GroupDataProvider = ({ children }) => {
     console.log("Current Member State: ", members);
   }, [members]);
 
-  // Functions to update events, members, and groups
+  // Update the GroupMembers component list
   const updateMembers = (newMembers) => {
     console.log("New members to set:", newMembers);
     setMembers(newMembers);
   };
+
   const updateGroup = (newGroup) => {
     setGroup(newGroup);
   };
+  
+  // updated the EventList component list
+  const updateEventList = (newEventData) => {
+    console.log("updatingGroupData function called")
+    setEvents((preEvents) => [...preEvents, newEventData]);
+  }
 
   // The value that will be available to components wrapped in this Provider
   const value = {
@@ -82,6 +89,7 @@ export const GroupDataProvider = ({ children }) => {
     members,
     setMembers,
     updateMembers,
+    updateEventList
   };
 
   // Provide the value to the children components

@@ -41,7 +41,7 @@ console.log("EventDetail Component eventId DATA TEST", eventId)
   const renderSubheader = () => {
     if (eventId) {
       return (
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" justifyContent="center" alignItems="flex-start" >
           <EventDetailsCard  />
         </Box>
       );
