@@ -40,9 +40,9 @@ export default function EventDetailsCard() {
 
   const { event, group, participants, userId, eventId } = useEventData();
 
-  console.log("EventDetail Component event DATA TEST", event);
-  console.log("EventDetail Component group DATA TEST", group);
-  console.log("EventDetail Component eventId DATA TEST", eventId);
+  console.log("EventDetailCard Component event DATA TEST", event);
+  console.log("EventDetailCard Component eventId DATA TEST", eventId);
+  console.log("EventDetailCard Component eventId DATA TEST", event.group.name);
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -104,7 +104,7 @@ export default function EventDetailsCard() {
         height="300"
         image={
           group.banner_img
-            ? group.banner_img
+            ? event.group.banner_img
             : "https://source.unsplash.com/random/?vintage,event"
         }
         alt="banner image"

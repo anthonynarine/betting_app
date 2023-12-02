@@ -5,6 +5,7 @@ import SecondaryDraw from "../../components/secondaryDraw/SecondaryDraw";
 import Main from "../../components/main/Main";
 // import EventDetails from "../events/main/EventDetials";
 import { EventDataProvider } from "../../context/eventData/EventDataProvider";
+import { GroupDataProvider } from "../../context/groupData/GroupDataProvider";
 import EventDetails from "./main/EventDetials";
 
 const EventsPage = () => {

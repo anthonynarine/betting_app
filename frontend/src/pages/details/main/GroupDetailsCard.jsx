@@ -30,13 +30,11 @@ const ExpandMore = styled((props) => {
 }));
 
 export default function GroupDetailsCard() {
-
   const { events, group, members, userId } = useGroupData();
 
   // console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
   // console.log("GroupDetailsCard Members:", members); //DEBUG TESTS
   // console.log("GroupDetailsCard User ID:", userId); //DEBUG TESTS
-
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -46,9 +44,8 @@ export default function GroupDetailsCard() {
   };
 
   const isMember = members
-  ? members.some((member) => member?.user?.id === Number(userId))
-  : false;
-
+    ? members.some((member) => member?.user?.id === Number(userId))
+    : false;
 
   return (
     <Card
@@ -92,12 +89,11 @@ export default function GroupDetailsCard() {
             <>
               {isMember ? (
                 <IconButton aria-label="leave-group">
-                  <LeaveGroupBtn/>
+                  <LeaveGroupBtn />
                 </IconButton>
               ) : (
                 <IconButton aria-label="join-group">
-                  < JoinGroupBtn />
-
+                  <JoinGroupBtn />
                 </IconButton>
               )}
             </>
@@ -110,29 +106,75 @@ export default function GroupDetailsCard() {
         component="img"
         height="300"
         image={
-          group.banner_img ? group.banner_img : "https://source.unsplash.com/random/?fight"
+          group.banner_img
+            ? group.banner_img
+            : "https://source.unsplash.com/random/?mountain"
         }
         alt="banner image"
       />
       <CardContent>
         <Box sx={{ margin: 2 }}>
-          <Typography variant="h6" color="text.secondary">
-           Current Events
+          <Typography variant="h5" color="#000">
+            Events
           </Typography>
           {events && events.length > 0 && (
             <>
-              {events.map((event) => (
-                <div key={event.id}>
-                  <Typography variant="h6" sx={{ marginTop: 1 }}>
-                    {event.team1} Vs {event.team2}
-                  </Typography>
+              {events.slice().map((event) => (
+                <div key={event.id} style={{ 
+  display: 'flex', 
+  flexDirection: 'column', 
+  alignItems: 'center', 
+  backgroundColor: '#fff', 
+  padding: '15px', 
+  borderRadius: '8px', 
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.15)', 
+  margin: '10px 0' 
+}}>
+  <div style={{ 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+    marginBottom: '8px'
+  }}>
+    <Typography variant="h6" style={{ 
+      fontWeight: '600', 
+      marginRight: '5px',
+      fontFamily: "'Roboto', sans-serif",
+      color: 'black'
+    }}>
+      {event.team1}
+    </Typography>
+    <Typography variant="h6" style={{ 
+      margin: '0 5px', 
+      fontWeight: '400', 
+      fontFamily: "'Roboto', sans-serif",
+      color: 'black'
+    }}>
+      vs
+    </Typography>
+    <Typography variant="h6" style={{ 
+      fontWeight: '600', 
+      marginLeft: '5px',
+      fontFamily: "'Roboto', sans-serif",
+      color: 'black'
+    }}>
+      {event.team2}
+    </Typography>
+  </div>
 
-                  <Typography
-                    sx={{ display: "flex", alignItems: "center", marginTop: 2 }}
-                  >
-                    <EventTimestamp createdAt={new Date(event.start_time)} />
-                  </Typography>
-                </div>
+  <Typography
+    style={{ 
+      display: "flex", 
+      alignItems: "center", 
+      justifyContent: 'center',
+      fontFamily: "'Roboto', sans-serif",
+      color: 'gray',
+      fontSize: '0.9rem'
+    }}
+  >
+    <EventTimestamp createdAt={new Date(event.start_time)} />
+  </Typography>
+</div>
               ))}
             </>
           )}
@@ -154,9 +196,7 @@ export default function GroupDetailsCard() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           {/* Additional details can go here */}
-          <Typography paragraph>
-            Additional details can be added here.
-          </Typography>
+          <Typography paragraph>Additional details can be added here.</Typography>
         </CardContent>
       </Collapse>
     </Card>

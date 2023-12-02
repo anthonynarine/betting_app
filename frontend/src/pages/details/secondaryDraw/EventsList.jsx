@@ -20,6 +20,7 @@ import React from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CreateEventForm from "../../events/crud-forms/CreateEventForm";
+import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 const EventsList = () => {
   const theme = useTheme();
@@ -30,7 +31,7 @@ const EventsList = () => {
     setCreateEventFormOpen(!openCreateEventForm);
 
   const { events } = useGroupData();
-  console.log("Events Page DATA:", events); //  TEST
+  console.log("EventsList  DATA:", events); //  TEST
 
   useEffect(()=>{},[events])
 

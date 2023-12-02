@@ -24,7 +24,7 @@ export default EventDataContext;
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
 export const EventDataProvider = ({ children }) => {
-  console.log("GroupDataProvider is re-rendering"); // DEBUG TEST
+  console.log("EventDataProvider is re-rendering"); // DEBUG TEST
 
   const { eventId } = useParams();
   const { fetchData } = useCrud([], `/events/${eventId}`);
@@ -52,12 +52,6 @@ export const EventDataProvider = ({ children }) => {
       fetchEventData();
     }
   }, [eventId]);
-
-
-  // const updateEventList = (newEventData) => {
-  //   console.log("updatingGroupData function called")
-  //   setEvents((preEvents) => [...preEvents, newEventData]);
-  // }
 
 
 
