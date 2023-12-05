@@ -35,7 +35,6 @@ const EventsList = () => {
 
   useEffect(()=>{},[events])
 
-
   return (
     <>
       <Box
