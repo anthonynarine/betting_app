@@ -17,6 +17,7 @@ import EventTimestamp from "./EventTimeStamp";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import { JoinGroupBtn } from "./JoinGroupBtn";
 import { LeaveGroupBtn } from "./LeaveGroupBtn";
+import { Link } from "react-router-dom"
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -32,7 +33,7 @@ const ExpandMore = styled((props) => {
 export default function GroupDetailsCard() {
   const { events, group, members, userId } = useGroupData();
 
-  // console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
+  console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
   // console.log("GroupDetailsCard Members:", members); //DEBUG TESTS
   // console.log("GroupDetailsCard User ID:", userId); //DEBUG TESTS
 
@@ -70,7 +71,7 @@ export default function GroupDetailsCard() {
           maxHeight: "none",
         },
       }}
-      elevation={0}
+      elevation={2}
     >
       <CardHeader
         // avatar={
@@ -99,7 +100,13 @@ export default function GroupDetailsCard() {
             </>
           </Box>
         }
-        title={<Typography variant="h6">{group.name}</Typography>}
+        title={
+          <Link to={'/'} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Typography variant="h6">
+              {group.name}
+            </Typography>
+          </Link>
+        }
         subheader={<Typography variant="subtitle1">{group.description}</Typography>}
       />
       <CardMedia

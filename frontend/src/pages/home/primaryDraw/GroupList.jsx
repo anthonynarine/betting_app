@@ -19,14 +19,14 @@ import React from "react";
 
 
 const GroupList = ({ open }) => {
-  const { apiData, fetchData } = useCrud([], "/groups/");
+  const { apiData, fetchData } = useCrud();
 
   const theme = useTheme();
   const classes = ListViewStyles(theme);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("accessToken")
-    fetchData(accessToken);
+    fetchData("/groups/", accessToken);
   }, []);
 
   //DATA TEST

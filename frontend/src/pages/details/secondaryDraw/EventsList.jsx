@@ -109,4 +109,4 @@ const EventsList = () => {
   );
 };
 
-export default React.memo(EventsList);
+export default EventsList;

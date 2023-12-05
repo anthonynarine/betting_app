@@ -27,7 +27,7 @@ export const EventDataProvider = ({ children }) => {
   console.log("EventDataProvider is re-rendering"); // DEBUG TEST
 
   const { eventId } = useParams();
-  const { fetchData } = useCrud([], `/events/${eventId}`);
+  const { fetchData } = useCrud();
 
   //State to needed for Events
   const [event, setEvent] = useState([]);
@@ -41,7 +41,7 @@ export const EventDataProvider = ({ children }) => {
       const fetchEventData = async () => {
         // const accessToken = localStorage.getItem("accessToken"); // 
         try {
-          const data = await fetchData();
+          const data = await fetchData(`/events/${eventId}`);
           setEvent(data);
           setGroup(data.group);
           setParticipants(data.participants);

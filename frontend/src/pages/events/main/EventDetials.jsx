@@ -1,5 +1,6 @@
 import { Typography, Box, Container, } from "@mui/material";
 import { useEventData } from "../../../context/eventData/EventDataProvider"
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
 import EventDetailsCard from "./EventDetailCard";
 
@@ -9,7 +10,7 @@ const { event, group, eventId } = useEventData();
 
 console.log("EventDetail Component event DATA TEST", event)
 console.log("EventDetail Component group DATA TEST", group)
-console.log("EventDetail Component eventId DATA TEST", eventId)
+console.log("EventDetail Component eventId DATA TEST", event.id)
 
     
   const renderHeader = () => {

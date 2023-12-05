@@ -13,6 +13,12 @@ class EventViewset(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     
+    def get_queryset(self):
+        queryset = Event.objects.all()
+        if self.request.user.is_authenticated:
+            queryset = queryset.filter(organizer=self.request.user)
+        return super().get_queryset()
+    
     def create(self, request, *args, **kwargs):
         print("Received data for Event creation:", request.data)
         return super().create(request, *args, **kwargs)

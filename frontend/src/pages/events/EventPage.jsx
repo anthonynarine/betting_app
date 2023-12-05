@@ -11,13 +11,17 @@ import EventDetails from "./main/EventDetials";
 const EventsPage = () => {
   return (
     <Box sx={{ display: "flex" }}>
-      <EventDataProvider>
-        <CssBaseline />
-        <PrimaryAppBar />
-        <PrimaryDraw></PrimaryDraw>
-        <SecondaryDraw></SecondaryDraw>
-        <Main> <EventDetails/> </Main>
-      </EventDataProvider>
+      <GroupDataProvider>
+        <EventDataProvider>
+          <CssBaseline />
+          <PrimaryAppBar />
+          <PrimaryDraw></PrimaryDraw>
+          <SecondaryDraw></SecondaryDraw>
+          <Main>
+            <EventDetails />
+          </Main>
+        </EventDataProvider>
+      </GroupDataProvider>
     </Box>
   );
 };

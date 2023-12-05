@@ -31,7 +31,7 @@ export const GroupDataProvider = ({ children }) => {
   // const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
 
   // Use the custom CRUD hook to fetch data
-  const { apiData, fetchData, isLoading, error } = useCrud([], `/groups/${groupId}`);
+  const { apiData, fetchData, isLoading, error } = useCrud();
 
   // State variables for events, members, and groups
   const [events, setEvents] = useState([]);
@@ -44,7 +44,7 @@ export const GroupDataProvider = ({ children }) => {
       const fetchGroupData = async () => {
         const accessToken = localStorage.getItem("accessToken");
         try {
-          const data = await fetchData(accessToken);
+          const data = await fetchData(`/groups/${groupId}`, accessToken);
           setEvents(data.events);
           setMembers(data.members);
           setGroup(data);
@@ -56,6 +56,8 @@ export const GroupDataProvider = ({ children }) => {
       fetchGroupData();
     }
   }, [groupId]); // refetches data when groupId changes
+
+  
 
   useEffect(() => {
     console.log("Current Member State: ", members);

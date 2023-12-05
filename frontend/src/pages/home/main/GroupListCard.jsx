@@ -9,10 +9,10 @@ function GroupListCard() {
   const { groupId } = useParams();
   const url = groupId ? `/groups/${groupId}/` : "/groups/";
 
-  const { apiData, fetchData } = useCrud([], url);
+  const { apiData, fetchData } = useCrud(url);
 
   useEffect(() => {
-    fetchData();
+    fetchData(url);
   }, [groupId]);
 
 

@@ -14,11 +14,14 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 //bet
 import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
 import BetForm from "./bet_crud/BetForm";
 import CreateEventForm from "../crud-forms/CreateEventForm";
+
+import { Link } from "react-router-dom";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -42,7 +45,7 @@ export default function EventDetailsCard() {
 
   console.log("EventDetailCard Component event DATA TEST", event);
   console.log("EventDetailCard Component eventId DATA TEST", eventId);
-  console.log("EventDetailCard Component eventId DATA TEST", event.group.name);
+  console.log("EventDetailCard Component eventId DATA TEST", event.group);
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -73,6 +76,7 @@ export default function EventDetailsCard() {
     >
       <CardHeader
         title={
+          <Link to={`/group/${group.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <Typography
             variant="h6"
             sx={{
@@ -84,6 +88,7 @@ export default function EventDetailsCard() {
               // textDecorationColor: "#00DE49",
             }}
           >{`${group.name}`}</Typography>
+          </Link>
         }
         action={
           <Box
