@@ -41,12 +41,12 @@ export default function EventDetailsCard() {
   //func to open and close the form
   const toggleBetForm = () => setBetFormOpen(!openBetForm);
 
-  const { event, group, participants, userId, eventId, organizer } = useEventData();
+  const { event, group, participants, userId, eventId, userIsEventCreator } = useEventData();
 
   console.log("EventDetailCard Component event DATA TEST", event);
   console.log("EventDetailCard Component eventId DATA TEST", eventId);
   console.log("EventDetailCard Component eventId DATA TEST", event.group);
-  console.log("EventDetailCard Component organizer DATA TEST", organizer);
+  console.log("EventDetailCard Component organizer DATA TEST", userIsEventCreator);
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -55,9 +55,7 @@ export default function EventDetailsCard() {
     setExpanded(!expanded);
   };
 
-  //   const isMember = members
-  //   ? members.some((member) => member?.user?.id === Number(userId))
-  //   : false;
+
 
   return (
     <Card

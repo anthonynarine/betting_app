@@ -34,8 +34,11 @@ export const EventDataProvider = ({ children }) => {
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [organizer, setOrganizer] = useState(null);
-
-
+  
+  // Function to check if the logged-in user is the organizer
+  const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
+  console.log(typeof(userIsEventCreator))
+  
   // Feth event data when eventId changes
 
   useEffect(() => {
@@ -48,6 +51,7 @@ export const EventDataProvider = ({ children }) => {
           setGroup(data.group);
           setParticipants(data.participants);
           setOrganizer(data.organizer)
+          console.log("organizer id", organizer)
         } catch (error) {
           console.error("Error fetching event data:", error);
         }
@@ -58,12 +62,15 @@ export const EventDataProvider = ({ children }) => {
 
 
 
+
+
   const value = {
     event, 
     eventId,
     group,
     participants,
     organizer,
+    userIsEventCreator
   };
 
   return (
