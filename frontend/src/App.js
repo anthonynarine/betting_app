@@ -10,7 +10,8 @@ import AuthProvider from "./context/Auth/AuthContext";
 import UserServiceProvider from "./context/user/UserContext";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
-import TestLogin from "./pages/login/test/TestLogin";
+
+import TestLogin from "./pages/login/test/testLogin";
 import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./context/Auth/ProtectedRoute";
