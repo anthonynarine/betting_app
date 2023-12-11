@@ -6,6 +6,7 @@ __pycache__/
 
 # Ignore virtual environment
 betting_venv/
+db.sqlite3
 
 # Ignore local_settings.py file
 local_settings.py
