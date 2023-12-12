@@ -102,6 +102,7 @@ class StripeConfigView(APIView):
         # Retrieve the Stripe publishable key from the project settings
         stripe_publishable_key = settings.STRIPE_PUBLISHABLE_KEY
         # Return the Stripe publishable key in the response
+        print(stripe_publishable_key)
         return Response({"publicKey": settings.STRIPE_PUBLISHABLE_KEY})
 
 class DepositFundsView(APIView):

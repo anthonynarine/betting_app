@@ -1,43 +1,29 @@
-import { TextField, Box } from "@mui/material";
-import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-import { useState } from "react";
+// StripeForm.jsx  THIS COMPONENT IS NO LONGER IN USE 
+import React, { useState } from "react";
+import { Box, TextField, Button } from "@mui/material";
+import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 
-const StripeForm = ({ onSubmit, loading, error }) => {
+const StripeForm = ({ onSubmit }) => {
+  const [amount, setAmount] = useState("");
+  const stripe = useStripe();
+  const elements = useElements();
 
-    const stripe = useStripe();
-    const elements = useElements();
-    const [amount, setAmount] =useState("");
-    const [error, setError] =useState(false)
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    // Handle form submission when the user clicks the Add Funds btn
-    let handleSubmit = async (event) => {
-        event.preventDefault();
-        // Check if the Stripe Elements are available
-        if (!stripe || !elements){
-            return;
-        };
-    
-        //Get the CardElements from Elements
-        let cardElement = elements.getElement(CardElement);
-    
-        //Create a payment method using the card details
-        const { paymentMethod, error } = await stripe.createPaymentMethod({
-            type: "card",
-            card: cardElement,
-        });
+    if (!stripe || !elements) {
+      console.log("Stripe has not loaded");
+      return;
+    }
 
-        if (error) {
-            setError(error.message);
-            setIsloading(false);
-            return;
-          }
-    
+    const cardElement = elements.getElement(CardElement);
 
-    };
+    onSubmit(cardElement, amount); // Call the passed onSubmit function
+  };
 
   return (
-    <>
-      <Box component="form" onSubmit={handleSubmit} noValidate>
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <TextField
         label="Amount in USD"
         variant="outlined"
         fullWidth
@@ -47,9 +33,15 @@ const StripeForm = ({ onSubmit, loading, error }) => {
         autoFocus
         value={amount}
         onChange={(e) => setAmount(e.target.value)}
-
+      />
+      <Box sx={{ margin: 2 }}>
+        <CardElement />
       </Box>
-    </>
+      <Button variant="contained" color="primary" fullWidth type="submit">
+        Add Funds
+      </Button>
+    </Box>
   );
 };
+
 export default StripeForm;

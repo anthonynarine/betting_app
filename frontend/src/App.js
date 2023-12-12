@@ -21,9 +21,14 @@ import EventPage from "./pages/events/EventPage";
 //Stripe
 import StripeChargeComponent from "./stripe/StripeChargeRequest";
 import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import useFetchStripeKey from "./stripe/FetchStripeKeyRequest";
 
 function App() {
 
+  const { stripePublicKey } = useFetchStripeKey();
+  const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
+  console.log(stripePromise)
 
   return (
     <AuthProvider>
@@ -48,7 +53,7 @@ function App() {
             <Route
               path="/addfunds"
               element={
-                <Elements>
+                <Elements stripe={stripePromise} >
                   <StripeChargeComponent />
                 </Elements>
               }
