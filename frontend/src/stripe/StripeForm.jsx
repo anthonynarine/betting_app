@@ -7,6 +7,7 @@ const StripeForm = ({ onSubmit, loading, error }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [amount, setAmount] =useState("");
+    const [error, setError] =useState(false)
 
     // Handle form submission when the user clicks the Add Funds btn
     let handleSubmit = async (event) => {

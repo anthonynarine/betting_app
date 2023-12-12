@@ -21,13 +21,9 @@ import EventPage from "./pages/events/EventPage";
 //Stripe
 import StripeChargeComponent from "./stripe/StripeChargeRequest";
 import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 
 function App() {
-  //THIS NEEDS TO BE CHANGE DTO A REQUEST TO THE BACKEND TO OBTAIN THIS
-  //WILL STORE IT LOCAL STORAGE FOR ACCESS.
-  const REACT_APP_STRIPE_PUBLISHABLE_KEY = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
-  const stripePromise = loadStripe(REACT_APP_STRIPE_PUBLISHABLE_KEY);
+
 
   return (
     <AuthProvider>
@@ -38,8 +34,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/group/:groupId" element={<DetailPage />} />
             <Route path="/event/:eventId" element={<EventPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<Signup />} />
             {/* <Route path="/login" element={<LoginPageV0 />} /> */}
             <Route
               path="/testlogin"
@@ -52,7 +48,7 @@ function App() {
             <Route
               path="/addfunds"
               element={
-                <Elements stripe={stripePromise}>
+                <Elements>
                   <StripeChargeComponent />
                 </Elements>
               }

@@ -65,7 +65,7 @@ export default function EventDetailsCard() {
         overflow: "auto",
         borderRadius: "20px",
         borderColor: "#000",
-        background: "#fff",
+        background: "#EAE5E1",
         "@media (min-width: 768px)": {
           maxWidth: 400,
           maxHeight: "none",
@@ -109,14 +109,14 @@ export default function EventDetailsCard() {
         image={
           group.banner_img
             ? event.group.banner_img
-            : "https://source.unsplash.com/random/?vintage,event"
+            : "https://source.unsplash.com/random/?mountain"
         }
         alt="banner image"
       />
 
       {/* Card Content: Displaying event details */}
       <CardContent>
-        <Box sx={{ margin: 2 }}>
+        <Box sx={{ margin: 2, backgroundColor: "#EAE5E1" }}>
           {/* Event Title */}
           <Typography
             // variant="h3"
