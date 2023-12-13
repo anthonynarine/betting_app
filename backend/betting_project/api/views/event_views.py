@@ -1,3 +1,5 @@
+from django.forms import ValidationError
+from pytz import timezone
 from ..models import Event
 from ..serializer import EventSerializer
 from rest_framework import viewsets, status
@@ -28,12 +30,22 @@ class EventViewset(viewsets.ModelViewSet):
         event = self.get_object()
         if request.user != event.organizer:
             raise PermissionDenied 
+        
+        # Check if the event has already started 
+        if timezone.now() >= event.start_time:
+            raise ValidationError("Cannot update the event after it has started")
+        
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         event = self.get_object()
         if request.user != event.organizer:
             raise PermissionDenied
+        
+        # Check if the event has already started 
+        if timezone.now() >= event.start_time:
+            raise ValidationError("Cannot delete the event after it has started")
+        
         return super().destroy(request, *args, **kwargs)
 
     

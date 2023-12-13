@@ -7,7 +7,8 @@ import {
   Typography,
   Box,
   TextField,
-  Button
+  Button,
+  Alert,
 } from "@mui/material";
 import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import { useUserServices } from "../context/user/UserContext";
@@ -73,8 +74,9 @@ function StripeChargeComponent() {
   };
 
   return (
+    <Container sx={classes.flexContainer}>
     <Container maxWidth={isLargeScreen ? "xs" : "sm"} sx={classes.container}>
-      <Typography variant="h5" gutterBottom textAlign="center">
+      <Typography variant="h5" gutterBottom textAlign="center" sx={{mt: 3}}>
         Add Funds
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate>
@@ -89,16 +91,16 @@ function StripeChargeComponent() {
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
-        <Box sx={{ margin: 2 }}>
-          test
+        <Box sx={classes.card_element_box}>
           <CardElement />
         </Box>
-        <Button variant="contained" color="primary" fullWidth type="submit" disabled={isLoading}>
+        <Button variant="contained" color="primary" fullWidth type="submit" disabled={isLoading} sx={{mb: 4}}>
           Add Funds
         </Button>
       </Box>
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {isLoading && <div>Loading...</div>}
+      {error && <Alert severity="error">{error}</Alert>}
+      {isLoading && <Alert severity="info">Loading...</Alert>}
+    </Container>
     </Container>
   );
 }

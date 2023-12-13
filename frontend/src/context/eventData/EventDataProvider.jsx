@@ -60,10 +60,6 @@ export const EventDataProvider = ({ children }) => {
     }
   }, [eventId]);
 
-
-
-
-
   const value = {
     event, 
     eventId,

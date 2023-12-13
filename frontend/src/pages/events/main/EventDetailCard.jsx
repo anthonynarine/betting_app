@@ -14,14 +14,16 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
-import { useGroupData } from "../../../context/groupData/GroupDataProvider";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
 //bet
 import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
 import BetForm from "./bet_crud/BetForm";
 import CreateEventForm from "../crud-forms/CreateEventForm";
-
 import { Link } from "react-router-dom";
+//crud
+import useCrud from "../../../services/useCrud";
+import { handleDeleteObject } from "./DeleteEvent";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -37,16 +39,18 @@ const ExpandMore = styled((props) => {
 export default function EventDetailsCard() {
   const [openBetForm, setBetFormOpen] = useState(false);
 
-
   //func to open and close the form
   const toggleBetForm = () => setBetFormOpen(!openBetForm);
 
-  const { event, group, participants, userId, eventId, userIsEventCreator } = useEventData();
+  const { event, group, participants, userId, eventId, userIsEventCreator } =
+    useEventData();
 
+  const { deleteObject }  = useCrud();
   console.log("EventDetailCard Component event DATA TEST", event);
   console.log("EventDetailCard Component eventId DATA TEST", eventId);
   console.log("EventDetailCard Component eventId DATA TEST", event.group);
   console.log("EventDetailCard Component organizer DATA TEST", userIsEventCreator);
+  console.log("EventDetailCard Component deleteObject DATA TEST", deleteObject);
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
@@ -54,7 +58,6 @@ export default function EventDetailsCard() {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
 
 
   return (
@@ -75,18 +78,21 @@ export default function EventDetailsCard() {
     >
       <CardHeader
         title={
-          <Link to={`/group/${group.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-          <Typography
-            variant="h6"
-            sx={{
-              fontFamily: "Garamond, serif",
-              fontSize: "1.3rem",
-              fontWeight: "bold",
-              ml: "2%",
-              // textDecorationLine: "underline",
-              // textDecorationColor: "#00DE49",
-            }}
-          >{`${group.name}`}</Typography>
+          <Link
+            to={`/group/${group.id}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                fontFamily: "Garamond, serif",
+                fontSize: "1.3rem",
+                fontWeight: "bold",
+                ml: "2%",
+                // textDecorationLine: "underline",
+                // textDecorationColor: "#00DE49",
+              }}
+            >{`${group.name}`}</Typography>
           </Link>
         }
         action={
@@ -181,9 +187,11 @@ export default function EventDetailsCard() {
 
       {/* Card Actions: Share and Expand */}
       <CardActions disableSpacing>
-        <IconButton aria-label="share">
-          <DeleteSweepIcon />
-        </IconButton>
+        {userIsEventCreator && (
+          <IconButton aria-label="share" onClick={() => handleDeleteObject(deleteObject, eventId, navigate)}>
+            <DeleteSweepIcon />
+          </IconButton>
+        )}
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}

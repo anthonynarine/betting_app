@@ -80,7 +80,7 @@ const EventsList = () => {
                   <ListItemAvatar sx={{ minWidth: "50px" }}>
                     <Avatar
                       alt="Group Icon"
-                      src={"https://source.unsplash.com/random/?group"}
+                      src={"https://source.unsplash.com/random/?star"}
                     />
                   </ListItemAvatar>
                 </ListItemIcon>

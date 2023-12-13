@@ -1,9 +1,15 @@
 export const StripeStyles = (theme) => ({
+  flexContainer: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    height: '100vh',
+    width: '100vw', // Full width of the viewport
+    paddingTop: "20vh"
+  },
   container: {
     backgroundColor: "#FFFFFF",
-    height: "100vh",
-    marginTop: "25vh",
-    // backgroundImage: "url(https://source.unsplash.com/random/?black)",
+    border: "2px solid #000",
   },
   box1: {
     border: "1px solid #000",
