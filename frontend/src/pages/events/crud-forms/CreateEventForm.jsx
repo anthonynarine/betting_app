@@ -36,7 +36,7 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
   const [showSuccessMessage, setShowSuccessfulMessage] = useState(false);
 
   // Initialize the useCrud hook with the desired API URL
-  const { createObject } = useCrud("/events/");
+  const { createObject } = useCrud();
 
   // Event handler for input changes in the form
   const handleInputChange = (event) => {
@@ -89,7 +89,7 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
     <Dialog
       open={openCreateEventForm}
       onClose={toggleCreateEventForm}
-      aria-labelledby="form-dialog-title"
+      aria-labelledby="create-event-dialog"
       PaperProps={{
         style: {
           background: "#fff",
@@ -100,7 +100,7 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
       }}
     >
       {/* Dialog Title */}
-      <DialogTitle id="form-dialog-title" style={{ textAlign: "center" }}>
+      <DialogTitle id="create-event-dialog" style={{ textAlign: "center" }}>
         Create Event
       </DialogTitle>
       <DialogContent>

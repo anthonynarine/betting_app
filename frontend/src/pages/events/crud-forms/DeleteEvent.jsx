@@ -10,4 +10,4 @@ export const handleDeleteObject = async (deleteObject, eventId, navigate) => {
     console.error("Error deleteing event:", error); 
    }
 
-}
+};

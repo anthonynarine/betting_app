@@ -1,5 +1,5 @@
-from django.forms import ValidationError
-from pytz import timezone
+from rest_framework.exceptions import ValidationError
+from django.utils import timezone
 from ..models import Event
 from ..serializer import EventSerializer
 from rest_framework import viewsets, status

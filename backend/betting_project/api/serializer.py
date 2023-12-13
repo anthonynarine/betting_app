@@ -14,7 +14,7 @@ class GroupSerializer(serializers.ModelSerializer):
 class GroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ("name", "description", "user")
+        fields = ("id", "name", "description", "user")
 
 
 class EventSerializer(serializers.ModelSerializer):

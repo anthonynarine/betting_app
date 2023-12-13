@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+// mui components
 import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -9,21 +11,24 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+
+//icons
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 //bet
 import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
 import BetForm from "./bet_crud/BetForm";
-import CreateEventForm from "../crud-forms/CreateEventForm";
 import { Link } from "react-router-dom";
+
 //crud
 import useCrud from "../../../services/useCrud";
-import { handleDeleteObject } from "./DeleteEvent";
+import { handleDeleteObject } from "../crud-forms/DeleteEvent";
+import UpdateEventForm from "../crud-forms/UpdateEventForm";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -38,14 +43,15 @@ const ExpandMore = styled((props) => {
 
 export default function EventDetailsCard() {
   const [openBetForm, setBetFormOpen] = useState(false);
+  const [openUpdateEventForm, setUpdateFormOpen] = useState(false);
 
-  //func to open and close the form
+  //func to open and close the forms
   const toggleBetForm = () => setBetFormOpen(!openBetForm);
+  const toggleEventForm = () => setUpdateFormOpen(!openUpdateEventForm);
 
-  const { event, group, participants, userId, eventId, userIsEventCreator } =
-    useEventData();
+  const { event, group, eventId, userIsEventCreator } = useEventData();
 
-  const { deleteObject }  = useCrud();
+  const { deleteObject } = useCrud();
   console.log("EventDetailCard Component event DATA TEST", event);
   console.log("EventDetailCard Component eventId DATA TEST", eventId);
   console.log("EventDetailCard Component eventId DATA TEST", event.group);
@@ -58,7 +64,6 @@ export default function EventDetailsCard() {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
 
   return (
     <Card
@@ -188,9 +193,23 @@ export default function EventDetailsCard() {
       {/* Card Actions: Share and Expand */}
       <CardActions disableSpacing>
         {userIsEventCreator && (
-          <IconButton aria-label="share" onClick={() => handleDeleteObject(deleteObject, eventId, navigate)}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleDeleteObject(deleteObject, eventId, navigate)}
+          >
             <DeleteSweepIcon />
           </IconButton>
+        )}
+        {userIsEventCreator && (
+          <IconButton aria-label="update" onClick={toggleEventForm}>
+            <SettingsOutlinedIcon />
+          </IconButton>
+        )}
+        {openUpdateEventForm && (
+          <UpdateEventForm
+            openUpdateEventForm={openUpdateEventForm}
+            toggleEventForm={toggleEventForm}
+          />
         )}
         <ExpandMore
           expand={expanded}
