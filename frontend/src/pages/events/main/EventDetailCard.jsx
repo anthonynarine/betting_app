@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 // mui components
 import { Box } from "@mui/material";
+import Chip from '@mui/material/Chip';
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -55,7 +56,10 @@ export default function EventDetailsCard() {
   console.log("EventDetailCard Component event DATA TEST", event);
   console.log("EventDetailCard Component eventId DATA TEST", eventId);
   console.log("EventDetailCard Component eventId DATA TEST", event.group);
-  console.log("EventDetailCard Component organizer DATA TEST", userIsEventCreator);
+  console.log(
+    "EventDetailCard Component organizer DATA TEST",
+    userIsEventCreator
+  );
   console.log("EventDetailCard Component deleteObject DATA TEST", deleteObject);
 
   const navigate = useNavigate();
@@ -170,8 +174,13 @@ export default function EventDetailsCard() {
               </span>{" "}
               {/* Start time label */}
             </Typography>
-            <Typography sx={{ display: "flex", alignItems: "center", marginTop: 1 }}>
-              <EventTimeStamp createdAt={event.end_time} timezone="America/New_York" />
+            <Typography
+              sx={{ display: "flex", alignItems: "center", marginTop: 1 }}
+            >
+              <EventTimeStamp
+                createdAt={event.end_time}
+                timezone="America/New_York"
+              />
               <span style={{ marginLeft: "8px" }}>
                 <Typography
                   variant="caption"
@@ -186,6 +195,21 @@ export default function EventDetailsCard() {
                 </Typography>
               </span>{" "}
             </Typography>
+            {event.is_complete ? (
+              <Chip
+                label="Completed"
+                color="success"
+                size="small"
+                sx={{ marginTop: "10px" }}
+              />
+            ) : (
+              <Chip
+                label="Ongoing"
+                color="primary"
+                size="small"
+                sx={{ marginTop: "10px" }}
+              />
+            )}
           </Box>
         </Box>
       </CardContent>
@@ -225,9 +249,9 @@ export default function EventDetailsCard() {
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Typography paragraph sx={{ fontFamily: "Georgia, serif" }}>
-            Dive into the details of this thrilling event where {event.team1} faces off
-            against {event.team2}. Experience the excitement, the anticipation, and the
-            spirit of the game.
+            Dive into the details of this thrilling event where {event.team1}{" "}
+            faces off against {event.team2}. Experience the excitement, the
+            anticipation, and the spirit of the game.
           </Typography>
         </CardContent>
       </Collapse>
