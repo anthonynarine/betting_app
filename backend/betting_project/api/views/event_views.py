@@ -1,4 +1,3 @@
-from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 from ..models import Event
 from ..serializer import EventSerializer
@@ -7,6 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import ValidationError
 
 class EventViewset(viewsets.ModelViewSet):
     """
@@ -33,7 +33,7 @@ class EventViewset(viewsets.ModelViewSet):
         
         # Check if the event has already started 
         if timezone.now() >= event.start_time:
-            raise ValidationError("Cannot update the event after it has started")
+            raise ValidationError({"detail": "Cannot update the event after it has started"})
         
         return super().update(request, *args, **kwargs)
 
@@ -44,7 +44,7 @@ class EventViewset(viewsets.ModelViewSet):
         
         # Check if the event has already started 
         if timezone.now() >= event.start_time:
-            raise ValidationError("Cannot delete the event after it has started")
+            raise ValidationError({"detail": "Cannot delete the event after it has started"})
         
         return super().destroy(request, *args, **kwargs)
 

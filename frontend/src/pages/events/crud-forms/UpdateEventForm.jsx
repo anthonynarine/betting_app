@@ -9,6 +9,7 @@ import {
     Button,
     Typography,
     Snackbar,
+    Box, 
 } from "@mui/material";
 import useCrud from "../../../services/useCrud";
 import EditIcon from "@mui/icons-material/Edit"
@@ -70,9 +71,21 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     };
 
     const handleError = (error) => {
-        setSnackbarMessage("Error updating event.");
+        let errorMessage = "Error updating event.";
+        if (error.response && error.response.data && error.response.data.detail) {
+            errorMessage = error.response.data.detail;
+        }
+        console.log("Error Message: ", errorMessage); // Debugging 
+        setSnackbarMessage(errorMessage);
         setSnackbarOpen(true);
     };
+
+    // For testing: Manually trigger the Snackbar
+    useEffect(() => {
+        console.log("Snackbar Open: ", snackbarOpen); // Debugging 
+        setSnackbarMessage("Test error message");
+        setSnackbarOpen(true);
+    }, []);
 
     return (
         <>
@@ -153,8 +166,12 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
                 autoHideDuration={6000}
                 onClose={() => setSnackbarOpen(false)}
                 message={snackbarMessage}
-                sx={{ backgroundColor: 'green', color: 'gold' }}
-            />
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+                sx={{
+                    zIndex: (theme) => theme.zIndex.tooltip + 1, // Higher than most other components
+                    marginTop: '43px',
+                }}
+                />    
         </>
     );
 };
