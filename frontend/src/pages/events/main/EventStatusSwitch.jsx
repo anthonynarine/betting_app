@@ -4,9 +4,9 @@ import useCrud from '../../../services/useCrud';
 import { useEventData } from '../../../context/eventData/EventDataProvider';
 
 
-const EventStatusSwitch = () => {
+const EventStatusSwitch = ({ event }) => {
     const { deletObject } = useCrud();
-    const { event } = useEventData();
+    // const { event } = useEventData(); event ojbect can be taken from context as well
     const [deleteChecked, setDeleteChecked] = useState(false);
 
     const handleDeleteCheck = (event) => {

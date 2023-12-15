@@ -17,6 +17,7 @@ import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 import EventStatusSwitch from "./EventStatusSwitch";
+import CountDownTimer from "./EventCountDownTimer";
 
 //icons
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
@@ -190,7 +191,7 @@ export default function EventDetailsCard() {
                 </Typography>
               </span>{" "}
             </Typography>
-            <EventStatusSwitch />
+            <CountDownTimer event={event} />
           </Box>
         </Box>
       </CardContent>
