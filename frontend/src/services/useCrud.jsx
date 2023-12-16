@@ -46,10 +46,10 @@ const useCrud = () => {
     [jwtAxios, BASE_URL]
   );
 
-  const createObject = async (URL, data) => {
+  const createObject = async (url, data) => {
     setIsLoading(true);
     try {
-      const response = await jwtReqAxios.post(URL, data);
+      const response = await jwtReqAxios.post(url, data);
       const createdData = response.data;
       setApiData([...apiData, createdData]); // Add the created data to the list
       setError(null);
@@ -65,12 +65,12 @@ const useCrud = () => {
     // createData(eventData, '/events/)
   };
 
-  const updateObject = async (url, data) => {
+  const updateObject = async (url, id, data) => {
     setIsLoading(true);
     try {
-      const response = await jwtReqAxios.put(url, data);
+      const response = await jwtReqAxios.put(`${url}/${id}/`, data);
       const updatedData = response.data;
-      setApiData([...apiData, updatedData]);
+      setApiData(apiData.map(item => item.id === id ? updatedData : item));
       setError(null);
       setIsLoading(false);
       return updatedData;

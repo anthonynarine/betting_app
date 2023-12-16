@@ -15,7 +15,7 @@ class EventViewset(viewsets.ModelViewSet):
 
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    
+
     def get_queryset(self):
         queryset = Event.objects.all()
         if self.request.user.is_authenticated:
@@ -42,8 +42,10 @@ class EventViewset(viewsets.ModelViewSet):
         if request.user != event.organizer:
             raise PermissionDenied
         
-        # Check if the event has already started 
-        if timezone.now() >= event.start_time:
+        current_time = timezone.now()
+        
+        # Check if the event is either upcoming or has already ended
+        if not (current_time < event.start_time or current_time > event.end_time):
             raise ValidationError({"detail": "Cannot delete the event after it has started"})
         
         return super().destroy(request, *args, **kwargs)

@@ -11,7 +11,8 @@ import EditIcon from "@mui/icons-material/Edit";
 // UpdateEventForm component: Manages the update functionality for an event
 const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     // Accessing event data from context
-    const { event } = useEventData();
+    const { event, updateEventData } = useEventData();
+    console.log("TESTING event data", event)
     // CRUD operations custom hook
     const { updateObject } = useCrud();
 
@@ -40,7 +41,15 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     // useEffect hook to update state when event data changes
     useEffect(() => {
         if (event) {
-            setEventDetails({ /* Same initialization as above */ });
+            setEventDetails({ 
+                id: event.id,
+                group_id: event.group.id,
+                organizer: event.organizer,
+                team1: event.team1,
+                team2: event.team2,
+                start_time: formatDateTimeForInput(event.start_time),
+                end_time: formatDateTimeForInput(event.end_time),
+            });
         }
     }, [event]);
 
@@ -53,6 +62,7 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     const handleSubmit = async () => {
         try {
             const updatedEventObject = await updateObject(`/events/${event.id}/`, eventDetails);
+            console.log(updatedEventObject)
             handleSuccess(updatedEventObject);
         } catch (error) {
             handleError(error);
@@ -61,6 +71,8 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
 
     // Handling successful update
     const handleSuccess = (updatedEventObject) => {
+        console.log(updatedEventObject)
+        updateEventData(updatedEventObject) // Update context with the new event data
         toggleEventForm();
         setSnackbarMessage("Event updated successfully!");
         setSnackbarOpen(true);
@@ -177,7 +189,7 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
                 anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
                 sx={{
                     zIndex: (theme) => theme.zIndex.tooltip + 1, // Higher than most other components
-                    marginTop: '43px',
+                    marginTop: '140px',
                 }}
                 />    
         </>

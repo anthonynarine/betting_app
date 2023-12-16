@@ -27,7 +27,7 @@ export const EventDataProvider = ({ children }) => {
   console.log("EventDataProvider is re-rendering"); // DEBUG TEST
 
   const { eventId } = useParams();
-  const { fetchData } = useCrud();
+  const { fetchData, updateObject } = useCrud();
 
   //State to needed for Events
   const [event, setEvent] = useState([]);
@@ -40,7 +40,6 @@ export const EventDataProvider = ({ children }) => {
   console.log(typeof(userIsEventCreator))
   
   // Feth event data when eventId changes
-
   useEffect(() => {
     if (eventId) {
       const fetchEventData = async () => {
@@ -60,13 +59,26 @@ export const EventDataProvider = ({ children }) => {
     }
   }, [eventId]);
 
+  // Function to update event data
+  const updateEventData = async(updatedEventData) => {
+    try {
+      const updatedData = await updateObject(`/events/${eventId}/`, updatedEventData)
+      setEvent(updatedData) // Update event data in the state
+      // Optionally , update other related fields liek group or participants
+    } catch (error) {
+      console.error("Error updating event data:", error);
+    }
+    console.log("updateEventData Called")
+  }
+
   const value = {
     event, 
     eventId,
     group,
     participants,
     organizer,
-    userIsEventCreator
+    userIsEventCreator,
+    updateEventData,
   };
 
   return (
