@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     // Accessing event data from context
     const { event, updateEventData } = useEventData();
-    console.log("TESTING event data", event)
+    // console.log("TESTING event data input", event)
     // CRUD operations custom hook
     const { updateObject } = useCrud();
 
@@ -61,8 +61,10 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     // Async function to handle form submission
     const handleSubmit = async () => {
         try {
-            const updatedEventObject = await updateObject(`/events/${event.id}/`, eventDetails);
-            console.log(updatedEventObject)
+            console.log('Event ID:', event.id); // Debugging
+            console.log('Event Details:', eventDetails); // Debugging
+            const updatedEventObject = await updateObject('/events/', event.id, eventDetails);
+            console.log('Updated Event Object:', updatedEventObject); // Debugging
             handleSuccess(updatedEventObject);
         } catch (error) {
             handleError(error);

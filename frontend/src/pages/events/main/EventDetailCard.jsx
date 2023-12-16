@@ -57,11 +57,11 @@ export default function EventDetailsCard() {
   const { event, group, eventId, userIsEventCreator } = useEventData();
 
   const { deleteObject } = useCrud();
-  console.log("EventDetailCard Component event DATA TEST", event);
-  console.log("EventDetailCard Component eventId DATA TEST", eventId);
-  console.log("EventDetailCard Component eventId DATA TEST", event.group);
-  console.log("EventDetailCard Component organizer DATA TEST", userIsEventCreator);
-  console.log("EventDetailCard Component deleteObject DATA TEST", deleteObject);
+  // console.log("EventDetailCard Component event DATA TEST", event);
+  // console.log("EventDetailCard Component eventId DATA TEST", eventId);
+  // console.log("EventDetailCard Component eventId DATA TEST", event.group);
+  // console.log("EventDetailCard Component organizer DATA TEST", userIsEventCreator);
+  // console.log("EventDetailCard Component deleteObject DATA TEST", deleteObject);
 
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);

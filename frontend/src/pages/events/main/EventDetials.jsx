@@ -8,9 +8,9 @@ function EventDetails() {
 
 const { event, group, eventId } = useEventData();
 
-console.log("EventDetail Component event DATA TEST", event)
-console.log("EventDetail Component group DATA TEST", group)
-console.log("EventDetail Component eventId DATA TEST", event.id)
+// console.log("EventDetail Component event DATA TEST", event)
+// console.log("EventDetail Component group DATA TEST", group)
+// console.log("EventDetail Component eventId DATA TEST", event.id)
 
     
   const renderHeader = () => {

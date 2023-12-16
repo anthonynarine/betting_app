@@ -24,7 +24,7 @@ export default EventDataContext;
 // === Provider Creation ===
 // The Provider component that wraps parts of the app
 export const EventDataProvider = ({ children }) => {
-  console.log("EventDataProvider is re-rendering"); // DEBUG TEST
+  // console.log("EventDataProvider is re-rendering"); // DEBUG TEST
 
   const { eventId } = useParams();
   const { fetchData, updateObject } = useCrud();
@@ -37,7 +37,7 @@ export const EventDataProvider = ({ children }) => {
   
   // Function to check if the logged-in user is the organizer
   const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
-  console.log(typeof(userIsEventCreator))
+  // console.log(typeof(userIsEventCreator))
   
   // Feth event data when eventId changes
   useEffect(() => {
@@ -60,16 +60,10 @@ export const EventDataProvider = ({ children }) => {
   }, [eventId]);
 
   // Function to update event data
-  const updateEventData = async(updatedEventData) => {
-    try {
-      const updatedData = await updateObject(`/events/${eventId}/`, updatedEventData)
-      setEvent(updatedData) // Update event data in the state
-      // Optionally , update other related fields liek group or participants
-    } catch (error) {
-      console.error("Error updating event data:", error);
-    }
-    console.log("updateEventData Called")
-  }
+  const updateEventData = (updatedEventData) => {
+    setEvent(updatedEventData); // Directly update the context with the provided data
+    console.log("Event data updated in context");
+}
 
   const value = {
     event, 
