@@ -73,7 +73,10 @@ export default function EventDetailsCard() {
   return (
     <Card
       sx={{
-        maxWidth: 300,
+        maxWidth: {
+          xs: 200, // Width for extra-small screens
+          lg: 400, // Width for large screens and above
+        },
         maxHeight: 700,
         overflow: "auto",
         borderRadius: "20px",
@@ -175,7 +178,7 @@ export default function EventDetailsCard() {
               </span>{" "}
               {/* Start time label */}
             </Typography>
-            <Typography sx={{ display: "flex", alignItems: "center", marginTop: 1 }}>
+            <Typography sx={{ display: "flex", alignItems: "center", marginTop: 1, marginBottom: 2 }}>
               <EventTimeStamp createdAt={event.end_time} timezone="America/New_York" />
               <span style={{ marginLeft: "8px" }}>
                 <Typography

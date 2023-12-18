@@ -17,7 +17,8 @@ import EventTimestamp from "./EventTimeStamp";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import { JoinGroupBtn } from "./JoinGroupBtn";
 import { LeaveGroupBtn } from "./LeaveGroupBtn";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
+import CountDownTimer from "../../events/main/EventCountDownTimer";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -33,7 +34,7 @@ const ExpandMore = styled((props) => {
 export default function GroupDetailsCard() {
   const { events, group, members, userId } = useGroupData();
 
-  console.log("GroupDetailsCard DATA", group);  //DEBUG TESTS
+  console.log("GroupDetailsCard DATA", group); //DEBUG TESTS
   // console.log("GroupDetailsCard Members:", members); //DEBUG TESTS
   // console.log("GroupDetailsCard User ID:", userId); //DEBUG TESTS
 
@@ -51,35 +52,21 @@ export default function GroupDetailsCard() {
   return (
     <Card
       sx={{
-        // Set initial maxWidth (for smaller screens)
         maxWidth: 300,
-        // Set maxHeight for scrolling on smaller screens
         maxHeight: 400,
         overflow: "auto",
-        // Rounded corners to make it look like a book
         borderRadius: "20px",
         borderColor: "#000",
-        // Shadow to simulate pages
-        // boxShadow: "4px 4px 8px rgba(0, 0, 0, 0.2)",
-        // Light background color like pages of a book
         background: "#fff",
-        // CSS media query for larger screens
+        boxShadow: "5px 5px 15px rgba(0, 0, 0, 0.5)",
         "@media (min-width: 768px)": {
-          // Adjust maxWidth for wider screens
-          maxWidth: 400, // You can adjust this value
-          // Remove maxHeight for wider screens (no scrolling)
+          maxWidth: 400,
           maxHeight: "none",
         },
       }}
-      elevation={2}
+      elevation={3}
     >
       <CardHeader
-        // avatar={
-        //   <Avatar
-        //     src={"https://source.unsplash.com/random/?plant"}
-        //     aria-label="movie-icon"
-        //   />
-        // }
         action={
           <Box
             sx={{ pt: 1.25, pr: 1 }}
@@ -87,28 +74,31 @@ export default function GroupDetailsCard() {
             justifyContent="center"
             flexGrow={1}
           >
-            <>
-              {isMember ? (
-                <IconButton aria-label="leave-group">
-                  <LeaveGroupBtn />
-                </IconButton>
-              ) : (
-                <IconButton aria-label="join-group">
-                  <JoinGroupBtn />
-                </IconButton>
-              )}
-            </>
+            {isMember ? (
+              <IconButton aria-label="leave-group">
+                <LeaveGroupBtn />
+              </IconButton>
+            ) : (
+              <IconButton aria-label="join-group">
+                <JoinGroupBtn />
+              </IconButton>
+            )}
           </Box>
         }
         title={
-          <Link to={'/'} style={{ textDecoration: 'none', color: 'inherit' }}>
-            <Typography variant="h6">
+          <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
+            <Typography variant="h6" style={{ fontWeight: "bold" }}>
               {group.name}
             </Typography>
           </Link>
         }
-        subheader={<Typography variant="subtitle1">{group.description}</Typography>}
+        subheader={
+          <Typography variant="subtitle1" color="textSecondary">
+            {group.description}
+          </Typography>
+        }
       />
+
       <CardMedia
         component="img"
         height="300"
@@ -119,74 +109,104 @@ export default function GroupDetailsCard() {
         }
         alt="banner image"
       />
-      <CardContent>
-        <Box sx={{ margin: 2 }}>
-          <Typography variant="h5" color="#000">
-            Events
-          </Typography>
-          {events && events.length > 0 && (
-            <>
-              {events.slice().map((event) => (
-                <div key={event.id} style={{ 
-  display: 'flex', 
-  flexDirection: 'column', 
-  alignItems: 'center', 
-  backgroundColor: '#fff', 
-  padding: '15px', 
-  borderRadius: '8px', 
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.15)', 
-  margin: '10px 0' 
-}}>
-  <div style={{ 
-    display: 'flex', 
-    justifyContent: 'center', 
-    alignItems: 'center',
-    marginBottom: '8px'
-  }}>
-    <Typography variant="h6" style={{ 
-      fontWeight: '600', 
-      marginRight: '5px',
-      fontFamily: "'Roboto', sans-serif",
-      color: 'black'
-    }}>
-      {event.team1}
-    </Typography>
-    <Typography variant="h6" style={{ 
-      margin: '0 5px', 
-      fontWeight: '400', 
-      fontFamily: "'Roboto', sans-serif",
-      color: 'black'
-    }}>
-      vs
-    </Typography>
-    <Typography variant="h6" style={{ 
-      fontWeight: '600', 
-      marginLeft: '5px',
-      fontFamily: "'Roboto', sans-serif",
-      color: 'black'
-    }}>
-      {event.team2}
-    </Typography>
-  </div>
 
-  <Typography
-    style={{ 
-      display: "flex", 
-      alignItems: "center", 
-      justifyContent: 'center',
-      fontFamily: "'Roboto', sans-serif",
-      color: 'gray',
-      fontSize: '0.9rem'
-    }}
-  >
-    <EventTimestamp createdAt={new Date(event.start_time)} />
+      <CardContent>
+      <Box sx={{ margin: 2 }}>
+  <Typography variant="h5" color="#000" style={{ fontWeight: "bold" }}>
+    Events
   </Typography>
-</div>
-              ))}
-            </>
-          )}
+  {events && events.length > 0 && (
+    events.map((event) => (
+      <Box
+        key={event.id}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backgroundColor: "#fff",
+          padding: "15px",
+          borderRadius: "8px",
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
+          margin: "10px 0",
+          position: "relative", 
+        }}
+      >
+        {/* Team names and 'vs' */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "8px",
+          }}
+        >
+          <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: "600",
+                fontFamily: "'Roboto', sans-serif",
+                color: "black",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {event.team1}
+            </Typography>
+          </Box>
+
+          <Typography
+            variant="body1"
+            sx={{
+              fontWeight: "bold",
+              fontFamily: "'Roboto', sans-serif",
+              color: "black",
+              mx: 2, // margin for left and right
+              textAlign: "center",
+              minWidth: "40px", // Ensure some space for 'vs' text
+            }}
+          >
+            vs
+          </Typography>
+
+          <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
+            <Typography
+              variant="body1"
+              sx={{
+                fontWeight: "600",
+                fontFamily: "'Roboto', sans-serif",
+                color: "black",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {event.team2}
+            </Typography>
+          </Box>
         </Box>
+
+        {/* Countdown Timer */}
+        <Typography
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontFamily: "'Roboto', sans-serif",
+            color: "gray",
+            fontSize: "0.9rem",
+          }}
+        >
+          <CountDownTimer event={event} />
+        </Typography>
+      </Box>
+    ))
+  )}
+</Box>
       </CardContent>
+
       <CardActions disableSpacing>
         <IconButton aria-label="share">
           <DeleteSweepIcon />
@@ -200,9 +220,9 @@ export default function GroupDetailsCard() {
           <ExpandMoreIcon />
         </ExpandMore>
       </CardActions>
+
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-          {/* Additional details can go here */}
           <Typography paragraph>Additional details can be added here.</Typography>
         </CardContent>
       </Collapse>

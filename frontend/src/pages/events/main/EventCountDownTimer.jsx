@@ -1,126 +1,136 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box, Chip } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime'; // Time icon
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 
+/**
+ * A countdown timer component that displays the time remaining until an event starts or ends.
+ * 
+ * @param {Object} props - Component props.
+ * @param {Object} props.event - Event object containing start and end times.
+ * @returns React component.
+ */
 const CountDownTimer = ({ event }) => {
-    // State for storing time left until the event starts/ends
+    // State to store the remaining time until the event.
     const [timeLeft, setTimeLeft] = useState({});
 
-    // State for storing the current status of the event
+    // State to store the current status of the event (Upcoming, Starts in, In Progress, Ended).
     const [status, setStatus] = useState("Upcoming");
 
-    //Function to calc. time left and update the status
+    /**
+     * Calculates the time left until the event starts or ends.
+     * 
+     * @returns {Object} An object containing the time left in years, months, weeks, days, hours, minutes, and seconds.
+     */
     const calculateTimeLeft = () => {
-        // Currnt date and time
         let now = new Date();
+        let targetTime = new Date(now < new Date(event.start_time) ? event.start_time : event.end_time);
 
-        // Convert event start & end times from string to Date objs.
-        let startTime = new Date(event.start_time);
-        let endTime = new Date(event.end_time);
+        // Check if the current time is before the target time.
+        if (now < targetTime) {
+            // Update the status based on whether the event is upcoming or in progress.
+            setStatus(now < new Date(event.start_time) ? "Starts in" : "In Progress");
+            let difference = targetTime - now;
+            let timeLeft = {};
 
-        // Check if the current time is before the event start time
-        if (now < startTime) {
-            // Calc the diff in time between now & event start
-            let difference = startTime - now;
-            setStatus("Starts in")
-            return {
-                // Calculate hours left
-                   /* 
-                    Explanation:
-                    - `difference` is the time difference in milliseconds.
-                    - `1000 * 60 * 60` converts milliseconds to hours.
-                    - `Math.floor` rounds down to the nearest whole number.
-                    - `% 24` ensures the hour count resets every 24 hours.
-                    */
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                // Calculate minutes left
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                    /* 
-                    Explanation:
-                    - `difference` is the time difference in milliseconds.
-                    - `1000 * 60` converts milliseconds to minutes.
-                    - `Math.floor` rounds down to the nearest whole number.
-                    - `% 60` ensures the minute count resets every 60 minutes.
-                    */
-                // Calculate seconds left
-                seconds: Math.floor((difference / 1000) % 60),
-                /* 
-                    Explanation:
-                    - `difference` is the time difference in milliseconds.
-                    - `1000` converts milliseconds to seconds.
-                    - `Math.floor` rounds down to the nearest whole number.
-                    - `% 60` ensures the second count resets every 60 seconds.
-                */
-            };
-        } 
-        // Check if current time is between now and event end
-        else if (now >= startTime && now <= endTime){
-            const difference = endTime - now;
-            setStatus("In Progress");
-            return {
-                hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-                minutes: Math.floor((difference / 1000 / 60) % 60),
-                seconds: Math.floor((difference / 1000) % 60),
-            };
-        }
-        // if current time is after the event end time
-        else {
+            // Calculate and store the time components.
+            timeLeft.years = Math.floor(difference / (1000 * 60 * 60 * 24 * 365));
+            difference -= timeLeft.years * 1000 * 60 * 60 * 24 * 365;
+            timeLeft.months = Math.floor(difference / (1000 * 60 * 60 * 24 * 30));
+            difference -= timeLeft.months * 1000 * 60 * 60 * 24 * 30;
+            timeLeft.weeks = Math.floor(difference / (1000 * 60 * 60 * 24 * 7));
+            difference -= timeLeft.weeks * 1000 * 60 * 60 * 24 * 7;
+            timeLeft.days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            difference -= timeLeft.days * 1000 * 60 * 60 * 24;
+            timeLeft.hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+            timeLeft.minutes = Math.floor((difference / 1000 / 60) % 60);
+            timeLeft.seconds = Math.floor((difference / 1000) % 60);
+
+            return timeLeft;
+        } else {
+            // If the current time is past the target time, set the status to "Ended".
             setStatus("Ended");
-            return {}
+            return {};
         }
     };
 
-    useEffect(()=>{
-        // Immediately update the time left when the component or event times change
+    // Effect hook to set up a timer that updates the remaining time every second.
+    useEffect(() => {
         setTimeLeft(calculateTimeLeft());
-
-        // Set up an interval taht update the countdown ever second
-        let timer = setInterval(()=>{
-            // Update the time left using the calculateTimeLeft function
+        let timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft());
-        },1000) // 1000 milliseconds = 1 sec
+        }, 1000);
+        return () => clearInterval(timer);
+    }, [event.start_time, event.end_time]);
 
-// Cleanup function to clear the interval when the component unmounts or depencies change
-// This prevents memort leaks and enusres the times is accurate
-        return () => clearInterval(timer)
+    /**
+     * Renders the time left components.
+     * 
+     * @returns {Array} An array of JSX elements representing the time left components.
+     */
+    const renderTimeLeft = () => {
+        if (status === "Ended") {
+            return null; // Do not display time units if the event has ended.
+        }
+    
+        let components = [];
+        // Add each time component to the array if its value is greater than 0.
+        if (timeLeft.years > 0) {
+            components.push(<span key="years">{`${timeLeft.years}y `}</span>);
+        }
+        if (timeLeft.months > 0) {
+            components.push(<span key="months">{`${timeLeft.months}mo `}</span>);
+        }
+        if (timeLeft.weeks > 0) {
+            components.push(<span key="weeks">{`${timeLeft.weeks}w `}</span>);
+        }
+        if (timeLeft.days > 0) {
+            components.push(<span key="days">{`${timeLeft.days}d `}</span>);
+        }
+        if (timeLeft.hours > 0) {
+            components.push(<span key="hours">{`${timeLeft.hours}h `}</span>);
+        }
+        if (timeLeft.minutes > 0) {
+            components.push(<span key="minutes">{`${timeLeft.minutes}m `}</span>);
+        }
+        if (timeLeft.seconds > 0) {
+            components.push(<span key="seconds">{`${timeLeft.seconds}s`}</span>);
+        }
+    
+        return components;
+    };
 
-    },[event.start_time, event.end_time])
-
-    return(
-        <>
-             <Box sx={{ 
-                minWidth: "14px",
-                maxWidth: "17rem",
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: 1, 
-                padding: '6px 10px', 
-                borderRadius: '16px', 
-                backgroundColor: '#000',
-                boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
-                marginTop: "10px"
-            }}>
-                {/* Display the status of the event with an icon */}
-                <Chip 
-                    icon={<AccessTimeIcon />} 
-                    label={status} 
-                    size="medium" 
-                    sx={{ 
-                        fontWeight: 'bold', 
-                        color: '#424242', 
-                        backgroundColor: '#000'
-                    }}
-                />
-
-                {/* Display the time left in a sleek style with fixed width */}
-                <Typography variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
-                    {`${timeLeft.hours ? `${timeLeft.hours}h ` : '00h '} 
-                    ${timeLeft.minutes ? `${timeLeft.minutes}m ` : '00m '} 
-                    ${timeLeft.seconds ? `${timeLeft.seconds}s` : '00s'}`}
-                </Typography>
-            </Box>
-        </>
-    )
-
+    return (
+        <Box sx={{ 
+            maxWidth: "19rem",
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 4, 
+            padding: '6px 10px', 
+            borderRadius: '16px', 
+            backgroundColor: '#000',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
+            marginTop: "2px"
+        }}>
+            <Chip 
+                icon={<AccessTimeIcon />} 
+                label={status} 
+                size="medium" 
+                sx={{ 
+                    fontWeight: 'bold', 
+                    color: '#94959B', 
+                    backgroundColor: '#484950',
+                    display: 'flex',
+                    width: {
+                        xs: '6rem', 
+                        sm: '9rem', 
+                    }
+                }}
+            />
+            <Typography variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
+                {renderTimeLeft()}
+            </Typography>
+        </Box>
+    );
 };
+
 export default CountDownTimer;

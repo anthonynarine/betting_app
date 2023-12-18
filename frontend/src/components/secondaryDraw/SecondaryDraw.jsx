@@ -6,6 +6,14 @@ const SecondaryDraw = ({ children }) => {
   const theme = useTheme();
 
 
+  // Style for handling text overflow
+  const overflowStyle = {
+    textOverflow: "ellipsis", // Add ellipsis at the end of the text
+    overflow: "hidden",      // Hide overflow text
+    whiteSpace: "nowrap",    // Prevent text from wrapping to the next line
+    maxWidth: "28ch",        // Set maximum width based on character count
+  };
+
   const childrenWithProps = React.Children.map(children, (child) =>
   /* this code is iterating 
   over all the children of a component. For each child 

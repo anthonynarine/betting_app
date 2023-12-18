@@ -23,7 +23,7 @@ class Group(models.Model):
     Represents a group which can organize events and have members.
     """
     name = models.CharField(
-        max_length=32, 
+        max_length=20, 
         unique=True, 
         null=False,
         help_text="The name of the group. Must be unique."
@@ -50,13 +50,19 @@ class Group(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # METHODS     
+    # def save(self, *args, **kwargs):
+    #     # Capitalie the name before saving
+    #     self.name = self.name.title()
+    #     super(Group, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.name} - {self.location}"
 
     class Meta:
         verbose_name = "Group"
         verbose_name_plural = "Groups"
-
-    def __str__(self):
-        return f"{self.name} - {self.location}"
 
 class Event(models.Model):
     """
@@ -127,9 +133,17 @@ class Event(models.Model):
     is_archived = models.BooleanField(
         default=False,
         help_text="Indicates whether the event is archived.")
-
+    
+    # METHODS
+        # METHODS     
+    def save(self, *args, **kwargs):
+        # Capitalie the name before saving
+        self.team1 = self.team1.title()
+        self.team2 = self.team2.title()
+        super(Event, self).save(*args, **kwargs)
+    
     def __str__(self):
-        return f"{self.team1} vs {self.team2} at {self.time.strftime('%Y-%m-%d %H:%M')}"
+        return f"{self.team1} vs {self.team2} at {self.start_time.strftime('%Y-%m-%d %H:%M')}"
 
 class Member(models.Model):
     """
@@ -159,14 +173,16 @@ class Member(models.Model):
     
     joined_at = models.DateTimeField(auto_now_add=True,)
 
-    class Meta:
-        unique_together = ("user", "group")
-        ordering = ["joined_at"]
-
+    # METHODS
     def __str__(self):
         return (
             f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"
         )
+        
+    class Meta:
+        unique_together = ("user", "group")
+        ordering = ["joined_at"]
+
 
 
 class Bet(models.Model):
@@ -270,11 +286,12 @@ class Bet(models.Model):
         choices=[("Pending", "Pending"), ("WON", "Won"), ("LOST", "Lost")],
         default="PENDING",
     )
-
+    
+    #METHODS
+    def __str__(self):
+        return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
     class Meta:
         unique_together = ("user", "event")
         # index_together = ("user", "event") # no longer necesary since django v1.11
         ordering = ["-created_at"]  # newest bets first
     
-    def __str__(self):
-        return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
