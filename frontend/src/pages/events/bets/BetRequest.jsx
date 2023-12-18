@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import useAxiosWithInterceptor from "../../../../services/jwtinterceptor-jwtNotReq";
+import useAxiosWithInterceptor from "../../../services/jwtinterceptor-jwtNotReq";
 import { Button } from "@mui/material";
 
 const BetRequest = ({ betDetails, onSuccess, onError }) => {

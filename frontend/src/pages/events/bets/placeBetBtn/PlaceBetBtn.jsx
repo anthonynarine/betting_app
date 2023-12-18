@@ -1,5 +1,5 @@
 import { Button, Tooltip, Box, useTheme } from "@mui/material";
-import { useEventData } from "../../../../../context/eventData/EventDataProvider";
+import { useEventData } from "../../../../context/eventData/EventDataProvider";
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 
 export const PlaceBetBtn = ({ toggleBetForm }) => {

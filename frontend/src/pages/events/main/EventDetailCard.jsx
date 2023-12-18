@@ -26,8 +26,9 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import UpcomingIcon from '@mui/icons-material/Upcoming';
 
 //bet
-import { PlaceBetBtn } from "./bet_crud/placeBetBtn/PlaceBetBtn";
-import BetForm from "./bet_crud/BetForm";
+import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn"
+import BetForm from "../bets/BetForm"
+
 import { Link } from "react-router-dom";
 
 //crud
