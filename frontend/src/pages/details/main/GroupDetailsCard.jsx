@@ -63,6 +63,14 @@ export default function GroupDetailsCard() {
           maxWidth: 400,
           maxHeight: "none",
         },
+            // Override for large screens
+        "@media (min-width: 900px)": {
+          maxWidth: 600, // Max width for large screens
+        },
+            // Override for extra-large (XL) screens
+      "@media (min-width: 1536px)": {
+        maxWidth: 800, // Max width for XL screens
+        },
       }}
       elevation={3}
     >

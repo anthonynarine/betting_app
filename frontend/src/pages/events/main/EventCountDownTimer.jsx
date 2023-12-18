@@ -101,7 +101,7 @@ const CountDownTimer = ({ event }) => {
 
     return (
         <Box sx={{ 
-            maxWidth: "19rem",
+            maxWidth: "20rem",
             display: 'flex', 
             alignItems: 'center', 
             gap: 4, 
