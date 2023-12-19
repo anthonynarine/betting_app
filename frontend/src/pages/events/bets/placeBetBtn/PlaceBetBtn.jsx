@@ -6,7 +6,7 @@ export const PlaceBetBtn = ({ toggleBetForm }) => {
   const { event } = useEventData();
 
   //convert event time to a Date object and get its timestamp
-  let eventStartTime = new Date(event.time).getTime();
+  let eventStartTime = new Date(event.start_time).getTime();
   let currentTime = Date.now();
 
   //check if the current time is past the event start time

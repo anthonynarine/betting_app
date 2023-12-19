@@ -150,10 +150,10 @@ class BetSerializer(serializers.ModelSerializer):
         Check that the bet is valid.
         """
         # When creating a new bet, ensure the event has not already passed
-        if data["event"].time < timezone.now():
+        if data["event"].start_time < timezone.now():
             raise serializers.ValidationError("Cannot place a bet on a past event.")
         # When updating an existing bet, ensure the event has not started
-        elif self.instance and self.instance.event.time <= timezone.now():
+        elif self.instance and self.instance.event.start_time <= timezone.now():
             raise serializers.ValidationError(
                 "Cannot update a bet after the event has started."
             )

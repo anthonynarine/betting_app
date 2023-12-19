@@ -8,7 +8,7 @@ router = routers.DefaultRouter()
 router.register("groups", group_views.GroupViewset, basename="group")
 router.register("events", event_views.EventViewset, basename="event")
 router.register("members", member_views.MemberViewSet, basename="member")
-router.register("bet", bet_views.BetViewset, basename="bet") 
+router.register("bets", bet_views.BetViewset, basename="bet") 
 # basename="bet" added to this route b/c a queryset was not explicitly set.  
 # the get_queryset was overidden.
 

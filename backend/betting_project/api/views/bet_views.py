@@ -67,7 +67,7 @@ class BetViewset(viewsets.ModelViewSet):
             )
         
         #check if the event has already started
-        if event.time <= timezone.now():
+        if event.start_time <= timezone.now():
             return Response(
                 {"details": "Cannot place a bet after the event has started"},
                 status=status.HTTP_400_BAD_REQUEST
@@ -84,7 +84,7 @@ class BetViewset(viewsets.ModelViewSet):
     def update_bet(self, request, pk=None):
         
         bet = self.get_object()
-        if bet.event.time <= timezone.now():
+        if bet.event.start_time <= timezone.now():
             return Response(
                 {"details": "Cannot plac a bet after the event has started"},
                 status=status.HTTP_400_BAD_REQUEST
@@ -117,7 +117,7 @@ class BetViewset(viewsets.ModelViewSet):
         bet = self.get_object()
 
         # Check if the event time associated with the bet is in the past.
-        if bet.event.time <= timezone.now():
+        if bet.event.start_time <= timezone.now():
             # If the event has started, respond with a 400 Bad Request, indicating
             # that the bet cannot be deleted.
             return Response(
