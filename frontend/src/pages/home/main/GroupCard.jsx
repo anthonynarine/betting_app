@@ -83,7 +83,7 @@ const GroupCard = ({ group }) => {
                     flexGrow: 1, // Allow text to take available space
                   }}
                 >
-                 Join this group
+                Join this group
                   {/* <StarRating rating={movie.avg_rating} /> */}
                 </Typography>
               }

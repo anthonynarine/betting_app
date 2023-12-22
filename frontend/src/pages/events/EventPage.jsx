@@ -15,8 +15,8 @@ const EventsPage = () => {
         <EventDataProvider>
           <CssBaseline />
           <PrimaryAppBar />
-          <PrimaryDraw></PrimaryDraw>
-          <SecondaryDraw></SecondaryDraw>
+          {/* <PrimaryDraw></PrimaryDraw>
+          <SecondaryDraw></SecondaryDraw> */}
           <Main>
             <EventDetails />
           </Main>

@@ -29,7 +29,7 @@ export const EventDataProvider = ({ children }) => {
   const { eventId } = useParams();
   const { fetchData, updateObject } = useCrud();
 
-  //State to needed for Events
+  //State needed for Events
   const [event, setEvent] = useState([]);
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);

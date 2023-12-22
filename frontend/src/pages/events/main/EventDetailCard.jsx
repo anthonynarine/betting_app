@@ -15,15 +15,12 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
-
-import EventStatusSwitch from "./EventStatusSwitch";
 import CountDownTimer from "./EventCountDownTimer";
 
 //icons
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
-import UpcomingIcon from '@mui/icons-material/Upcoming';
 
 //bet
 import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn"

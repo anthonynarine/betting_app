@@ -290,6 +290,7 @@ class Bet(models.Model):
     #METHODS
     def __str__(self):
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
+    
     class Meta:
         unique_together = ("user", "event")
         # index_together = ("user", "event") # no longer necesary since django v1.11

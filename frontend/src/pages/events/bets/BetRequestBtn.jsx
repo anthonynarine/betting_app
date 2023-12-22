@@ -10,7 +10,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
         setIsLoading(true);
         try {
             // Use the createObject method from useCrud
-            const newBet = await createObject('/bet/', betDetails);
+            const newBet = await createObject('/bets/', betDetails);
             setIsLoading(false);
             onSuccess(newBet); // Pass the new bet data to the onSuccess handler
         } catch (error) {
@@ -23,7 +23,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
     return (
         <>
             <Button onClick={createBet} disabled={isLoading}>
-                {isLoading ? "Placing Bet..." : "Place Bet"}
+                {isLoading ? "Placing Bet..." : "Confirm Bet"}
             </Button>
         </>
     );
