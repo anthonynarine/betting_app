@@ -68,7 +68,7 @@ import {
                             whiteSpace: "nowrap",
                           }}
                         >
-                          {bet.team_choice} to {bet.bet_type}  ${bet.amount}
+                          {bet.chosen_team_name} to {bet.bet_type}  ${bet.bet_amount}
                         </Typography>
                       }
                     />

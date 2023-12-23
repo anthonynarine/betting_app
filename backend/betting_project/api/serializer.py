@@ -128,6 +128,7 @@ class FullGroupSerializer(serializers.ModelSerializer):
 
 
 class BetSerializer(serializers.ModelSerializer):
+    chosen_team_name = serializers.SerializerMethodField("get_chosen_team_name")
     class Meta:
         model = Bet
         fields = [
@@ -138,12 +139,33 @@ class BetSerializer(serializers.ModelSerializer):
             "bet_type",
             "team1_score",
             "team2_score",
-            "amount",
+            "bet_amount",
             "created_at",
             "updated_at",
             "status",
+            "chosen_team_name"
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at", "chosen_team_name"]
+        
+    def get_chosen_team_name(self, bet):
+        """
+        Determines and returns the name of the chonen team based on the team_choice of the Bet instance
+        
+        Args:
+            obj (Bet): The Bet instance obeing serialized.
+            
+        Retruns: 
+            str: The name of the chonese team or None if no Team is chosen or if the event is not set.
+        """
+        # Check if the chosen team is "Team 1"
+        if bet.team_choice == "Team 1":
+            # Return the name of team1 from the related event, if the event exist
+            return bet.event.team1 if bet.event else None
+        # Check if the chonsen tea is "Team 2"
+        elif bet.team_choice == "Team 2":
+            return bet.event.team2 if bet.event else None
+        # If neither "Team 1" nor "Team 2" is chosen, return None
+        return None
 
     def validate(self, data):
         """

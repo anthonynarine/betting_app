@@ -1,140 +1,138 @@
-from sched import Event
-import stat
+from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from ..models import Bet
+from ..models import Bet, Event
 from ..serializer import BetSerializer
 from django.utils import timezone
 
-import logging
-
-
 class BetViewset(viewsets.ModelViewSet):
-    # queryset = Bet.objects.all()
+    # Define the serializer class used for this viewset
     serializer_class = BetSerializer
+
+    # Define the authentication and permission classes for this viewset
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         """
-        This view should return a list of bets for the currently authenticated user.
-        If an 'event_id' is provided in the query parameters, it filters the bets by that event.
+        Retrieve a queryset of bets based on the user's role and optional event filter.
         """
-        # Access the user from the request object, currently authenticated user.
+        # Access the currently authenticated user from the request
         user = self.request.user
+
+        # Retrieve 'event_id' from query parameters, if provided
         event_id = self.request.query_params.get("event_id")
-        print("User", user, event_id )
         
-        # Base quer: bet for the logged-in use
+        # By default, filter bets for the logged-in user
         queryset = Bet.objects.filter(user=user)
 
-        # Check if the user has the 'is_staff' attribute set to True, which typically indicates an admin-level user.
+        # If the user is a staff member, return all bets
         if user.is_staff:
-            # If the user is a staff member, return all bet objects.
-            return Bet.objects.all()
+            queryset = Bet.objects.all()
         
-        # Filter by event_id if provided
+        # If 'event_id' is provided, further filter the queryset by the event
         if event_id:
             queryset = queryset.filter(event_id=event_id)
 
-        # Retrun the queryset.
+        # Return the final queryset
         return queryset
+    
+    def check_and_update_funds(self, user, bet_amount):
+        """
+        Check if the user has sufficient funds and update their balance.
+        """
+        # Check if the user's available funds are less than or equal to zero
+        if user.available_funds <= 0:
+            raise ValidationError({"details": "Insufficient funds"})
+        
+        # Check if the bet amount is greater than the user's available funds
+        if bet_amount > user.available_funds:
+            raise ValidationError({"details": "Bet amount is more than currently available funds"})
+        
+        # Deduct the bet amount from the user's available funds
+        user.available_funds -= bet_amount
+
+        # Save the updated user object
+        user.save(update_fields=["available_funds"])
 
     def perform_create(self, serializer):
         """
-        Cutsom save behavior to create a new Bet instance.
-
-        Associates the new Bet w/ the currently authenticated user. Will maintain
-        referential integrity, ensure security by preventing manual override of the "user"
-        feild, and provide convenience by automatically setting the "user" without requiring
-        it in the request payload
+        Custom save behavior to create a new Bet instance.
         """
+        # Save the bet instance with the currently authenticated user
         serializer.save(user=self.request.user)
 
     @action(detail=False, methods=["post"], permission_classes=[IsAuthenticated])
     def place_bet(self, request):
-        
-        """Custom action to place a bet
-        Action will ensure that a bet cannot be placed after the event assoc w/
-        it has started
         """
-        #Deserialize the input data
+        Custom action to place a new bet.
+        """
+        # Deserialize and validate the incoming data
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
-        #Retrieve the event based on the provided data
+        # Retrieve the bet amount from the validated data
+        bet_amount = serializer.validated_data.get("bet_amount")
+        
+        # Retrieve the event based on the provided data
         event_id = serializer.validated_data.get("event")
         try:
             event = Event.objects.get(id=event_id)
         except Event.DoesNotExist:
-            return Response(
-                {"details": "Event does not exist"},
-                status=status.HTTP_404_NOT_FOUND
-            )
+            # Return an error response if the event does not exist
+            return Response({"details": "Event does not exist"}, status=status.HTTP_404_NOT_FOUND)
         
-        #check if the event has already started
+        # Check if the event has already started
         if event.start_time <= timezone.now():
-            return Response(
-                {"details": "Cannot place a bet after the event has started"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            # Return an error response if the event has started
+            return Response({"details": "Cannot place a bet after the event has started"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        # Check and update the user's funds
+        self.check_and_update_funds(request.user, bet_amount)
         
-        #save to db 
+        # Save the bet to the database
         self.perform_create(serializer)
-        # serializer.save()
         
-        #Return the serialized data with a 201 Created status. 
+        # Return a success response with the bet data
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
+
     @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def update_bet(self, request, pk=None):
-        
+        """
+        Custom action to update an existing bet.
+        """
+        # Retrieve the bet instance to be updated
         bet = self.get_object()
+
+        # Check if the event associated with the bet has already started
         if bet.event.start_time <= timezone.now():
-            return Response(
-                {"details": "Cannot plac a bet after the event has started"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            # Return an error response if the event has started
+            return Response({"details": "Cannot update a bet after the event has started"}, status=status.HTTP_400_BAD_REQUEST)
         
+        # Deserialize and validate the incoming data for update
         serializer = self.get_serializer(bet, data=request.data, partial=True)
-        serializer.is_valid(raise_exception=True)  
+        serializer.is_valid(raise_exception=True)
         
+        # Save the updated bet data
         serializer.save()
         
-        return Response(serializer.data, status=status.HTTP_200_OK)      
-    
-        
+        # Return a success response with the updated bet data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def destroy(self, request, *args, **kwargs):
         """
-        Deletes a bet instance.
-
-        This method overrides the default destroy method to add a custom
-        validation step. It ensures that a bet cannot be deleted after the
-        event associated with it has started.
-
-        Args:
-            request: The HTTP request object.
-
-        Returns:
-            Response: A DRF Response object with either a success status (if deletion is allowed)
-            or an error status (if the event has already started).
+        Custom behavior for deleting a bet instance.
         """
-        # Retrieve the bet instance that is requested to be deleted.
+        # Retrieve the bet instance to be deleted
         bet = self.get_object()
 
-        # Check if the event time associated with the bet is in the past.
+        # Check if the event time associated with the bet is in the past
         if bet.event.start_time <= timezone.now():
-            # If the event has started, respond with a 400 Bad Request, indicating
-            # that the bet cannot be deleted.
-            return Response(
-                {
-                    "details": "Cannot delete a bet after the associated event has started."
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
+            # Return an error response if the event has started
+            return Response({"details": "Cannot delete a bet after the associated event has started"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # If the event has not started, proceed with the default deletion process.
+        # Proceed with the default deletion process if the event has not started
         return super().destroy(request, *args, **kwargs)

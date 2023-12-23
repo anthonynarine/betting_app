@@ -247,9 +247,9 @@ class Bet(models.Model):
     
     team_choice = models.CharField(
         max_length=15,
-        choices=[("Team 1", "Team 1"), ("Team 2", "Team 2")], 
+        # choices=[("Team 1", "Team 1"), ("Team 2", "Team 2")], 
         default="",
-        validators=[team_choice_validator],
+        # validators=[team_choice_validator],
         help_text="Select the team you want to bet on"
     )
     
@@ -265,7 +265,7 @@ class Bet(models.Model):
         help_text="Select the bet type ('Win' or 'Lose')"
     )
     
-    amount = models.IntegerField(
+    bet_amount = models.IntegerField(
         default=0,
         null=True,
         blank=True,
@@ -286,6 +286,14 @@ class Bet(models.Model):
         choices=[("Pending", "Pending"), ("WON", "Won"), ("LOST", "Lost")],
         default="PENDING",
     )
+    
+    @property
+    def team1(self):
+        return self.event.team1
+    
+    @property
+    def team2(self):
+        return self.event.team2
     
     #METHODS
     def __str__(self):

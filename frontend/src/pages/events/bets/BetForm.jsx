@@ -41,7 +41,7 @@ const BetForm = ({ open, onClose }) => {
     user: userId,
     team_choice: "",
     bet_type: "",
-    amount: "",
+    bet_amount: "",
   });
 
   /**
@@ -107,8 +107,8 @@ const BetForm = ({ open, onClose }) => {
           <TextField
             autoFocus
             margin="dense"
-            id="amount"
-            name="amount"
+            id="bet_amount"
+            name="bet_amount"
             label="Amount"
             type="number"
             value={betDetails.amount}
