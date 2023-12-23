@@ -20,19 +20,28 @@ class BetViewset(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        This view should return a list of all bets for the currently authenticated user.
-        However, if the user has special permissions (e.g., staff members), they can see all bets.
+        This view should return a list of bets for the currently authenticated user.
+        If an 'event_id' is provided in the query parameters, it filters the bets by that event.
         """
         # Access the user from the request object, currently authenticated user.
         user = self.request.user
+        event_id = self.request.query_params.get("event_id")
+        print("User", user, event_id )
+        
+        # Base quer: bet for the logged-in use
+        queryset = Bet.objects.filter(user=user)
 
         # Check if the user has the 'is_staff' attribute set to True, which typically indicates an admin-level user.
         if user.is_staff:
             # If the user is a staff member, return all bet objects.
             return Bet.objects.all()
+        
+        # Filter by event_id if provided
+        if event_id:
+            queryset = queryset.filter(event_id=event_id)
 
-        # If the user is not a staff member, filter the bets so that only those belonging to the user are returned.
-        return Bet.objects.filter(user=user)
+        # Retrun the queryset.
+        return queryset
 
     def perform_create(self, serializer):
         """

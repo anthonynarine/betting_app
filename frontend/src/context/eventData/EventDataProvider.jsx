@@ -49,8 +49,8 @@ export const EventDataProvider = ({ children }) => {
           setEvent(data);
           setGroup(data.group);
           setParticipants(data.participants);
-          setOrganizer(data.organizer)
-          console.log("organizer id", organizer)
+          setOrganizer(data.organizer);
+          console.log("organizer id", organizer);
         } catch (error) {
           console.error("Error fetching event data:", error);
         }

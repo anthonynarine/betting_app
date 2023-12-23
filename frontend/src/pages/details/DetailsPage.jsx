@@ -35,6 +35,9 @@ const DetailPage = () => {
           <Main>
             <GroupDetails />
           </Main>
+          <SecondaryDraw>
+            <EventsList />
+          </SecondaryDraw>
         </Box>
       </EventDataProvider>
     </GroupDataProvider>
