@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 // mui components
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import Chip from "@mui/material/Chip";
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
@@ -17,14 +17,17 @@ import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import CountDownTimer from "./EventCountDownTimer";
 
+// Styles
+import { EventDetailCardStyles } from "./EventDetailCardStyles";
+
 //icons
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 //bet
-import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn"
-import BetForm from "../bets/BetForm"
+import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn";
+import BetForm from "../bets/BetForm";
 import BetDetailsCard from "../bets/BetDetailsCard";
 
 import { Link } from "react-router-dom";
@@ -63,6 +66,9 @@ export default function EventDetailsCard() {
   // console.log("EventDetailCard Component deleteObject DATA TEST", deleteObject);
 
   const navigate = useNavigate();
+  const theme = useTheme();
+  const classes = EventDetailCardStyles(theme);
+
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -71,21 +77,7 @@ export default function EventDetailsCard() {
 
   return (
     <Card
-      sx={{
-        maxWidth: {
-          xs: 200, // Width for extra-small screens
-          lg: 400, // Width for large screens and above
-        },
-        maxHeight: 700,
-        overflow: "auto",
-        borderRadius: "20px",
-        borderColor: "#000",
-        background: "#EAE5E1",
-        "@media (min-width: 768px)": {
-          maxWidth: 400,
-          maxHeight: "none",
-        },
-      }}
+      sx={classes.card}
       elevation={1}
     >
       <CardHeader
@@ -121,7 +113,7 @@ export default function EventDetailsCard() {
       />
 
       {/* Card Media: Displaying the banner image */}
-      <CardMedia
+      {/* <CardMedia
         component="img"
         height="300"
         image={
@@ -130,11 +122,13 @@ export default function EventDetailsCard() {
             : "https://source.unsplash.com/random/?mountain"
         }
         alt="banner image"
-      />
+      /> */}
 
       {/* Card Content: Displaying event details */}
       <CardContent>
-        <Box sx={{ margin: 2, backgroundColor: "#EAE5E1" }}>
+        <Box
+          sx={classes.cardContentBox}
+        >
           {/* Event Title */}
           <Typography
             // variant="h3"
@@ -155,6 +149,7 @@ export default function EventDetailsCard() {
               flexDirection: "column",
               alignItems: "start",
               marginTop: 2,
+              marginBottom: 2,
             }}
           >
             <Typography sx={{ display: "flex", alignItems: "center" }}>
@@ -177,7 +172,14 @@ export default function EventDetailsCard() {
               </span>{" "}
               {/* Start time label */}
             </Typography>
-            <Typography sx={{ display: "flex", alignItems: "center", marginTop: 1, marginBottom: 2 }}>
+            <Typography
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: 1,
+                marginBottom: 2,
+              }}
+            >
               <EventTimeStamp createdAt={event.end_time} timezone="America/New_York" />
               <span style={{ marginLeft: "8px" }}>
                 <Typography

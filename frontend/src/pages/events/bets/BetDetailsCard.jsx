@@ -14,17 +14,22 @@ const ticketStyle = {
 };
 
 const statusStyle = (status) => ({
-  color: status === 'Won' ? '#4caf50' : status === 'Lost' ? '#f44336' : '#ffffff', // Use Material-UI color codes for won/lost
+  color: status === 'Won' ? '#4caf50' : status === 'Lost' ? '#f44336' : '#ffffff', 
   fontWeight: 'bold'
 })
 
 const BetDetailsCard = () => {
   const { individualBet } = useBetData();
 
+  // Check if individualBet is either null, undefined or an empty object if any of this is true return null
+  if (!individualBet || Object.keys(individualBet).length === 0) {
+    return null;
+  }
+
   return (
     <Box>
       <Paper style={ticketStyle}>
-        <Typography variant="h5" gutterBottom style={{ color: '#8b4513' }}> {/* Dark brown color */}
+        <Typography variant="h5" gutterBottom style={{ color: '#8b4513' }}> 
           Bet Ticket
         </Typography>
         <Typography variant="body1" gutterBottom>
