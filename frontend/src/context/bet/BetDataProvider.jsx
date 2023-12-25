@@ -48,7 +48,7 @@ export const BetDataProvider = ({ children }) => {
 
         const fetchIndividualBet = async () => {
             try {
-                const individualBetData = await fetchData(`/bets/?event_id=${eventId}`);
+                const individualBetData = await fetchData(`/bets/event-bet/?event_id=${eventId}`);
                 setIndividualBet(individualBetData);
                 console.log("INDIVIDUAL BET DATA in context:", individualBetData, eventId)
             } catch (error) {

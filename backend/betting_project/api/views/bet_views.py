@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -8,37 +9,60 @@ from ..models import Bet, Event
 from ..serializer import BetSerializer
 from django.utils import timezone
 
+
 class BetViewset(viewsets.ModelViewSet):
     # Define the serializer class used for this viewset
     serializer_class = BetSerializer
-
+    
     # Define the authentication and permission classes for this viewset
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-
+    
     def get_queryset(self):
         """
-        Retrieve a queryset of bets based on the user's role and optional event filter.
+        Override the default queryset to return bets based on user's staff status
         """
-        # Access the currently authenticated user from the request
         user = self.request.user
-
-        # Retrieve 'event_id' from query parameters, if provided
-        event_id = self.request.query_params.get("event_id")
-        
-        # By default, filter bets for the logged-in user
-        queryset = Bet.objects.filter(user=user)
-
-        # If the user is a staff member, return all bets
         if user.is_staff:
-            queryset = Bet.objects.all()
-        
-        # If 'event_id' is provided, further filter the queryset by the event
-        if event_id:
-            queryset = queryset.filter(event_id=event_id)
+            return Bet.objects.all()
+        return Bet.objects.filter(user=user)
 
-        # Return the final queryset
-        return queryset
+    @action(detail=False, methods=['get'], url_path='event-bet')
+    def event_bet(self, request):
+        """
+        A custom action to retrieve a specific bet based on the provided event ID
+        
+        This action will return a single Bet instance for the currently logged in user
+        if a valid event_id is provided in the query parameters. If the user is a staff mem
+        the can acces any bet for the specified event.
+        
+        The build in list method will return all bets for the logged in user;
+        """
+        # Access the user who make the request 
+        user = request.user
+        
+        # Retrieve the "event_id" from the quer parmas of the request
+        event_id = request.query_params.get("event_id")
+        
+        # Check if "event_id" was provided: if no, return an error response
+        if not event_id:
+            return Response({"error": "event_id must be provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Build the queryset to filter the bets based on the provided event_id
+        queryset = Bet.objects.filter(event_id=event_id)
+        
+        # if the user is not a staff member, further filter the querset to include only bets made by the user 
+        if not user.is_staff:
+            queryset = queryset.filter(user=user)
+        # Try to get a single bet from the queryset; if no bet is found, a 404    
+        bet = get_object_or_404(queryset)
+        
+        # Serialize the bet instance
+        serializer = self.get_serializer(bet)
+        print(serializer.data)
+        # Return the serialized bet data in the response
+        return Response(serializer.data)
+
     
     def check_and_update_funds(self, user, bet_amount):
         """

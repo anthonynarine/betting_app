@@ -25,6 +25,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 //bet
 import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn"
 import BetForm from "../bets/BetForm"
+import BetDetailsCard from "../bets/BetDetailsCard";
 
 import { Link } from "react-router-dom";
 
@@ -193,6 +194,7 @@ export default function EventDetailsCard() {
               </span>{" "}
             </Typography>
             <CountDownTimer event={event} />
+            <BetDetailsCard />
           </Box>
         </Box>
       </CardContent>
