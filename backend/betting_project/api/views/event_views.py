@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.exceptions import ValidationError
 
+
 class EventViewset(viewsets.ModelViewSet):
     """
     API endpoint that allows events to be viewed or edited.
@@ -21,7 +22,7 @@ class EventViewset(viewsets.ModelViewSet):
         if self.request.user.is_authenticated:
             queryset = queryset.filter(organizer=self.request.user)
         return super().get_queryset()
-    
+
     def create(self, request, *args, **kwargs):
         print("Received data for Event creation:", request.data)
         return super().create(request, *args, **kwargs)
@@ -29,45 +30,56 @@ class EventViewset(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         event = self.get_object()
         if request.user != event.organizer:
-            raise PermissionDenied 
-        
-        # Check if the event has already started 
+            raise PermissionDenied
+
+        # Check if the event has already started
         if timezone.now() >= event.start_time:
-            raise ValidationError({"detail": "Cannot update the event after it has started"})
-        
+            raise ValidationError(
+                {"detail": "Cannot update the event after it has started"}
+            )
+
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         event = self.get_object()
         if request.user != event.organizer:
             raise PermissionDenied
-        
+
         current_time = timezone.now()
-        
+
         # Check if the event is either upcoming or has already ended
         if not (current_time < event.start_time or current_time > event.end_time):
-            raise ValidationError({"detail": "Cannot delete the event after it has started"})
-        
+            raise ValidationError(
+                {"detail": "Cannot delete the event after it has started"}
+            )
+
         return super().destroy(request, *args, **kwargs)
 
-    
-    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    @action(
+        detail=True,
+        methods=["post"],
+        url_path="mark-as-complete",
+        permission_classes=[IsAuthenticated],
+    )
     def complete_event(self, request, pk=None):
         """
         Method to mark an event as complete
-        
+
         """
         # Retrieve the specific Event instance based on the primary key (pk) provided in the URL.
         # This is used to operate on a specific instance rather than the entire collection.
         event = self.get_object()
-        
+
         # Check if the request user is the event organizer
         if request.user != event.organizer:
-            return Response({'details': 'You did not create this even'}, status=status.HTTP_403_FORBIDDEN)
-        
+            return Response(
+                {"details": "You did not create this even"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
         event.is_complete = True
         event.save()
-        
-        
-        
-        return Response({'details': "Event marked as complete"}, status=status.HTTP_200_OK)
+
+        return Response(
+            {"details": "Event marked as complete"}, status=status.HTTP_200_OK
+        )

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Chip } from '@mui/material';
+import { Typography, Box, Chip, IconButton } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Import the icon
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import CompleteEventModal from "./CompleteEventModal";
+
 
 /**
  * A countdown timer component that displays the time remaining until an event starts or ends.
@@ -12,6 +16,11 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 const CountDownTimer = ({ event }) => {
     // State to store the remaining time until the event.
     const [timeLeft, setTimeLeft] = useState({});
+
+    // State to manage modal visibility
+    const [modalOpen, setModalOpen] = useState(false);
+    // switch to toggle state of modal
+    const toggleModal = () => setModalOpen(!modalOpen);
 
     // State to store the current status of the event (Upcoming, Starts in, In Progress, Ended).
     const [status, setStatus] = useState("Upcoming");
@@ -129,6 +138,18 @@ const CountDownTimer = ({ event }) => {
             <Typography variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
                 {renderTimeLeft()}
             </Typography>
+            {status === "Ended" && (
+                <IconButton onClick={toggleModal}>
+                    <EventAvailableIcon color="primary" />
+                </IconButton>
+            )}
+
+            <CompleteEventModal
+                modalOpen={modalOpen}
+                toggleModal={toggleModal}
+                // onEventComplete={onEventComplete}
+                teams={[event.team1, event.team2]}
+            />
         </Box>
     );
 };
