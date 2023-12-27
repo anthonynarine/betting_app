@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Button } from "@mui/material";
 import useCrud from "../../../services/useCrud";
+import { useBetData } from "../../../context/bet/BetDataProvider";
 
 const BetRequest = ({ betDetails, onSuccess, onError }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { createObject } = useCrud(); // Use the createObject function from useCrud
+    const { updateBetList } = useBetData();
+
 
     const createBet = async () => {
         setIsLoading(true);
@@ -13,6 +16,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
             const newBet = await createObject('/bets/', betDetails);
             setIsLoading(false);
             onSuccess(newBet); // Pass the new bet data to the onSuccess handler
+            updateBetList();  // Update BetList
         } catch (error) {
             console.error('Error placing bet:', error);
             setIsLoading(false);
