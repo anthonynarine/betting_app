@@ -21,7 +21,7 @@ export const EventDetailCardStyles = (theme) => ({
   },
   cardContentBox: {
     margin: 2,
-    backgroundColor: "gray",
+    backgroundColor: "white",
     display: "flex", // Enables flexbox
     flexDirection: "column", // Stacks children vertically
     justifyContent: "center", // Centers content vertically in the box

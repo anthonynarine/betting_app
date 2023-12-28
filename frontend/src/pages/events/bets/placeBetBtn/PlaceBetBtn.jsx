@@ -1,9 +1,11 @@
 import { Button, Tooltip, Box, useTheme } from "@mui/material";
 import { useEventData } from "../../../../context/eventData/EventDataProvider";
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
+import { useBetData } from "../../../../context/bet/BetDataProvider";
 
 export const PlaceBetBtn = ({ toggleBetForm }) => {
   const { event } = useEventData();
+  const { individualBet } = useBetData();
 
   //convert event time to a Date object and get its timestamp
   let eventStartTime = new Date(event.start_time).getTime();

@@ -10,8 +10,12 @@ const ticketStyle = {
   backgroundColor: '#1a1a1a', // Dark background
   color: '#fff', // White text color
   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)', // Stronger shadow for depth
-  maxWidth: '300px' // Max width for the ticket
+  maxWidth: '20rem', // Max width for the ticket
+  minWidth: "15rem",
+  textAlign: 'center',
 };
+
+
 
 const statusStyle = (status) => ({
   color: status === 'Won' ? '#4caf50' : status === 'Lost' ? '#f44336' : '#ffffff', 
@@ -27,7 +31,7 @@ const BetDetailsCard = () => {
   }
 
   return (
-    <Box>
+    <Box >
       <Paper style={ticketStyle}>
         <Typography variant="h5" gutterBottom style={{ color: '#8b4513' }}> 
           Bet Ticket

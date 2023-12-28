@@ -16,7 +16,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
             const newBet = await createObject('/bets/', betDetails);
             setIsLoading(false);
             onSuccess(newBet); // Pass the new bet data to the onSuccess handler
-            updateBetList();  // Update BetList
+            updateBetList();  // Update BetList 
         } catch (error) {
             console.error('Error placing bet:', error);
             setIsLoading(false);
