@@ -93,12 +93,12 @@ class BetViewset(viewsets.ModelViewSet):
         # Save the bet instance with the currently authenticated user
         serializer.save(user=self.request.user)
 
-    @action(detail=False, methods=["post"], permission_classes=[IsAuthenticated])
+    # @action(detail=False, methods=["post"], permission_classes=[IsAuthenticated])
     def place_bet(self, request):
         """
         Custom action to place a new bet.
         """
-        # Deserialize and validate the incoming data
+        # Deserialize and validate the incoming data from react betform
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
@@ -107,6 +107,7 @@ class BetViewset(viewsets.ModelViewSet):
         
         # Retrieve the event based on the provided data
         event_id = serializer.validated_data.get("event")
+        
         try:
             event = Event.objects.get(id=event_id)
         except Event.DoesNotExist:
@@ -119,7 +120,7 @@ class BetViewset(viewsets.ModelViewSet):
             return Response({"details": "Cannot place a bet after the event has started"}, status=status.HTTP_400_BAD_REQUEST)
             
         # Check and update the user's funds
-        self.check_and_update_funds(request.user, bet_amount)
+        self.check_and_update_funds(user, bet_amount)
         
         # Save the bet to the database
         self.perform_create(serializer)
@@ -127,7 +128,7 @@ class BetViewset(viewsets.ModelViewSet):
         # Return a success response with the bet data
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+    # @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
     def update_bet(self, request, pk=None):
         """
         Custom action to update an existing bet.
