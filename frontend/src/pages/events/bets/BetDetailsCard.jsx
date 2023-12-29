@@ -5,13 +5,13 @@ import { useBetData } from "../../../context/bet/BetDataProvider";
 const ticketStyle = {
   padding: '20px',
   margin: '10px auto', // Center the ticket
-  borderRadius: '8px', // Smoothed border radius
-  border: '1px solid #333', // Dark border
-  backgroundColor: '#1a1a1a', // Dark background
+  borderRadius: '16px', // Smoothed border radius
+  border: '1px solid #000', // Dark border
+  backgroundColor: '#000', // Dark background
   color: '#fff', // White text color
   boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)', // Stronger shadow for depth
   maxWidth: '20rem', // Max width for the ticket
-  minWidth: "15rem",
+  minWidth: "20rem",
   textAlign: 'center',
 };
 

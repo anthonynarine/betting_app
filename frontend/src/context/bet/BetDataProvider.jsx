@@ -70,11 +70,21 @@ export const BetDataProvider = ({ children }) => {
             console.error("Error refreshing bets", error) 
         }
     };
+
+    const updateIndividualBet = async (betId) => {
+        try {
+            const updateIndividualBet = await fetchData(`/bets/${betId}`)
+            setIndividualBet(updateIndividualBet); 
+        } catch (error) {
+            console.error("Error updating individual bet:", error) 
+        }
+    };
     
     const value = {
         bets,
         individualBet,
         updateBetList,
+        updateIndividualBet, 
     };
 
     return (

@@ -6,7 +6,7 @@ import { useBetData } from "../../../context/bet/BetDataProvider";
 const BetRequest = ({ betDetails, onSuccess, onError }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { createObject } = useCrud(); // Use the createObject function from useCrud
-    const { updateBetList } = useBetData();
+    const { updateBetList, updateIndividualBet } = useBetData();
 
 
     const createBet = async () => {
@@ -16,7 +16,8 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
             const newBet = await createObject('/bets/', betDetails);
             setIsLoading(false);
             onSuccess(newBet); // Pass the new bet data to the onSuccess handler
-            updateBetList();  // Update BetList 
+            updateBetList();  // Update BetList (ui)
+            updateIndividualBet(newBet.id) // Update BetDetails card (ui)
         } catch (error) {
             console.error('Error placing bet:', error);
             setIsLoading(false);

@@ -5,7 +5,7 @@
 
 export const EventDetailCardStyles = (theme) => ({
   card: {
-    width: { xs: 400, sm: 400, md: 600, lg: 700 }, // Specify fixed widths for different breakpoints
+    width: { xs: 400, sm: 400, md: 400, lg: 500 }, // Specify fixed widths for different breakpoints
     minHeight: 400, // Minimum height for the card
     maxHeight: "auto", // Adjust maxHeight or set it to 'auto'
     overflow: "auto",
