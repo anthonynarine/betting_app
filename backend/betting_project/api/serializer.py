@@ -1,20 +1,21 @@
+import re
 from django.forms import ValidationError
 from rest_framework import serializers
 from users.serializer import UserSerializer
 from .models import Group, Event, Member, Bet
 from django.utils import timezone
-
+from .serializer_mixins.mixins import BannerImageMixin
 
 class GroupSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ("id", "name", "location", "description", "user")
+        fields = ("id", "name", "location", "description", "user", "banner_image")
 
 
 class GroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
-        fields = ("id", "name", "description", "user")
+        fields = ("id", "name", "description", "user", "banner_image")
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -124,8 +125,8 @@ class FullGroupSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Group
-        fields = ("name", "id", "location", "description", "events", "members")
-
+        fields = ("name", "id", "location", "description", "events", "members", "banner_image")
+        
 
 class BetSerializer(serializers.ModelSerializer):
     chosen_team_name = serializers.SerializerMethodField("get_chosen_team_name")

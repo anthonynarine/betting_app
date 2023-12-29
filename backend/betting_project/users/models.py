@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
+
 from .managers import CustomUserManager
 
 
@@ -25,6 +26,8 @@ class CustomUser(AbstractUser):
         blank=True,
         null=True,
         default=default_icon_image,
+        # validators=[validate_image_file_extension],
+        help_text="User provile icon image"
     )
     available_funds = models.DecimalField(
         default=Decimal("0.00"),

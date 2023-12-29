@@ -99,7 +99,7 @@ const BetForm = ({ open, onClose }) => {
               name="bet_type"
             >
               <MenuItem value="Win">Win</MenuItem>
-              <MenuItem value="Loss">Loss</MenuItem>
+              <MenuItem value="Lose">Lose</MenuItem>
             </Select>
           </FormControl>
 

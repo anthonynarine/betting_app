@@ -1,21 +1,26 @@
 # models.py in your Django app
 
+import imp
 from re import T
 from django.conf import settings
 from django.db import models
 from enum import Enum
 from django.core.validators import MinValueValidator
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from validators.bet_validators import bet_type_validator
+from validators.img_validators import validate_icon_image_size, validate_image_file_extension
 
 
+def banner_image_upload_path(instance, filename):
+    return f"group/{instance.id}/banner_image/{filename}"
 
-
-from api.validators.bet_validators import team_choice_validator, bet_type_validator
+def default_banner_image():
+    return "/default/tenkaichi.gif"
 
 class UserType(Enum):
     ADMIN = "admin"
     NORMAL = "normal"
-
 
 # Group Model
 class Group(models.Model):
@@ -27,6 +32,15 @@ class Group(models.Model):
         unique=True, 
         null=False,
         help_text="The name of the group. Must be unique."
+    )
+    
+    banner_image = models.ImageField(
+        upload_to=banner_image_upload_path,
+        null=True,
+        blank=True,
+        validators=[validate_image_file_extension],
+        default=default_banner_image,
+        help_text="The image for the group card"
     )
     
     location = models.CharField(
@@ -51,11 +65,29 @@ class Group(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
-    # METHODS     
-    # def save(self, *args, **kwargs):
-    #     # Capitalie the name before saving
-    #     self.name = self.name.title()
-    #     super(Group, self).save(*args, **kwargs)
+    #METHODS     
+    def save(self, *args, **kwargs):
+        """
+        Overrides the default save method of the Django model the Group inherits from.
+        Method performs additional operations before saving 
+        """
+        
+        # Check if this is an existing instance in the DB.
+        # self.id indicates the instace is being Updated NOT Created.
+        if self.id:
+            # Fetch the existing instance from the db or 404 not found
+            group_instance = get_object_or_404(Group, id=self.id)
+            # check if the "banner_image" field has been updated
+            # this is done by comparing the current img to the one tn the db
+            if group_instance.banner_image != self.banner_image:
+                # If the image has changed delete the old image from the files
+                group_instance.banner_image.delete(save=False)       
+        # Capitalie the name before saving
+        self.name = self.name.title()
+        # Call the parent class's save method.
+        # This ensures that the base model's save logic is executed,
+        # which includes actually saving the instance to the database.
+        super(Group, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.name} - {self.location}"
@@ -133,6 +165,7 @@ class Event(models.Model):
     is_archived = models.BooleanField(
         default=False,
         help_text="Indicates whether the event is archived.")
+    
     
     # METHODS
         # METHODS     

@@ -111,8 +111,8 @@ export default function GroupDetailsCard() {
         component="img"
         height="300"
         image={
-          group.banner_img
-            ? group.banner_img
+          group.banner_image
+            ? group.banner_image
             : "https://source.unsplash.com/random/?mountain"
         }
         alt="banner image"

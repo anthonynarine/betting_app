@@ -8,8 +8,8 @@ logger = logging.getLogger(__name__)
 
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
-    fields = ["name", "location", "description"]
-    list_display = ["id", "name", "location", "description"]
+    fields = ["name", "location", "description", "banner_image"]
+    list_display = ["name", "location", "description", ]
 
     def save_model(self, request, obj, form, change):
         logger.debug("Logged-in admin user: %s", request.user)
