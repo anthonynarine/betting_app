@@ -5,6 +5,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+
+from users.models import CustomUser
 from ..models import Bet, Event
 from ..serializer import BetSerializer
 from django.utils import timezone
@@ -68,6 +70,9 @@ class BetViewset(viewsets.ModelViewSet):
         """
         Check if the user has sufficient funds and update their balance.
         """
+        # Retrieve the latest user instance from the db
+        user = CustomUser.objects.get(id=user.user_id)
+        
         # Check if the user's available funds are less than or equal to zero
         if user.available_funds <= 0:
             raise ValidationError({"details": "Insufficient funds"})
@@ -78,7 +83,6 @@ class BetViewset(viewsets.ModelViewSet):
         
         # Deduct the bet amount from the user's available funds
         user.available_funds -= bet_amount
-
         # Save the updated user object
         user.save(update_fields=["available_funds"])
 
