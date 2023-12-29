@@ -66,12 +66,12 @@ class BetViewset(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     
-    def check_and_update_funds(self, user, bet_amount):
+    def check_and_update_funds(self, user_id, bet_amount):
         """
         Check if the user has sufficient funds and update their balance.
         """
         # Retrieve the latest user instance from the db
-        user = CustomUser.objects.get(id=user.user_id)
+        user = CustomUser.objects.get(id=user_id)
         
         # Check if the user's available funds are less than or equal to zero
         if user.available_funds <= 0:
@@ -79,9 +79,9 @@ class BetViewset(viewsets.ModelViewSet):
         
         # Check if the bet amount is greater than the user's available funds
         if bet_amount > user.available_funds:
-            raise ValidationError({"details": "Bet amount is more than currently available funds"})
+            raise ValidationError({"details": "Bet amount is more than current available funds"})
         
-        # Deduct the bet amount from the user's available funds
+        # Deduct the bet amount from the user's available funds + update the available_funds field
         user.available_funds -= bet_amount
         # Save the updated user object
         user.save(update_fields=["available_funds"])
