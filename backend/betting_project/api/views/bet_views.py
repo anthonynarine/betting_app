@@ -10,6 +10,7 @@ from users.models import CustomUser
 from ..models import Bet, Event
 from ..serializer import BetSerializer
 from django.utils import timezone
+from django.db import transaction
 
 
 class BetViewset(viewsets.ModelViewSet):
@@ -93,10 +94,9 @@ class BetViewset(viewsets.ModelViewSet):
         # Save the bet instance with the currently authenticated user
         serializer.save(user=self.request.user)
 
-    # @action(detail=False, methods=["post"], permission_classes=[IsAuthenticated])
-    def place_bet(self, request):
+    def create_bet(self, request):
         """
-        Custom action to place a new bet.
+        Custom action to Create a new bet.
         """
         # Deserialize and validate the incoming data from react betform
         serializer = self.get_serializer(data=request.data)
@@ -118,17 +118,23 @@ class BetViewset(viewsets.ModelViewSet):
         if event.start_time <= timezone.now():
             # Return an error response if the event has started
             return Response({"details": "Cannot place a bet after the event has started"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Transaction ensures that funds check and bet creation are atomic; either all operations within a transaction are completed successfully, or none are.
+        with transaction.atomic():
+            # Refresh the user instance to get the most up-to-date funds info
+            user = request.user
+            user.refresh_from_db()
             
         # Check and update the user's funds
         self.check_and_update_funds(user, bet_amount)
         
-        # Save the bet to the database
+        # Create and Save the bet to the database
         self.perform_create(serializer)
         
         # Return a success response with the bet data
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # @action(detail=True, methods=["post"], permission_classes=[IsAuthenticated])
+
     def update_bet(self, request, pk=None):
         """
         Custom action to update an existing bet.
