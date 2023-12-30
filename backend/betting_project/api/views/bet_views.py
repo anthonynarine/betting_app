@@ -71,6 +71,7 @@ class BetViewset(viewsets.ModelViewSet):
         """
         Check if the user has sufficient funds and update their balance.
         """
+        print("Type of bet_amount:", type(bet_amount))  # Debugging line
         # Retrieve the latest user instance from the db
         user = CustomUser.objects.get(id=user_id)
         
@@ -121,18 +122,25 @@ class BetViewset(viewsets.ModelViewSet):
         
         # Transaction ensures that funds check and bet creation are atomic; either all operations within a transaction are completed successfully, or none are.
         with transaction.atomic():
-            # Refresh the user instance to get the most up-to-date funds info
-            user = request.user
-            user.refresh_from_db()
-            
-        # Check and update the user's funds
-        self.check_and_update_funds(user, bet_amount)
-        
-        # Create and Save the bet to the database
-        self.perform_create(serializer)
-        
+            try:
+                # Refresh the user instance to get the most up-to-date funds info
+                user = request.user
+                user.refresh_from_db()
+                
+                # Check and update the user's funds
+                self.check_and_update_funds(user, bet_amount)
+                
+                # Create and Save the bet to the database
+                self.perform_create(serializer)
+            except ValidationError as e:
+                # Handle known validation errors (like insufficient funds error details from check_and_update_funds)
+                return Response({"details": str(e)}, status=status.HTTP_400_BAD_REQUEST)   
+            except Exception as e:
+                #Fallback for any other unexpected exceptions
+                return Response({"details": "An erro occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         # Return a success response with the bet data
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
     def update_bet(self, request, pk=None):

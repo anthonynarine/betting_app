@@ -1,5 +1,7 @@
 # models.py in your Django app
 
+from decimal import Decimal
+from email.policy import default
 import imp
 from re import T
 from django.conf import settings
@@ -298,11 +300,13 @@ class Bet(models.Model):
         help_text="Select the bet type ('Win' or 'Lose')"
     )
     
-    bet_amount = models.IntegerField(
-        default=0,
+    bet_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=("0.00"),
         null=True,
         blank=True,
-        validators=[MinValueValidator(0)],
+        validators=[MinValueValidator(Decimal("0.00"))],
         help_text="The amount wagered on the bet. Defaults to 0."
     )
     
