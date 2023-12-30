@@ -74,16 +74,24 @@ const BetForm = ({ open, onClose }) => {
 
   return (
     <>
-      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+      <Dialog 
+        open={open} 
+        onClose={onClose} 
+        aria-labelledby="form-dialog-title"
+        aria-describedby="form-dialog-description"
+      >
         <DialogTitle id="form-dialog-title">Place A Bet</DialogTitle>
-        <DialogContent>
+        <DialogContent id="form-dialog-description">
           {/* Team Choice Dropdown */}
           <FormControl fullWidth margin="normal">
-            <InputLabel>Team Choice</InputLabel>
+            <InputLabel htmlFor="team-choice-select">Team Choice</InputLabel>
             <Select
               value={betDetails.team_choice}
               onChange={handleInputChange}
               name="team_choice"
+              inputProps={{
+                id: 'team-choice-select',
+              }}
             >
               <MenuItem value="Team 1">{event.team1}</MenuItem>
               <MenuItem value="Team 2">{event.team2}</MenuItem>
@@ -92,11 +100,14 @@ const BetForm = ({ open, onClose }) => {
 
           {/* Bet Type Dropdown */}
           <FormControl fullWidth margin="normal">
-            <InputLabel>Bet Type</InputLabel>
+            <InputLabel htmlFor="bet-type-select">Bet Type</InputLabel>
             <Select
               value={betDetails.bet_type}
               onChange={handleInputChange}
               name="bet_type"
+              inputProps={{
+                id: 'bet-type-select',
+              }}
             >
               <MenuItem value="Win">Win</MenuItem>
               <MenuItem value="Lose">Lose</MenuItem>
@@ -114,6 +125,7 @@ const BetForm = ({ open, onClose }) => {
             value={betDetails.amount}
             fullWidth
             onChange={handleInputChange}
+            aria-label="Bet Amount"
           />
         </DialogContent>
         <DialogActions>

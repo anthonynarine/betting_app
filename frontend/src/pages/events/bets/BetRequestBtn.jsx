@@ -18,6 +18,7 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
             onSuccess(newBet); // Pass the new bet data to the onSuccess handler
             updateBetList();  // Update BetList (ui)
             updateIndividualBet(newBet.id) // Update BetDetails card (ui)
+            console.log("Printing bet details:", betDetails)
         } catch (error) {
             console.error('Error placing bet:', error);
             setIsLoading(false);

@@ -77,10 +77,13 @@ class BetViewset(viewsets.ModelViewSet):
             bet_amount = Decimal(bet_amount)
         except (InvalidOperation, ValueError):
             raise ValidationError({"details": "Invalid bet amount"})
-        print("Type of bet_amount:", type(bet_amount))  # Debugging line
         
         # Retrieve the latest user instance from the db
         user = CustomUser.objects.get(id=user_id)
+        
+        # Debug
+        print("bet_amount:", bet_amount, "type:", type(bet_amount))
+        print("user.available_funds:", user.available_funds, "type:", type(user.available_funds))
         
         # Check if the user's available funds are less than or equal to zero
         if user.available_funds <= 0:
@@ -106,6 +109,7 @@ class BetViewset(viewsets.ModelViewSet):
         """
         Custom action to Create a new bet.
         """
+        print("create_bet method called") # DEBUGGING
         # Deserialize and validate the incoming data from react betform
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
