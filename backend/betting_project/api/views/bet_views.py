@@ -1,3 +1,4 @@
+from decimal import Decimal, InvalidOperation
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 from rest_framework import viewsets, status
@@ -71,7 +72,13 @@ class BetViewset(viewsets.ModelViewSet):
         """
         Check if the user has sufficient funds and update their balance.
         """
+        try:
+            # Attempt to convert bet_amount to a decimal
+            bet_amount = Decimal(bet_amount)
+        except (InvalidOperation, ValueError):
+            raise ValidationError({"details": "Invalid bet amount"})
         print("Type of bet_amount:", type(bet_amount))  # Debugging line
+        
         # Retrieve the latest user instance from the db
         user = CustomUser.objects.get(id=user_id)
         
