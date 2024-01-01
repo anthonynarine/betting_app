@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Button } from "@mui/material";
+import { Button, } from "@mui/material";
 import useCrud from "../../../services/useCrud";
 import { useBetData } from "../../../context/bet/BetDataProvider";
 
-const BetRequest = ({ betDetails, onSuccess, onError }) => {
+
+
+const BetRequest = ({ betDetails, onSuccess, onError, errorMessage }) => {
     const [isLoading, setIsLoading] = useState(false);
     const { createObject } = useCrud(); // Use the createObject function from useCrud
     const { updateBetList, updateIndividualBet } = useBetData();
@@ -21,14 +23,22 @@ const BetRequest = ({ betDetails, onSuccess, onError }) => {
             console.log("Printing bet details:", betDetails)
         } catch (error) {
             console.error('Error placing bet:', error);
+            console.log("Received errorMessage:", errorMessage)
             setIsLoading(false);
             onError(error); // Pass the error to the onError handler
         }
     };
 
+
     return (
         <>
-            <Button onClick={createBet} disabled={isLoading}>
+            <Button 
+                onClick={createBet}
+                disabled={isLoading} 
+                variant="outlined" 
+                sx={{}}
+                // className={classes.confirmBetButton}
+                >
                 {isLoading ? "Placing Bet..." : "Confirm Bet"}
             </Button>
         </>
