@@ -12,7 +12,9 @@ from ..models import Bet, Event
 from ..serializer import BetSerializer
 from django.utils import timezone
 from django.db import transaction
+import logging
 
+logger = logging.getLogger(__name__)
 
 class BetViewset(viewsets.ModelViewSet):
     # Define the serializer class used for this viewset
@@ -81,9 +83,9 @@ class BetViewset(viewsets.ModelViewSet):
         # Retrieve the latest user instance from the db
         user = CustomUser.objects.get(id=user_id)
         
-        # Debug
-        print("bet_amount:", bet_amount, "type:", type(bet_amount))
-        print("user.available_funds:", user.available_funds, "type:", type(user.available_funds))
+        # Log the current state for debugging
+        logger.debug("bet_amount: %s, type: %s", bet_amount, type(bet_amount))
+        logger.debug("user.available_funds: %s, type: %s", user.available_funds, type(user.available_funds))
         
         # Check if the user's available funds are less than or equal to zero
         if user.available_funds <= 0:
@@ -97,11 +99,19 @@ class BetViewset(viewsets.ModelViewSet):
         user.available_funds -= bet_amount
         # Save the updated user object
         user.save(update_fields=["available_funds"])
+        logger.info("Updated funds for user %s", user_id)
 
     def perform_create(self, serializer):
         """
         Custom save behavior to create a new Bet instance.
         """
+        # Refresh the user instance to get the most up-to-date funds info
+        user = self.request.user
+        user.refresh_from_db()
+        bet_amount = serializer.validated_data.get("bet_amount")
+                
+        # Check and update the user's funds
+        self.check_and_update_funds(user.id, bet_amount)
         # Save the bet instance with the currently authenticated user
         serializer.save(user=self.request.user)
 
@@ -133,22 +143,16 @@ class BetViewset(viewsets.ModelViewSet):
         
         # Transaction ensures that funds check and bet creation are atomic; either all operations within a transaction are completed successfully, or none are.
         with transaction.atomic():
-            try:
-                # Refresh the user instance to get the most up-to-date funds info
-                user = request.user
-                user.refresh_from_db()
-                
-                # Check and update the user's funds
-                self.check_and_update_funds(user, bet_amount)
-                
+            try:                
                 # Create and Save the bet to the database
                 self.perform_create(serializer)
+                logger.info(f"Bet successfully created for user {user.id} on event {event_id}")
             except ValidationError as e:
                 # Handle known validation errors (like insufficient funds error details from check_and_update_funds)
                 return Response({"details": str(e)}, status=status.HTTP_400_BAD_REQUEST)   
             except Exception as e:
                 #Fallback for any other unexpected exceptions
-                return Response({"details": "An erro occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
+                return Response({"details": "An error occurred"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         # Return a success response with the bet data
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 

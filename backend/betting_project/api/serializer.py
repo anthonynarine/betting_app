@@ -134,7 +134,7 @@ class BetSerializer(serializers.ModelSerializer):
         model = Bet
         fields = [
             "id",
-            "user",
+            # "user",
             "event",
             "team_choice",
             "bet_type",

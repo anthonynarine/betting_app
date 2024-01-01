@@ -333,8 +333,9 @@ class Bet(models.Model):
         return self.event.team2
     
     #METHODS
-    def __str__(self):
+    def __str__(self): 
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
+
     
     class Meta:
         unique_together = ("user", "event")
