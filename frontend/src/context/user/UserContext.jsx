@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
 import axios from "axios";
 import UserProvider from "./UserContext_v1";
+import useCrud from "../../services/useCrud";
 
 //CONTEXT CREATION
 export const UserContext = createContext();
@@ -18,7 +19,7 @@ export function useUserServices() {
 
 // Define Provider
 export function UserServiceProvider ({ children }) {
-    const BASE_URL = process.env.REACT_APP_BASE_URL;
+
     const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
 
     const initialUserDetails = {
@@ -31,6 +32,7 @@ export function UserServiceProvider ({ children }) {
     const [userData, setUserData] = useState(initialUserDetails);
     const [isLoading, setIsLoading] = useState(true);
 
+    const { fetchData } = useCrud()
 
     // Function to fetch user data
     const fetchUserData = async () => {
@@ -44,22 +46,19 @@ export function UserServiceProvider ({ children }) {
         };
 
         try {
-            const response = await axios.get(`${BASE_URL}/users/${userID}`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            });
+            const userData = await fetchData(`/users/${userID}`, accessToken)
 
-            const userData = response.data;
             setUserData(userData)
             console.log("TESting user DATA from func call", userData)
             setIsLoading(false)
-            return { success: true, data: response.data };   
+            return { success: true, data: userData };   
         } catch (error) {
             setIsLoading(false);
             return { success: false, error: error.message }; 
         }
     };
+
+    let updateUserData = response.data;
 
 
     // useEffect to fetch user data when the components moutns
