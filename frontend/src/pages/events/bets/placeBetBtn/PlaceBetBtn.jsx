@@ -13,7 +13,7 @@ export const PlaceBetBtn = ({ toggleBetForm }) => {
   let currentTime = Date.now();
 
   // Check if the event has started
-  let isEventStart = currentTime >= eventStartTime;
+  let eventHasStarted = currentTime >= eventStartTime;
 
   // Check if there is an active bet and it has not started
   let hasActiveBet = individualBet && !individualBet.has_started;
@@ -25,12 +25,12 @@ export const PlaceBetBtn = ({ toggleBetForm }) => {
   let buttonLabel = "";
   let buttonClickHandler = null;
 
-  if (isEventStart) {
+  if (eventHasStarted) {
     buttonLabel = "Betting Closed";
-  } else if (!isEventStart && !hasActiveBet) {
+  } else if (!eventHasStarted && !hasActiveBet) {
     buttonLabel = "Place Bet";
     buttonClickHandler = toggleBetForm;
-  } else if (!isEventStart && hasActiveBet) {
+  } else if (!eventHasStarted && hasActiveBet) {
     buttonLabel = "Update Bet";
     buttonClickHandler = toggleBetForm;
   }
