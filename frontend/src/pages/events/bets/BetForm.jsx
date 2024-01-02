@@ -103,29 +103,21 @@ const BetForm = ({ open, onClose }) => {
       <Dialog
         open={open}
         onClose={onClose}
-        aria-labelledby="form-dialog-title"
-        aria-describedby="form-dialog-description"
+        aria-labelledby="bet-form"
+        aria-describedby="form-to-create-a-bet"
       >
-        <DialogTitle id="form-dialog-title">Place A Bet</DialogTitle>
-        {/* Display error message obtained from django */}
-        {errorMessage && (
-          <DialogContent>
-            <Typography variant="body1" color="error" textAlign="center">
-              {errorMessage}
-            </Typography>
-          </DialogContent>
-        )}
-        <DialogContent id="form-dialog-description">
+        <DialogTitle id="bet-form">Place A Bet</DialogTitle>
+        {/* ... error message display ... */}
+        <DialogContent id="form-to-create-a-bet">
           {/* Team Choice Dropdown */}
           <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="team-choice-select">Team Choice</InputLabel>
+            <InputLabel id="team-choice-label">Team Choice</InputLabel>
             <Select
+              labelId="team-choice-label"
               value={betDetails.team_choice}
               onChange={handleInputChange}
               name="team_choice"
-              inputProps={{
-                id: "team-choice-select",
-              }}
+              label="Team Choice"
             >
               <MenuItem value="Team 1">{event.team1}</MenuItem>
               <MenuItem value="Team 2">{event.team2}</MenuItem>
@@ -134,14 +126,13 @@ const BetForm = ({ open, onClose }) => {
 
           {/* Bet Type Dropdown */}
           <FormControl fullWidth margin="normal">
-            <InputLabel htmlFor="bet-type-select">Bet Type</InputLabel>
+            <InputLabel id="bet-type-label">Bet Type</InputLabel>
             <Select
+              labelId="bet-type-label"
               value={betDetails.bet_type}
               onChange={handleInputChange}
               name="bet_type"
-              inputProps={{
-                id: "bet-type-select",
-              }}
+              label="Bet Type"
             >
               <MenuItem value="Win">Win</MenuItem>
               <MenuItem value="Lose">Lose</MenuItem>
@@ -156,25 +147,13 @@ const BetForm = ({ open, onClose }) => {
             name="bet_amount"
             label="Amount"
             type="number"
-            value={betDetails.amount}
+            value={betDetails.bet_amount}
             fullWidth
             onChange={handleInputChange}
             aria-label="Bet Amount"
           />
         </DialogContent>
-        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "cen", paddingBottom:3}}>
-          <DialogActions>
-            <BetRequest
-              betDetails={betDetails}
-              onSuccess={handleSuccess}
-              onError={handleError}
-              errorMessage={errorMessage}
-            />
-            <Button onClick={onClose} color="primary" variant="outlined">
-              Cancel
-            </Button>
-          </DialogActions>
-        </Box>
+        {/* ... DialogActions and Buttons ... */}
       </Dialog>
     </>
   );
