@@ -58,7 +58,7 @@ export function UserServiceProvider ({ children }) {
         }
     };
 
-    let updateUserData = response.data;
+    // let updateUserData = response.data;
 
 
     // useEffect to fetch user data when the components moutns
