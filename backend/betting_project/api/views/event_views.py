@@ -1,4 +1,6 @@
+
 from django.utils import timezone
+from backend.betting_project.validators.bet_validators import bet_type_validator
 from ..models import Event, Bet
 from ..serializer import EventSerializer
 from rest_framework import viewsets, status
@@ -8,8 +10,11 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.exceptions import ValidationError
 from django.db import models
+from django.db.models import F, Sum
+from django.db import transaction
 
 # Rest of your code...
+
 
 class EventViewset(viewsets.ModelViewSet):
     """
@@ -63,84 +68,74 @@ class EventViewset(viewsets.ModelViewSet):
         url_path="mark-as-complete",
         permission_classes=[IsAuthenticated],
     )
-
-    def is_authorized_user(self, user, event):
-        """
-        Check if the user is authorized to complete the event. 
-        """
-
-
     def complete_event(self, request, pk=None):
-        """
-        Marks an event as complete, determines the winning team based on request data,
-        and calculates and distributes winnings to the users who bet on the winning team.
-
-        Parameters:
-            request (HttpRequest): The HTTP request object containing request data.
-            pk (int, optional): The primary key of the event to be marked as complete.
-
-        Returns:
-            Response: A Response object with details about the completion of the event
-                      and the distribution of winnings, or an error message and status code.
-        """
-
-        # Retrieve the specific Event instance based on the primary key (pk) provided in the URL.
         event = self.get_object()
-
-        # Check if the request user is the event organizer. Only the organizer can complete the event.
-        if request.user != event.organizer:
+        if not self.is_authorized_user(request.user, event):
             return Response(
                 {"details": "You did not create this event"},
                 status=status.HTTP_403_FORBIDDEN,
             )
-
-        # Retrieve the winning team name from the request data.
-        winning_team_name = request.data.get("winning_team")
-
-        # Validate the winning team name against the event's teams.
-        if winning_team_name == event.team1:
-            winning_team = event.team1
-        elif winning_team_name == event.team2:
-            winning_team = event.team2
-        else:
+            
+        winning_team = self.validate_winning_team(request, event)
+        if not winning_team:
             return Response(
                 {"details": "Invalid Winning Team"},
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        total_bet_amount = self._calculate_total_bet_amount(event)
+        if total_bet_amount == 0:
+            return Response(
+                {"details": "No bets were placed on this event"},
+                status=status.HTTP_404_NOT_FOUND,
             )
         
-        # Aggregate the total bet amount for this event.
-        total_bet_amount = Bet.objects.filter(event=event).aggregate(models.Sum("bet_amount"))["bet_amount__sum"]
-
-        # Initialize dictionaries to store the winnings and bet percentage for each user.
-        winnings = {}
-        bet_percentage = {}
-
-        # Calculate the percentage of each bet relative to the total bet amount.
-        bets = Bet.objects.filter(event=event)
-        for bet in bets:
-            if bet.team_choice == winning_team:
-                percentage = (bet.bet_amount / total_bet_amount) * 100
-                bet_percentage[bet.user] = percentage
-                winnings[bet.user] = (bet.bet_amount / total_bet_amount) * 100
-
-        # Distribute the winnings to each user based on their bet percentage.
-        for user, percentage in bet_percentage.items():
-            user_winnings = (percentage / 100) * winnings[user]
-            user.available_funds += user_winnings
-            user.save()
-
-        # Mark the event as complete and save the event.
+        self._calculate_and_distribute_winnings(event, winning_team, total_bet_amount)
+        
+        
         event.is_complete = True
         event.save()
-
-        # Return a successful response indicating event completion and winnings distribution.
-        return Response(
-            {
-                "details": "Event completed and winnings distributed",
-                "winning_team": winning_team,
-            },
-            status=status.HTTP_200_OK,
+        
+        return Response({
+            "details": "Event completed and winnings distributed",
+            "winning_team": winning_team,
+        },
+        status=status.HTTP_200_OK,
+                        
         )
+        
+    # Helper methods for complete_event    
 
+    def is_authorized_user(self, user, event):
+        """
+        Check if the user is authorized to complete the event.
+        """
+        return user == event.organizer
 
+    def validate_winning_team(self, request, event):
+        """
+        Use the request data to validate the winning team
+        """
+        winning_team_name = request.data.get("winning_team")
+        if winning_team_name in [event.team1, event.team2]:
+            return winning_team_name
+        return None
 
+    def _calculate_total_bet_amount(self, event):
+        return Bet.objects.filter(event=event).aaggregate(Sum("bet_amount"))[
+            "bet_amount__sum"
+        ]
+        
+    def _calculate_percentage_shares(self, event, winng_team, total_bet_amount):
+        bet_percentage = {}
+        if total_bet_amount == 0:
+            return bet_percentage
+        winning_bets = Bet.objects.filter(event=event, team_choice=winng_team)
+        for bet in winning_bets:
+            percentage = (bet.bet_amount / total_bet_amount) * 100
+            bet_percentage[bet.user] = percentage
+        
+        return bet_percentage
+    
+    @transaction.atomic
+    
