@@ -12,8 +12,9 @@ from rest_framework.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Sum
 from django.db import transaction
+from django.contrib.auth import get_user_model
 
-# Rest of your code...
+CustomUser = get_user_model()
 
 
 class EventViewset(viewsets.ModelViewSet):
@@ -138,4 +139,10 @@ class EventViewset(viewsets.ModelViewSet):
         return bet_percentage
     
     @transaction.atomic
+    def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
+        bet_percentage = self._calculate_percentage_shares(event, winning_team, total_bet_amount)
+        for user, percentage in bet_percentage.items():
+            user_winning = (percentage / 100) * total_bet_amount
+            CustomUser.objects.filter(pk=user.pk).update(available_funds=F("available_funds") + user_winning)
+            print (f"{user_winning} to {user.name}")
     
