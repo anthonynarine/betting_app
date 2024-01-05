@@ -115,7 +115,7 @@ class BetViewset(viewsets.ModelViewSet):
         # Save the bet instance with the currently authenticated user
         serializer.save(user=self.request.user)
 
-    def create_bet(self, request):
+    def create_bet(self, request, user):
         """
         Custom action to Create a new bet.
         """
