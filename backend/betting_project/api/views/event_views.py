@@ -1,4 +1,3 @@
-
 from django.utils import timezone
 from backend.betting_project.validators.bet_validators import bet_type_validator
 from ..models import Event, Bet
@@ -13,6 +12,9 @@ from django.db import models
 from django.db.models import F, Sum
 from django.db import transaction
 from django.contrib.auth import get_user_model
+import logging
+
+logger = logging.getLogger(__name__)
 
 CustomUser = get_user_model()
 
@@ -32,7 +34,8 @@ class EventViewset(viewsets.ModelViewSet):
         return super().get_queryset()
 
     def create(self, request, *args, **kwargs):
-        print("Received data for Event creation:", request.data)
+        logger.info("Received data for Event creation: %s", request.data)
+
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
@@ -45,7 +48,9 @@ class EventViewset(viewsets.ModelViewSet):
             raise ValidationError(
                 {"detail": "Cannot update the event after it has started"}
             )
-
+        logger.info(
+            "Event with ID %s updated by user %s", event.id, request.user.username
+        )
         return super().update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
@@ -60,7 +65,9 @@ class EventViewset(viewsets.ModelViewSet):
             raise ValidationError(
                 {"detail": "Cannot delete the event after it has started"}
             )
-
+        logger.info(
+            "Event with ID %s deleted by user %s", event.id, request.user.username
+        )
         return super().destroy(request, *args, **kwargs)
 
     @action(
@@ -76,36 +83,42 @@ class EventViewset(viewsets.ModelViewSet):
                 {"details": "You did not create this event"},
                 status=status.HTTP_403_FORBIDDEN,
             )
-            
+
         winning_team = self.validate_winning_team(request, event)
         if not winning_team:
             return Response(
-                {"details": "Invalid Winning Team"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"details": "Invalid Winning Team"}, status=status.HTTP_400_BAD_REQUEST
             )
-            
+
         total_bet_amount = self._calculate_total_bet_amount(event)
         if total_bet_amount == 0:
             return Response(
                 {"details": "No bets were placed on this event"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-        
-        self._calculate_and_distribute_winnings(event, winning_team, total_bet_amount)
-        
-        
+
+        winning_info = self._calculate_and_distribute_winnings(
+            event, winning_team, total_bet_amount
+        )
+
         event.is_complete = True
         event.save()
-        
-        return Response({
-            "details": "Event completed and winnings distributed",
-            "winning_team": winning_team,
-        },
-        status=status.HTTP_200_OK,
-                        
+
+        logger.info(
+            "Event with ID %s marked as complete by user %s",
+            event.id,
+            request.user.username,
         )
-        
-    # Helper methods for complete_event    
+        return Response(
+            {
+                "details": "Event completed and winnings distributed",
+                "winning_team": winning_team,
+                "winning_info": winning_info,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+    # Helper methods for complete_event
 
     def is_authorized_user(self, user, event):
         """
@@ -123,26 +136,41 @@ class EventViewset(viewsets.ModelViewSet):
         return None
 
     def _calculate_total_bet_amount(self, event):
-        return Bet.objects.filter(event=event).aaggregate(Sum("bet_amount"))[
+        return Bet.objects.filter(event=event).aggregate(Sum("bet_amount"))[
             "bet_amount__sum"
         ]
-        
-    def _calculate_percentage_shares(self, event, winng_team, total_bet_amount):
+
+    def _calculate_percentage_shares(self, event, winning_team, total_bet_amount):
         bet_percentage = {}
         if total_bet_amount == 0:
             return bet_percentage
-        winning_bets = Bet.objects.filter(event=event, team_choice=winng_team)
+        winning_bets = Bet.objects.filter(event=event, team_choice=winning_team)
         for bet in winning_bets:
             percentage = (bet.bet_amount / total_bet_amount) * 100
             bet_percentage[bet.user] = percentage
-        
         return bet_percentage
-    
+
     @transaction.atomic
     def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
-        bet_percentage = self._calculate_percentage_shares(event, winning_team, total_bet_amount)
-        for user, percentage in bet_percentage.items():
-            user_winning = (percentage / 100) * total_bet_amount
-            CustomUser.objects.filter(pk=user.pk).update(available_funds=F("available_funds") + user_winning)
-            print (f"{user_winning} to {user.name}")
-    
+        try:
+            bet_percentage = self._calculate_percentage_shares(
+                event, winning_team, total_bet_amount
+            )
+            winning_info = []
+            for user, percentage in bet_percentage.items():
+                user_winning = (percentage / 100) * total_bet_amount
+                CustomUser.objects.filter(pk=user.pk).update(
+                    available_funds=F("available_funds") + user_winning
+                )
+                winning_info.append(
+                    {"username": user.username, "winning_amount": user_winning}
+                )
+            return winning_info
+        except Exception as e:
+            logger.error(
+                "Error in calculating and distributing winnings for event ID %s: %s",
+                event.id,
+                e,
+            )
+            # Consider whether to re-raise the exception or handle it here
+            raise
