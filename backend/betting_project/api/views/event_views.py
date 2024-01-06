@@ -1,5 +1,5 @@
 from django.utils import timezone
-from backend.betting_project.validators.bet_validators import bet_type_validator
+from  validators.bet_validators import bet_type_validator
 from ..models import Event, Bet
 from ..serializer import EventSerializer
 from rest_framework import viewsets, status
@@ -77,26 +77,39 @@ class EventViewset(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated],
     )
     def complete_event(self, request, pk=None):
+        """
+        Custom action to mark an event as complet. Steps below:
+        - User authentication check
+        - Winning team validation
+        - Calculation of the total bet amount
+        - Marking the event as complete in the database
+        """
+        
+        # Retrieve the event based on the pk from the URL
         event = self.get_object()
+        
+        # Step 1: Check if the user is authorized to complete the event
         if not self.is_authorized_user(request.user, event):
             return Response(
                 {"details": "You did not create this event"},
                 status=status.HTTP_403_FORBIDDEN,
             )
-
+        # Step 2: Validate the winning team
         winning_team = self.validate_winning_team(request, event)
         if not winning_team:
             return Response(
                 {"details": "Invalid Winning Team"}, status=status.HTTP_400_BAD_REQUEST
             )
-
+        # Step 3: Calculate the total bet amount
         total_bet_amount = self._calculate_total_bet_amount(event)
         if total_bet_amount == 0:
             return Response(
                 {"details": "No bets were placed on this event"},
                 status=status.HTTP_404_NOT_FOUND,
             )
-
+        # Step 4: Calculate and distribute winnings
+        # Example: if total_bet_amount is $1000 and a user bet $100 on the winning team
+        # their winning_info entry should look like {"username": "Julia Narine "winning_amount": $100}
         winning_info = self._calculate_and_distribute_winnings(
             event, winning_team, total_bet_amount
         )
@@ -152,20 +165,62 @@ class EventViewset(viewsets.ModelViewSet):
 
     @transaction.atomic
     def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
+        """
+        Calculate and distribute winnigns based on the bets place on an event. 
+        Handles several senaris:
+        1. If only 1 person bets. the are refunded regardless of the outcome
+        2. If all bettors select the winning team, their bets are refunded.
+        3. If there are multiple bets and 1 person wins, they win a proportion of of the total bet amount.
+        4. If more than one person wins, each winner gets a proportion of the total pool based on their bet. 
+        
+        Args:
+            event (Event): The event for which to calculate and distribute winnings.
+            winning_team (str): The team that won the event.
+            total_bet_amount (Decimal): The total amount bet on the event. 
+            
+        Returns:
+            list: A list of dicts w/ each winner's username and their winning amount. 
+        """
         try:
-            bet_percentage = self._calculate_percentage_shares(
-                event, winning_team, total_bet_amount
-            )
-            winning_info = []
-            for user, percentage in bet_percentage.items():
-                user_winning = (percentage / 100) * total_bet_amount
-                CustomUser.objects.filter(pk=user.pk).update(
-                    available_funds=F("available_funds") + user_winning
-                )
-                winning_info.append(
-                    {"username": user.username, "winning_amount": user_winning}
-                )
-            return winning_info
+            # Retrieve all bets placed on the event and those placed on the winning team
+            all_bets = Bet.objects.filter(event=event)
+            
+            # Retrieve bets placed on the winning team
+            winning_bets = Bet.objects.filter(event=event, team_choice=winning_team)
+            
+            # Count the total number of bettors and the number who bet on the winning team
+            total_bettors = all_bets.count()
+            winning_bettors = winning_bets.count()
+            
+            # Senario 1: Only 1 bettor in the event
+            # Example: If there's only 1 bettor who bets $100, refund this amount
+            if total_bettors == 1:
+                for bet in all_bets:
+                    CustomUser.objects.filter(pk=bet.user.pk).update(
+                        available_funds=F("availabele_funds") + bet.bet_amount
+                    )
+                logger.info(f"Revunded bet for the only bettor in {event.team1} vs {event.team2}")
+                return []
+        
+            # Senario 2:  All bettors chose the winning team
+            # Example: If there are 3 bettors and theuy all bet on the winning team, refund their bets
+            if winning_bettors == total_bettors:
+                for bet in all_bets:
+                    CustomUser.objects.filter(pk=bet.user.pk).update(
+                        available_funds=F("available_funds") + bet.bet_amount
+                    )
+            logger.info(f"All bets refunded for {event.team1} vs {event.team2} as all bets were placed on the winner")
+            
+            # Senario 3: Multiple bettors, distribute winnings based on bet proportion. 
+            winning_info =[]
+            if winning_bettors > 0 and total_bettors > 1:
+                # Calculate the total amount bet on the losing team
+                losing_bet_total = total_bet_amount - winning_bet_total 
+
+            
+            # Calculate winning if thare valid winning bets
+
+
         except Exception as e:
             logger.error(
                 "Error in calculating and distributing winnings for event ID %s: %s",
