@@ -153,16 +153,6 @@ class EventViewset(viewsets.ModelViewSet):
             "bet_amount__sum"
         ]
 
-    def _calculate_percentage_shares(self, event, winning_team, total_bet_amount):
-        bet_percentage = {}
-        if total_bet_amount == 0:
-            return bet_percentage
-        winning_bets = Bet.objects.filter(event=event, team_choice=winning_team)
-        for bet in winning_bets:
-            percentage = (bet.bet_amount / total_bet_amount) * 100
-            bet_percentage[bet.user] = percentage
-        return bet_percentage
-
     @transaction.atomic
     def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
         """
@@ -192,18 +182,21 @@ class EventViewset(viewsets.ModelViewSet):
             total_bettors = all_bets.count()
             winning_bettors = winning_bets.count()
             
-            # Senario 1: Only 1 bettor in the event
+            # Calculate the total amount bet on the winning team.
+            winning_bet_total = winning_bets.aggregate(Sum("bet_amount"))["bet_amount__sum"] or 0
+            
+            # Scenario 1: Only 1 bettor in the event
             # Example: If there's only 1 bettor who bets $100, refund this amount
             if total_bettors == 1:
                 for bet in all_bets:
                     CustomUser.objects.filter(pk=bet.user.pk).update(
-                        available_funds=F("availabele_funds") + bet.bet_amount
+                        available_funds=F("available_funds") + bet.bet_amount
                     )
                 logger.info(f"Revunded bet for the only bettor in {event.team1} vs {event.team2}")
                 return []
         
-            # Senario 2:  All bettors chose the winning team
-            # Example: If there are 3 bettors and theuy all bet on the winning team, refund their bets
+            # Scenario 2:  All bettors chose the winning team
+            # Example: If there are 3 bettors and they all bet on the winning team, refund their bets
             if winning_bettors == total_bettors:
                 for bet in all_bets:
                     CustomUser.objects.filter(pk=bet.user.pk).update(
@@ -211,21 +204,34 @@ class EventViewset(viewsets.ModelViewSet):
                     )
             logger.info(f"All bets refunded for {event.team1} vs {event.team2} as all bets were placed on the winner")
             
-            # Senario 3: Multiple bettors, distribute winnings based on bet proportion. 
-            winning_info =[]
-            if winning_bettors > 0 and total_bettors > 1:
-                # Calculate the total amount bet on the losing team
-                losing_bet_total = total_bet_amount - winning_bet_total 
-
+            # Scenario 3: No bettors chose the winning team
+            if winning_bettors == 0:
+                for bet in all_bets:
+                    CustomUser.objects.filter(pk=bet.user.pk).update(
+                        available_funds=F("available_funds") + bet.bet_amount
+                    )
+                logger.info(f"All bets refunded for {event.team1} vs {event.team2} as no bet was placed on the winning team")
+                return []  
             
-            # Calculate winning if thare valid winning bets
-
-
+            # Scenario 4: Multiple bettors, distribute winnings based on bet proportion. 
+            else:
+                winning_info =[]
+                # The pool for distribution is total bet amount - the amount on the winning team  
+                losing_bet_total = total_bet_amount - winning_bet_total
+                for bet in winning_bets:
+                    # Calculate each winner's share of the losing bet total
+                    user_share = (bet.bet_amount / winning_bet_total) * losing_bet_total
+                    # Update the winner's account with their share of winnings. 
+                    CustomUser.objects.filter(pk=bet.user.pk).update(
+                        available_funds=F("available_funds") + user_share
+                    )
+                    # Add the winner's information to the rewaponse data. 
+                    winning_info.append({"username": bet.user.username, "winning_amount": user_share })
+                return winning_info
         except Exception as e:
             logger.error(
                 "Error in calculating and distributing winnings for event ID %s: %s",
                 event.id,
                 e,
             )
-            # Consider whether to re-raise the exception or handle it here
             raise
