@@ -192,7 +192,7 @@ class EventViewset(viewsets.ModelViewSet):
                     CustomUser.objects.filter(pk=bet.user.pk).update(
                         available_funds=F("available_funds") + bet.bet_amount
                     )
-                logger.info(f"Refunded bet for the only bettor in {event.team1} vs {event.team2}")
+                logger.info(f"Refunded {bet.bet_amount} to {bet.user.username} for event {event.team1} vs {event.team2}")
                 return []
         
             # Scenario 2:  All bettors chose the winning team
