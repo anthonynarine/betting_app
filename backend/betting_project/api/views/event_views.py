@@ -225,7 +225,6 @@ class EventViewset(viewsets.ModelViewSet):
                     CustomUser.objects.filter(pk=bet.user.pk).update(
                         available_funds=F("available_funds") + user_share
                     )
-                    # Add the winner's information to the rewaponse data. 
                     winning_info.append({"username": bet.user.username, "winning_amount": user_share })
                 return winning_info
         except Exception as e:

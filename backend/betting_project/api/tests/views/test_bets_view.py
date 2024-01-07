@@ -8,11 +8,26 @@ from api.serializer import BetSerializer
 from users.models import CustomUser
 from django.utils import timezone
 from datetime import timedelta
+import logging
 
-# running test in this module
+# Command for running tests
+
+# Run All test in this module
 # python manage.py test api.tests.views.test_bets_view
 
+# Run idividual test
+# python manage.py test api.tests.views.test_bets_view.BetViewsetTestCase.test_create_bet_with_sufficient_funds
+# python manage.py test api.tests.views.test_bets_view.BetViewsetTestCase.test_create_bet_with_insufficient_funds
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+
 class BetViewsetTestCase(TestCase):
+    
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    END = '\033[0m'
+    
     def setUp(self):
         # Set up data for the tests
         self.client = APIClient()
@@ -53,6 +68,7 @@ class BetViewsetTestCase(TestCase):
         self.create_bet_url = reverse("bet-list")
         
     def test_create_bet_with_sufficient_funds(self):
+        logger.info(f"{self.GREEN}Running test_create_bet_with_sufficient_funds {self.END}")
         # Log in as a user with funds
         self.client.force_authenticate(user=self.user_with_funds)
         
@@ -75,6 +91,7 @@ class BetViewsetTestCase(TestCase):
         self.assertEqual(self.user_with_funds.available_funds, Decimal("50.00"))  
         
     def test_create_bet_with_insufficient_funds(self):
+        logger.info(f"{self.GREEN}Running test_create_bet_with_sufficient_funds {self.END}") 
         # Log in as user without funds
         self.client.force_authenticate(user=self.user_without_funds)
         
