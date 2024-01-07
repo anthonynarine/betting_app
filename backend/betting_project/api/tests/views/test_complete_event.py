@@ -119,7 +119,18 @@ class EventViewSetTestCase(APITestCase):
         
     def test_all_bettors_refund(self):
         """
+        Test scenario where all bettor choose the winning team for an event.
         
+        This test ensures that if all bettors bet on the wining team, the are refunded
+        
+        Steps:
+        1. Mark the event as complete w/ the winning team being the one everyone bets on.
+        2. Check the response to confirm successful completion and refund distribution.
+        3. Assert that eaxh bettor's account is refunded w/ the bet amount
+        
+        Example:
+        If 3 users bet $100, $50, and $75 respectively on the same team and team wins,
+        they should all receive refunds of their bet amounts, regardless of the event outcome
         
         """
         logger.info(f"{self.GREEN}Running test_all_bettors_refund {self.END}")
