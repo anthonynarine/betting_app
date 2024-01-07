@@ -146,7 +146,6 @@ class EventCompleteTest(APITestCase):
 
         # Assert the response status code and event completion state
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-       
 
         
     def test_complete_event_unauthorized(self):
