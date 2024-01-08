@@ -17,7 +17,8 @@ User = get_user_model()
 # python manage.py test api.tests.views.test_complete_event
 # Run individual test
 # python manage.py test api.tests.views.test_complete_event.EventViewSetTestCase.test_single_bettor_refund
-# python manage.py test api.tests.views.test_complete_event.EventViewSetTestCase.test_all_bettors_refund
+# python manage.py test api.tests.views.test_complete_event.EventViewSetTestCase.test_all_bettors_refund_winning_team
+# python manage.py test api.tests.views.test_complete_event.EventViewSetTestCase.test_all_bettors_refund_losing_team
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
@@ -28,7 +29,6 @@ class EventViewSetTestCase(APITestCase):
     END = '\033[0m'
     PINK = '\033[95m'  # Light pink color
     ORANGE = '\033[93m'  # Light orange/yellow color
-
 
     
     @classmethod
@@ -117,7 +117,7 @@ class EventViewSetTestCase(APITestCase):
         # that the event is completed and winnings (refunds in this case) are distributed
         self.assertIn("Event completed and winnings distributed", response.data["details"])
         
-    def test_all_bettors_refund(self):
+    def test_all_bettors_refund_winning_team(self):
         """
         Test scenario where all bettor choose the winning team for an event.
         
@@ -168,10 +168,51 @@ class EventViewSetTestCase(APITestCase):
         logger.info(f"{self.PINK}User {self.user.username} refunded amount: {self.user.available_funds - 100}{self.END}")
         logger.info(f"{self.PINK}User {self.user2.username} refunded amount: {self.user2.available_funds - 200}{self.END}")
         logger.info(f"{self.PINK}User {self.user3.username} refunded amount: {self.user3.available_funds - 150}{self.END}")
-
-        
+    
         # Check if the available funds are equal to initial funds plus bet amount
         self.assertEqual(self.user.available_funds, initial_funds_user + bet_amount_user)
         self.assertEqual(self.user2.available_funds, initial_funds_user2 + bet_amount_user2)
         self.assertEqual(self.user3.available_funds, initial_funds_user3 + bet_amount_user3)
-            
+    
+    def test_all_bettors_refund_losing_team(self):
+        logger.info(f"{self.GREEN}test_all_bettors_refund_losing_team{self.END}")
+        
+        # Define initial funds and bet amounts for both users
+        initial_funds_user = Decimal("100.00")
+        initial_funds_user2 = Decimal("200.00")
+        bet_amount_user = Decimal("50.00")
+        bet_amount_user2 = Decimal("70.00")
+
+        # Deduct bet amounts from initial funds
+        self.user.available_funds = initial_funds_user - bet_amount_user
+        self.user.save()
+        self.user2.available_funds = initial_funds_user2 - bet_amount_user2
+        self.user2.save()
+
+        # Users bet on TeamB, but TeamA will be marked as the winner
+        Bet.objects.create(event=self.event, user=self.user, bet_amount=bet_amount_user, team_choice=self.event.team2)
+        Bet.objects.create(event=self.event, user=self.user2, bet_amount=bet_amount_user2, team_choice=self.event.team2)
+
+        # Perform the complete_event action
+        self.client.force_authenticate(user=self.user)
+        url = reverse("event-complete-event", args=[self.event.id])
+        response = self.client.post(url, {"winning_team": self.event.team2})
+        
+        # Log the response data for debugging
+        logger.info(f"Response data: {response.data}")
+        
+        # Check response and assert that bets were refunded
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Event completed and winnings distributed", response.data["details"])
+
+        # Validate that both users received their refunds
+        self.user.refresh_from_db()
+        self.user2.refresh_from_db()
+        
+        # Log the refunded amount for each user
+        logger.info(f"{self.PINK}User {self.user.username} refunded amount: {self.user.available_funds - initial_funds_user + bet_amount_user}{self.END}")
+        logger.info(f"{self.PINK}User {self.user2.username} refunded amount: {self.user2.available_funds - initial_funds_user2 + bet_amount_user2}{self.END}")
+
+        self.assertEqual(self.user.available_funds, initial_funds_user)  # User's funds should be unchanged
+        self.assertEqual(self.user2.available_funds, initial_funds_user2)  # User2's funds should be unchanged
+        
