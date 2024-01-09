@@ -3,7 +3,7 @@ import { Typography, Box, Chip, IconButton } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Import the icon
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import CompleteEventModal from "./CompleteEventModal";
+import CompleteEventForm from "./CompleteEventForm";
 
 
 /**
@@ -144,7 +144,7 @@ const CountDownTimer = ({ event }) => {
                 </IconButton>
             )}
 
-            <CompleteEventModal
+            <CompleteEventForm
                 modalOpen={modalOpen}
                 toggleModal={toggleModal}
                 // onEventComplete={onEventComplete}
