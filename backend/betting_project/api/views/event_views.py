@@ -185,6 +185,8 @@ class EventViewset(viewsets.ModelViewSet):
             # Calculate the total amount bet on the winning team.
             winning_bet_total = winning_bets.aggregate(Sum("bet_amount"))["bet_amount__sum"] or 0
             
+            default_message = {"message": "No winnings to distribute"}
+            
             # Scenario 1: Only 1 bettor in the event
             # Example: If there's only 1 bettor who bets $100, refund this amount
             if total_bettors == 1:
@@ -193,7 +195,7 @@ class EventViewset(viewsets.ModelViewSet):
                         available_funds=F("available_funds") + bet.bet_amount
                     )
                 logger.info(f"Refunded {bet.bet_amount} to {bet.user.username} for event {event.team1} vs {event.team2}")
-                return []
+                return [default_message]
         
             # Scenario 2:  All bettors chose the winning team
             # Example: If there are 3 bettors and they all bet on the winning team, refund their bets
@@ -211,11 +213,11 @@ class EventViewset(viewsets.ModelViewSet):
                         available_funds=F("available_funds") + bet.bet_amount
                     )
                 logger.info(f"All bets refunded for {event.team1} vs {event.team2} as no bet was placed on the winning team")
-                return []  
+                return [default_message]  
             
             # Scenario 4: Multiple bettors, distribute winnings based on bet proportion. 
             else:
-                winning_info =[]
+                winning_info =[default_message]
                 # The pool for distribution is total bet amount - the amount on the winning team  
                 losing_bet_total = total_bet_amount - winning_bet_total
                 for bet in winning_bets:

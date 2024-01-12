@@ -63,7 +63,7 @@ const CompleteEventRequest = ({
     };
 
     completeEvent();
-  }, [winner, eventId, createObject, onSuccess, onError, loadingMessage, successMessage, errorMessage]);
+  }, []);
 };
 
 export default CompleteEventRequest;

@@ -153,6 +153,19 @@ const BetForm = ({ open, onClose }) => {
             aria-label="Bet Amount"
           />
         </DialogContent>
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "cen", paddingBottom:3}}>
+          <DialogActions>
+            <BetRequest
+              betDetails={betDetails}
+              onSuccess={handleSuccess}
+              onError={handleError}
+              errorMessage={errorMessage}
+            />
+            <Button onClick={onClose} color="primary" variant="outlined">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Box>
         {/* ... DialogActions and Buttons ... */}
       </Dialog>
     </>
