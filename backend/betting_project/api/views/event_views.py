@@ -118,6 +118,9 @@ class EventViewset(viewsets.ModelViewSet):
         winning_info = self._calculate_and_distribute_winnings(
             event, winning_team, total_bet_amount
         )
+        
+        # Step 4: Calculate and distribute winnings based on the event outcome
+        self._update_bet_status(event, winning_team)
 
         event.is_complete = True
         event.save()
@@ -157,6 +160,19 @@ class EventViewset(viewsets.ModelViewSet):
         return Bet.objects.filter(event=event).aggregate(Sum("bet_amount"))[
             "bet_amount__sum"
         ]
+        
+    def _update_bet_status(self, event, winning_team):
+        """
+        Updates the status of each bet based on the outcome of the event.
+        Sets the status to 'Won' if the bet was on the winning team, otherwise 'Lost'.
+        """
+        all_bets = Bet.objects.filter(event=event)
+        for bet in all_bets:
+            if bet.team_choice == winning_team:
+                bet.status = "Won" 
+            else:
+                bet.status = "Lost" 
+            bet.save()  
 
     @transaction.atomic
     def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
