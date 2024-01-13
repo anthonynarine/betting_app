@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react"
-import axios from "axios";
-import UserProvider from "./UserContext_v1";
 import useCrud from "../../services/useCrud";
 
 //CONTEXT CREATION
@@ -40,14 +38,13 @@ export function UserServiceProvider ({ children }) {
         const userID = localStorage.getItem("userId");
         const accessToken = localStorage.getItem("accessToken");
 
-        if (!userID || !accessToken) {
+        if (!userID) {
             setIsLoading(false);
-            return { success: false, error: "User Id or access toke is missing"};
+            return { success: false, error: "User Id is missing"};
         };
 
         try {
-            const userData = await fetchData(`/users/${userID}`, accessToken)
-
+            const userData = await fetchData(`/users/${userID}`)
             setUserData(userData)
             console.log("TESting user DATA from func call", userData)
             setIsLoading(false)
@@ -61,7 +58,7 @@ export function UserServiceProvider ({ children }) {
     // let updateUserData = response.data;
 
 
-    // useEffect to fetch user data when the components moutns
+    // useEffect to fetch user data when the components mounts
     useEffect(()=>{
         fetchUserData();
     },[])

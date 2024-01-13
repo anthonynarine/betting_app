@@ -14,7 +14,7 @@ logic for handling JWT (JSON Web Token) authorization.*/}
 const useCrud = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-  const jwtAxios = useAxiosWithInterceptor();
+  // const jwtAxios = useAxiosWithInterceptor();
   const jwtReqAxios = useAxiosWithInterceptorJwt();
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
@@ -44,18 +44,14 @@ const useCrud = () => {
  * This is useful when passing this function as a prop to React components or when it needs to be stable across re-renders.
  */
 const fetchData = useCallback(
-  async (url, accessToken) => {
+  async (url) => {
     setIsLoading(true); // Start loading state
     try {
       if (!BASE_URL) {
         throw new Error("BASE_URL is not defined");
       }
-      // Set the authorization header only if an access token is provided
-      if (accessToken) {
-        jwtAxios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-      }
 
-      const response = await jwtAxios.get(`${BASE_URL}${url}`); // Make the GET request
+      const response = await jwtReqAxios.get(`${BASE_URL}${url}`); // Make the GET request
       const data = response.data; // Extract data from response
 
       setApiData(data); // Update local state with the fetched data
@@ -74,7 +70,7 @@ const fetchData = useCallback(
       throw error; // Re-throw the error for further handling
     }
   },
-  [jwtAxios, BASE_URL] // Dependencies for useCallback
+  [jwtReqAxios, BASE_URL] // Dependencies for useCallback
 );
 
 
