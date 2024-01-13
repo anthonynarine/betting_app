@@ -24,6 +24,11 @@ class EventViewset(viewsets.ModelViewSet):
     API endpoint that allows events to be viewed or edited.
     """
 
+        # Color for logger debugger
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    END = '\033[0m'
+    
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
@@ -171,6 +176,7 @@ class EventViewset(viewsets.ModelViewSet):
         Returns:
             list: A list of dicts w/ each winner's username and their winning amount. 
         """
+            
         try:
             # Retrieve all bets placed on the event and those placed on the winning team
             all_bets = Bet.objects.filter(event=event)
@@ -178,6 +184,14 @@ class EventViewset(viewsets.ModelViewSet):
             # Retrieve bets placed on the winning team
             winning_bets = Bet.objects.filter(event=event, team_choice=winning_team)
             
+            # Update the status of each bet
+            for bet in all_bets:
+                if bet.team_choice == winning_team:
+                    bet.status = "WON"
+                else:
+                    bet.status = "LOST"
+                bet.save()
+                
             # Count the total number of bettors and the number who bet on the winning team
             total_bettors = all_bets.count()
             winning_bettors = winning_bets.count()
@@ -194,7 +208,7 @@ class EventViewset(viewsets.ModelViewSet):
                     CustomUser.objects.filter(pk=bet.user.pk).update(
                         available_funds=F("available_funds") + bet.bet_amount
                     )
-                logger.info(f"Refunded {bet.bet_amount} to {bet.user.username} for event {event.team1} vs {event.team2}")
+                logger.info(f"{self.GREEN}Refunded {bet.bet_amount} to {bet.user.username} for event {event.team1} vs {event.team2}{self.END}")
                 return [default_message]
         
             # Scenario 2:  All bettors chose the winning team
@@ -204,7 +218,7 @@ class EventViewset(viewsets.ModelViewSet):
                     CustomUser.objects.filter(pk=bet.user.pk).update(
                         available_funds=F("available_funds") + bet.bet_amount
                     )
-            logger.info(f"All bets refunded for {event.team1} vs {event.team2} as all bets were placed on the winner")
+            logger.info(f"{self.GREEN}All bets refunded for {event.team1} vs {event.team2} as all bets were placed on the winner {self.END}")
             
             # Scenario 3: No bettors chose the winning team
             if winning_bettors == 0:
@@ -212,7 +226,7 @@ class EventViewset(viewsets.ModelViewSet):
                     CustomUser.objects.filter(pk=bet.user.pk).update(
                         available_funds=F("available_funds") + bet.bet_amount
                     )
-                logger.info(f"All bets refunded for {event.team1} vs {event.team2} as no bet was placed on the winning team")
+                logger.info(f"{self.GREEN}All bets refunded for {event.team1} vs {event.team2} as no bet was placed on the winning team {self.END}")
                 return [default_message]  
             
             # Scenario 4: Multiple bettors, distribute winnings based on bet proportion. 

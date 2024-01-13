@@ -1,6 +1,14 @@
+/* eslint-disable no-lone-blocks */
 import { useState, useCallback } from "react";
 import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
 import useAxiosWithInterceptorJwt from "./jwtinterceptor-jwtReq";
+
+{/*custom React hook designed for CRUD (Create, Read, Update, Delete)
+operations in applications interacting with a backend server. It
+encapsulates API interaction logic, manages API data, loading 
+states, and error handling. The hook leverages a modified Axios 
+instance with interceptors, which includes built-in token refresh 
+logic for handling JWT (JSON Web Token) authorization.*/}
 
 
 const useCrud = () => {

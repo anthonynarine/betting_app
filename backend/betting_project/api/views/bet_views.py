@@ -17,6 +17,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 class BetViewset(viewsets.ModelViewSet):
+    
+    # Color for logger debugger
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    END = '\033[0m'
+    
     # Define the serializer class used for this viewset
     serializer_class = BetSerializer
     
@@ -83,10 +89,10 @@ class BetViewset(viewsets.ModelViewSet):
         # Retrieve the latest user instance from the db
         user = CustomUser.objects.get(id=user_id)
         
-        # Log the current state for debugging
-        logger.debug("bet_amount: %s, type: %s", bet_amount, type(bet_amount))
-        logger.debug("user.available_funds: %s, type: %s", user.available_funds, type(user.available_funds))
-        
+        # Log the current state for debugging        
+        logger.debug(f"{self.GREEN} 'bet_amount: {bet_amount}, type: {type(bet_amount)}'{self.END}")
+        logger.debug(f"{self.GREEN} 'user.available_funds: {user.available_funds}, type: {type(user.available_funds)}'{self.END}")
+
         # Check if the user's available funds are less than or equal to zero
         if user.available_funds <= 0:
             raise ValidationError({"details": "Insufficient funds"})
@@ -99,7 +105,8 @@ class BetViewset(viewsets.ModelViewSet):
         user.available_funds -= bet_amount
         # Save the updated user object
         user.save(update_fields=["available_funds"])
-        logger.info("Updated funds for user %s", user_id)
+        logger.info(f"{self.GREEN}'Updated funds for user %s', {user_id} {self.END}")
+
 
     def perform_create(self, serializer):
         """
@@ -146,7 +153,7 @@ class BetViewset(viewsets.ModelViewSet):
             try:                
                 # Create and Save the bet to the database
                 self.perform_create(serializer)
-                logger.info(f"Bet successfully created for user {user.id} on event {event_id}")
+                logger.info(f"{self.GREEN}Bet successfully created for user {user.id} on event {event_id}{self.END}")
             except ValidationError as e:
                 # Handle known validation errors (like insufficient funds error details from check_and_update_funds)
                 return Response({"details": str(e)}, status=status.HTTP_400_BAD_REQUEST)   
