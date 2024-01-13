@@ -19,6 +19,7 @@ export function useUserServices() {
 export function UserServiceProvider ({ children }) {
 
     const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
+    const userID = localStorage.getItem("userId");
 
     const initialUserDetails = {
         email: "", 
@@ -33,13 +34,11 @@ export function UserServiceProvider ({ children }) {
     const { fetchData } = useCrud()
 
     // Function to fetch user data
+    
     const fetchUserData = async () => {
         setIsLoading(true);
-        const userID = localStorage.getItem("userId");
-        const accessToken = localStorage.getItem("accessToken");
 
         if (!userID) {
-            setIsLoading(false);
             return { success: false, error: "User Id is missing"};
         };
 
@@ -55,7 +54,26 @@ export function UserServiceProvider ({ children }) {
         }
     };
 
-    // let updateUserData = response.data;
+    // Function to update user data as of now it essentially has the same functionality as fetchUserData but i'll keep these seperate
+    const updateUserData = async () => {
+        setIsLoading(false);
+        if(!userID){
+            return { success: false , error: "User ID is missing"};
+        }
+
+        try {
+            // Fetch updated user data
+            const updatedData = await fetchData(`/users/${userID}`);
+            setUserData(updatedData);
+            console.log(updatedData.availabel_funds)
+            // Handle any errors
+            setIsLoading(false);
+            return{ success: true, data: updatedData}
+        } catch (error) {
+            setIsLoading(false);
+            return { success: false, error: error.message };
+        }        
+    };
 
 
     // useEffect to fetch user data when the components mounts
@@ -66,6 +84,7 @@ export function UserServiceProvider ({ children }) {
     const value = {
         userData,
         fetchUserData,
+        updateUserData,
     };
 
     return(
