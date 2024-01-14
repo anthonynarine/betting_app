@@ -32,8 +32,6 @@ const CompleteEventRequest = ({
   const { eventId } = useParams();
   const { updateIndividualBet, individualBet } = useBetData();
 
-  console.log("INDIVIDUAL BET", individualBet)
-
   useEffect(() => {
     /**
      * Asynchronously sends a request to complete an event by marking a winner.
@@ -54,7 +52,11 @@ const CompleteEventRequest = ({
           const detailMessage = response?.data?.details || successMessage;
           console.log(detailMessage);
           onSuccess(response, detailMessage);
-          await updateIndividualBet(individualBet.id) // Updates EventDetailCard UI   
+
+          // // Once the event is completed, if you have betting ID, update individual bet 
+          // if (individualBet && individualBet.id){
+          //    await updateIndividualBet(individualBet.id) // Updates EventDetailCard UI   
+          // };
         } catch (error) {
           console.error("Error completing event:", error);
           
@@ -67,7 +69,8 @@ const CompleteEventRequest = ({
     };
 
     completeEvent();
-  }, [winner, eventId, individualBet]);
+  }, [winner]);
 };
+
 
 export default CompleteEventRequest;

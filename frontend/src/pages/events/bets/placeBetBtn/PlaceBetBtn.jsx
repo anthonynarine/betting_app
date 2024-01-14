@@ -1,16 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Tooltip, Box, useTheme } from "@mui/material";
 import { useEventData } from "../../../../context/eventData/EventDataProvider";
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 import { useBetData } from "../../../../context/bet/BetDataProvider";
 
+  // State: currentTime
+  // Purpose: Tracks the current time in the component.
+  // Details:
+  // - Initialized with the current timestamp using Date.now().
+  // - Used to determine if the current time has surpassed the event start time.
+  // - Updated every second to reflect the real-world time progression.
+
 export const PlaceBetBtn = ({ toggleBetForm }) => {
   const { event } = useEventData();
   const { individualBet } = useBetData();
+  const [currentTime, setCurrentTime] = useState(Date.now())
+
+  useEffect(()=>{
+  // useEffect Hook: Interval setup for currentTime
+  // Purpose: Sets up a mechanism to update the currentTime state every second.
+  // Details:
+  // - The useEffect hook runs after the component mounts and sets up an interval.
+  // - setInterval is used to call setCurrentTime(Date.now()) every 1000 milliseconds.
+  // - This periodic update triggers a re-render of the component, allowing it to 
+  //   react to the real-time progression and update the UI accordingly.
+  // - A cleanup function is returned that clears the interval when the component unmounts.
+  //   This is important for preventing memory leaks and unnecessary computations.
+    const interval = setInterval(()=>{
+      setCurrentTime(Date.now()); // Update the currentTime state ever second
+    }, 1000) // 1 second
+    return ()=> clearInterval(interval)  // Clean up on component unmount
+  }, [])
 
   // Convert event time to a Date object and get its timestamp
   let eventStartTime = new Date(event.start_time).getTime();
-  let currentTime = Date.now();
 
   // Check if the event has started
   let eventHasStarted = currentTime >= eventStartTime;
