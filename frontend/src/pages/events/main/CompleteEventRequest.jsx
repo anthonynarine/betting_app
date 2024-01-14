@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
+import { useBetData } from "../../../context/bet/BetDataProvider";
 
 /**
  * The CompleteEventRequest component is responsible for handling the API request to complete an event.
@@ -29,6 +30,9 @@ const CompleteEventRequest = ({
 }) => {
   const { createObject } = useCrud();
   const { eventId } = useParams();
+  const { updateIndividualBet, individualBet } = useBetData();
+
+  console.log("INDIVIDUAL BET", individualBet)
 
   useEffect(() => {
     /**
@@ -46,11 +50,11 @@ const CompleteEventRequest = ({
         try {
           const response = await createObject(`/events/${eventId}/mark-as-complete/`, eventData);
           console.log(response);
-
           // Extract specific messages from the response or use the provided default success message
           const detailMessage = response?.data?.details || successMessage;
           console.log(detailMessage);
-          onSuccess(response, detailMessage);      
+          onSuccess(response, detailMessage);
+          await updateIndividualBet(individualBet.id) // Updates EventDetailCard UI   
         } catch (error) {
           console.error("Error completing event:", error);
           
@@ -63,7 +67,7 @@ const CompleteEventRequest = ({
     };
 
     completeEvent();
-  }, []);
+  }, [winner, eventId, individualBet]);
 };
 
 export default CompleteEventRequest;
