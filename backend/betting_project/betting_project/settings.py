@@ -74,7 +74,7 @@ WSGI_APPLICATION = "betting_project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "betting_app_db",
+        "NAME": os.environ.get('MYSQL_DB_NAME'),
         "HOST": "localhost",
         "USER": "root",
         "PASSWORD": os.environ.get('MYSQL_DB_PASSWORD')
