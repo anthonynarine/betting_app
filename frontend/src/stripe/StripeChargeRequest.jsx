@@ -75,32 +75,33 @@ function StripeChargeComponent() {
 
   return (
     <Container sx={classes.flexContainer}>
-    <Container maxWidth={isLargeScreen ? "xs" : "sm"} sx={classes.container}>
-      <Typography variant="h5" gutterBottom textAlign="center" sx={{mt: 3}}>
-        Add Funds
-      </Typography>
-      <Box component="form" onSubmit={handleSubmit} noValidate>
-        <TextField
-          label="Amount in USD"
-          variant="outlined"
-          fullWidth
-          type="number"
-          id="amount"
-          name="amount"
-          autoFocus
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-        />
-        <Box sx={classes.card_element_box}>
-          <CardElement />
-        </Box>
-        <Button variant="contained" color="primary" fullWidth type="submit" disabled={isLoading} sx={{mb: 4}}>
+      <Container maxWidth={isLargeScreen ? "xs" : "sm"} sx={classes.container}>
+        <Typography variant="h5" gutterBottom textAlign="center" sx={{mt: 3}}>
           Add Funds
-        </Button>
-      </Box>
-      {error && <Alert severity="error">{error}</Alert>}
-      {isLoading && <Alert severity="info">Loading...</Alert>}
-    </Container>
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <TextField
+            label="Amount in USD"
+            variant="outlined"
+            fullWidth
+            type="number"
+            id="amount"
+            name="amount"
+            autoFocus
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            sx={classes.textField} // Apply custom TextField style
+          />
+          <Box sx={classes.card_element_box}>
+            <CardElement />
+          </Box>
+          <Button variant="contained" fullWidth type="submit" disabled={isLoading} sx={classes.button}>
+            Add Funds
+          </Button>
+        </Box>
+        {error && <Alert severity="error">{error}</Alert>}
+        {isLoading && <Alert severity="info">Loading...</Alert>}
+      </Container>
     </Container>
   );
 }

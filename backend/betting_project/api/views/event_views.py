@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.utils import timezone
 from  validators.bet_validators import bet_type_validator
 from ..models import Event, Bet
@@ -25,6 +26,9 @@ class EventViewset(viewsets.ModelViewSet):
     """
 
         # Color for logger debugger
+    YELLOW = '\033[93m'  # ANSI escape code for bright yellow text
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
     RED = '\033[91m'
     GREEN = '\033[92m'
     END = '\033[0m'
@@ -193,76 +197,71 @@ class EventViewset(viewsets.ModelViewSet):
             list: A list of dicts w/ each winner's username and their winning amount. 
         """
             
-        try:
-            # Retrieve all bets placed on the event and those placed on the winning team
-            all_bets = Bet.objects.filter(event=event)
-            
-            # Retrieve bets placed on the winning team
-            winning_bets = Bet.objects.filter(event=event, team_choice=winning_team)
-            
-            # Update the status of each bet
-            for bet in all_bets:
-                if bet.team_choice == winning_team:
-                    bet.status = "WON"
-                else:
-                    bet.status = "LOST"
-                bet.save()
-                
-            # Count the total number of bettors and the number who bet on the winning team
-            total_bettors = all_bets.count()
-            winning_bettors = winning_bets.count()
-            
-            # Calculate the total amount bet on the winning team.
-            winning_bet_total = winning_bets.aggregate(Sum("bet_amount"))["bet_amount__sum"] or 0
-            
-            default_message = {"message": "No winnings to distribute"}
-            
-            # Scenario 1: Only 1 bettor in the event
-            # Example: If there's only 1 bettor who bets $100, refund this amount
-            if total_bettors == 1:
-                for bet in all_bets:
-                    CustomUser.objects.filter(pk=bet.user.pk).update(
-                        available_funds=F("available_funds") + bet.bet_amount
-                    )
-                logger.info(f"{self.GREEN}Refunded {bet.bet_amount} to {bet.user.username} for event {event.team1} vs {event.team2}{self.END}")
-                return [default_message]
+        logger.info(f"{self.GREEN}Starting calculation and distribution of the winnings for event {event.id}{self.END}")
         
-            # Scenario 2:  All bettors chose the winning team
-            # Example: If there are 3 bettors and they all bet on the winning team, refund their bets
-            if winning_bettors == total_bettors:
-                for bet in all_bets:
-                    CustomUser.objects.filter(pk=bet.user.pk).update(
-                        available_funds=F("available_funds") + bet.bet_amount
-                    )
-            logger.info(f"{self.GREEN}All bets refunded for {event.team1} vs {event.team2} as all bets were placed on the winner {self.END}")
-            
-            # Scenario 3: No bettors chose the winning team
-            if winning_bettors == 0:
-                for bet in all_bets:
-                    CustomUser.objects.filter(pk=bet.user.pk).update(
-                        available_funds=F("available_funds") + bet.bet_amount
-                    )
-                logger.info(f"{self.GREEN}All bets refunded for {event.team1} vs {event.team2} as no bet was placed on the winning team {self.END}")
-                return [default_message]  
-            
-            # Scenario 4: Multiple bettors, distribute winnings based on bet proportion. 
-            else:
-                winning_info =[default_message]
-                # The pool for distribution is total bet amount - the amount on the winning team  
-                losing_bet_total = total_bet_amount - winning_bet_total
-                for bet in winning_bets:
-                    # Calculate each winner's share of the losing bet total
-                    user_share = (bet.bet_amount / winning_bet_total) * losing_bet_total
-                    # Update the winner's account with their share of winnings. 
-                    CustomUser.objects.filter(pk=bet.user.pk).update(
-                        available_funds=F("available_funds") + user_share
-                    )
-                    winning_info.append({"username": bet.user.username, "winning_amount": user_share })
-                return winning_info
-        except Exception as e:
-            logger.error(
-                "Error in calculating and distributing winnings for event ID %s: %s",
-                event.id,
-                e,
+        total_bet_amount = Decimal(total_bet_amount)
+        all_bets = Bet.objects.filter(event=event)
+        
+        for bet in all_bets:
+            bet.bet_amount = Decimal(bet.bet_amount)
+        
+        winning_bets = all_bets.filter(team_choice=winning_team)
+        total_bettors = all_bets.count()
+        winning_bettors = winning_bets.count()
+        
+        # Scenario 1: Only 1 bettor in the event
+        if total_bettors == 1:
+            logger.info(f"{self.YELLOW} Only 1 bet placed for {event.id}, a refund will be distributed{self.END}")
+            return self._refund_bets(all_bets)
+        
+        # Scenario 2: No bettors chose the winning team
+        elif winning_bettors == 0:
+            logger.info(f"{self.YELLOW}No winning bets for event {event.id}, all bets refunded{self.END}")
+            return self._refund_bets(all_bets)
+        
+        # Scenario 3: All bettors chose the winning team
+        elif winning_bettors == total_bettors:
+            logger.info(f"{self.YELLOW}All bets were winning for event {event.id} all bets refunded{self.END}")
+            return self._refund_bets(all_bets)
+        
+        # Scenario 4: Multiple bettors, distribute winnings based on bet proportion
+        else:
+            logger.info(f"{self.YELLOW} One more winning bets for event {event.id}, distributing winnings{self.END}")
+            return self._distribute_winnings(winning_bets, total_bet_amount)
+    
+    # HELPER METHODS
+    def _refund_bets(self, bets):
+        for bet in bets:
+            CustomUser.objects.filter(pk=bet.user.pk).update(
+                available_funds=F("available_funds") + bet.bet_amount
             )
-            raise
+            logger.info(f"{self.BLUE}Refunded {bet.bet_amount} to user {bet.user.username} for bet {bet.id}{self.END}")
+        return [{"message": "Bets refunded"}]
+    
+    def _distribute_winnings(self, winning_bets, total_bet_amount):
+        winning_info = []
+        winning_bet_total = Decimal("0")
+        
+        for bet in winning_bets:
+            # bet_amount = Decimal(bet.bet_amount)
+            winning_bet_total += Decimal(bet.bet_amount)
+        
+        if winning_bet_total == 0:
+            logger.error(f"{self.RED}No winning bets total to distribute{self.END}")
+            return [{"message": "Error: No winning bets total"}]
+            
+        losing_bet_total = total_bet_amount - winning_bet_total
+        
+        for bet in winning_bets:
+            bet_amount = Decimal(bet.bet_amount)
+            user_share = (bet_amount / winning_bet_total) * losing_bet_total
+            CustomUser.objects.filter(pk=bet.user.pk).update(
+                available_funds=F("available_funds") + user_share
+            )
+            winning_info.append({"username": bet.user.username, "winning_amount": user_share})
+            logger.info(f"{self.BLUE}Distributed {user_share} to user {bet.user.username} for bet ID {bet.id}{self.END}")
+        return winning_info
+        
+        
+        
+        
