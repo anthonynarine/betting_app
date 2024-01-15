@@ -70,12 +70,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "betting_project.wsgi.application"
 
-
-
+#.. Added 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": "betting_app_db",
+        "HOST": "localhost",
+        "USER": "root",
+        "PASSWORD": os.environ.get('MYSQL_DB_PASSWORD')
     }
 }
 
