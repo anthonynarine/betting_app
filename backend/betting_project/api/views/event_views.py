@@ -241,8 +241,8 @@ class EventViewset(viewsets.ModelViewSet):
                 logger.info(f"{self.BLUE}Refunded {bet.bet_amount} to user {bet.user.username} for bet {bet.id}{self.END}")
                 refunded_bets.append(bet.id)
             except DatabaseError as e:
-                logger.error(f"{self.RED}Database error while refunding bet {bet.id}: {e}{self.END}")  
-                    
+                logger.error(f"{self.RED}Database error while refunding bet {bet.id}: {e}{self.END}")
+                # No need to raise an exception; let the transaction.atomic handle the rollback      
         return [{"message": "Bets refunded", "refunded_bets": refunded_bets}]
     
     def _distribute_winnings(self, winning_bets, total_bet_amount):
@@ -260,13 +260,17 @@ class EventViewset(viewsets.ModelViewSet):
         losing_bet_total = total_bet_amount - winning_bet_total
         
         for bet in winning_bets:
-            bet_amount = Decimal(bet.bet_amount)
-            user_share = (bet_amount / winning_bet_total) * losing_bet_total
-            CustomUser.objects.filter(pk=bet.user.pk).update(
-                available_funds=F("available_funds") + user_share
-            )
-            winning_info.append({"username": bet.user.username, "winning_amount": user_share})
-            logger.info(f"{self.BLUE}Distributed {user_share} to user {bet.user.username} for bet ID {bet.id}{self.END}")
+            try:
+                bet_amount = Decimal(bet.bet_amount)
+                user_share = (bet_amount / winning_bet_total) * losing_bet_total
+                CustomUser.objects.filter(pk=bet.user.pk).update(
+                    available_funds=F("available_funds") + user_share
+                )
+                winning_info.append({"username": bet.user.username, "winning_amount": user_share})
+                logger.info(f"{self.BLUE}Distributed {user_share} to user {bet.user.username} for bet ID {bet.id}{self.END}")
+            except DatabaseError as e:
+                logger.error(f"{self.RED}Database error while distributing winnings for bet {bet.id}: {e}{self.END}")
+                # No need to raise an exception; let the transaction.atomic handle the rollback
         return winning_info
         
         
