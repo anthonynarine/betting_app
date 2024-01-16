@@ -1,4 +1,5 @@
 from decimal import Decimal
+from MySQLdb import DatabaseError
 from django.utils import timezone
 from  validators.bet_validators import bet_type_validator
 from ..models import Event, Bet
@@ -231,12 +232,18 @@ class EventViewset(viewsets.ModelViewSet):
     
     # HELPER METHODS
     def _refund_bets(self, bets):
+        refunded_bets = []
         for bet in bets:
-            CustomUser.objects.filter(pk=bet.user.pk).update(
-                available_funds=F("available_funds") + bet.bet_amount
-            )
-            logger.info(f"{self.BLUE}Refunded {bet.bet_amount} to user {bet.user.username} for bet {bet.id}{self.END}")
-        return [{"message": "Bets refunded"}]
+            try:
+                CustomUser.objects.filter(pk=bet.user.pk).update(
+                    available_funds=F("available_funds") + bet.bet_amount
+                )
+                logger.info(f"{self.BLUE}Refunded {bet.bet_amount} to user {bet.user.username} for bet {bet.id}{self.END}")
+                refunded_bets.append(bet.id)
+            except DatabaseError as e:
+                logger.error(f"{self.RED}Database error while refunding bet {bet.id}: {e}{self.END}")  
+                    
+        return [{"message": "Bets refunded", "refunded_bets": refunded_bets}]
     
     def _distribute_winnings(self, winning_bets, total_bet_amount):
         winning_info = []
