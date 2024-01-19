@@ -200,6 +200,11 @@ class EventViewset(viewsets.ModelViewSet):
             
         logger.info(f"{self.GREEN}Starting calculation and distribution of the winnings for event {event.id}{self.END}")
         
+        # Check if the event is already completed ()
+        if event.is_complete:
+            logger.info(f"Event {event.id} is already marked as complete.")
+            return {"details": "Event has already been completed."}
+        
         total_bet_amount = Decimal(total_bet_amount)
         all_bets = Bet.objects.filter(event=event)
         
@@ -209,6 +214,7 @@ class EventViewset(viewsets.ModelViewSet):
         winning_bets = all_bets.filter(team_choice=winning_team)
         total_bettors = all_bets.count()
         winning_bettors = winning_bets.count()
+        
         
         # Scenario 1: Only 1 bettor in the event
         if total_bettors == 1:
