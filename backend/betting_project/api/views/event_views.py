@@ -208,12 +208,20 @@ class EventViewset(viewsets.ModelViewSet):
         total_bet_amount = Decimal(total_bet_amount)
         all_bets = Bet.objects.filter(event=event)
         
+        # Logging for debugging
+        logger.info(f"Total bet amount for event {event.id}: {total_bet_amount}")
+        logger.info(f"Winning team for event {event.id}: {winning_team}")
+        
         for bet in all_bets:
             bet.bet_amount = Decimal(bet.bet_amount)
         
         winning_bets = all_bets.filter(team_choice=winning_team)
         total_bettors = all_bets.count()
         winning_bettors = winning_bets.count()
+        
+        # Logging for debugging
+        logger.info(f"Total bettors for event {event.id}: {total_bettors}")
+        logger.info(f"Total winning bettors for event {event.id}: {winning_bettors}")
         
         
         # Scenario 1: Only 1 bettor in the event

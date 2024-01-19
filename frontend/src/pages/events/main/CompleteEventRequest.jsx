@@ -1,3 +1,9 @@
+
+// THIS COMPONENT IS NO LONGER IN USE THIS  REQUEST WAS MODIFIED AND ADDED TO THE FORM THE
+// THE useEffect WAS CAUSING MULTIPE REQUEST TO REFUND ESENTIALLY GIVING USER 2X THEIR INITIAN
+// BETS AMOUNT ON SENARIOS WHERE ONLY 1 PERSON ENTERED A BET FOR THE EVENT. 
+
+
 // import { useEffect } from "react";
 // import useCrud from "../../../services/useCrud";
 // import { useParams } from "react-router-dom";
