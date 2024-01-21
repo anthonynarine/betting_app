@@ -15,14 +15,6 @@ function GroupListCard() {
     fetchData(url);
   }, [groupId]);
 
-
-  // DATA TEST
-  useEffect(() => {
-    console.log("Group ID:", apiData, "data test in GroupsComp");
-    console.log(apiData)
-
-  },[]);
-
   
   const renderHeader = () => {
     if (groupId) {

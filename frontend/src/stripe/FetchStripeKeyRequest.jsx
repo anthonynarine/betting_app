@@ -8,16 +8,16 @@ const useFetchStripeKey = () => {
   const jwtReqAxios = useAxiosWithInterceptorJwt();
 
   useEffect(() => {
-    console.log("useFetchStripeKey hook called");
+    // console.log("useFetchStripeKey hook called");
     const fetchStripeKey = async () => {
       setIsloading(true);
       setError(null);
       try {
-        console.log("Attempting to fetch Stripe key");
+        // console.log("Attempting to fetch Stripe key");
         const response = await jwtReqAxios.get("/stripe/config/");
-        console.log("Response received:", response);
+        // console.log("Response received:", response);
         const  stripePublicKey  = response.data.publicKey;
-        console.log("Key received:", stripePublicKey);
+        // console.log("Key received:", stripePublicKey);
         localStorage.setItem("stripeKey", stripePublicKey);
         setStripePublicKey(stripePublicKey);
       } catch (err) {

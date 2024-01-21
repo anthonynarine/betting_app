@@ -180,7 +180,7 @@ class EventViewset(viewsets.ModelViewSet):
             bet.save()  
 
     @transaction.atomic
-    def _calculate_and_distribute_winnings(self, event, winning_team, total_bet_amount):
+    def _calculate_and_distribute_winnings(self, event, winning_team_name, total_bet_amount):
         """
         Calculate and distribute winnigns based on the bets place on an event. 
         Handles several senaris:
@@ -209,19 +209,29 @@ class EventViewset(viewsets.ModelViewSet):
         all_bets = Bet.objects.filter(event=event)
         
         # Logging for debugging
-        logger.info(f"Total bet amount for event {event.id}: {total_bet_amount}")
-        logger.info(f"Winning team for event {event.id}: {winning_team}")
+        logger.info(f"{self.BLUE}Total bet amount for event {event.id}: {total_bet_amount}{self.END}")
+        logger.info(f"{self.BLUE}Winning team for event {event.id}: {winning_team_name}{self.END}")
         
         for bet in all_bets:
             bet.bet_amount = Decimal(bet.bet_amount)
+            logger.info(f"{self.BLUE}Bet ID {bet.id}: Team choice - {bet.team_choice},  Bet amount - {bet.bet_amount}{self.END}")
         
-        winning_bets = all_bets.filter(team_choice=winning_team)
+        # Determine if the winning team name matches team1 or team2 of the event
+        if winning_team_name == event.team1:
+            winning_team_label = "Team 1"
+        elif winning_team_name == event.team2:
+            winning_team_label = "Team 2"
+        else:
+            logger.error(f"{self.RED}Invalid winning team name for event {event.id}: {winning_team_name}{self.END}")
+            return {"details": "Invalid winning team name"}
+        
+        winning_bets = all_bets.filter(team_choice=winning_team_label)
         total_bettors = all_bets.count()
         winning_bettors = winning_bets.count()
         
         # Logging for debugging
-        logger.info(f"Total bettors for event {event.id}: {total_bettors}")
-        logger.info(f"Total winning bettors for event {event.id}: {winning_bettors}")
+        logger.info(f"{self.BLUE}Total bettors for event {event.id}: {total_bettors}{self.END}")
+        logger.info(f"{self.BLUE}Total winning bettors for event {event.id}: {winning_bettors}{self.END}")
         
         
         # Scenario 1: Only 1 bettor in the event

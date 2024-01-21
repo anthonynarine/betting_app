@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { useUserServices } from "../user/UserContext";
 
 export function useAuthServices() {
 
   const navigate = useNavigate();
+  const { fetchUserData, userData } = useUserServices();
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const MEDIA_URL = process.env.REACT_APP_MEDIA_URL;
   const loggedIn = localStorage.getItem("isLoggedIn") === "true";
   const [isLoggedIn,  setIsLoggedIn] = useState(loggedIn)
 
@@ -96,9 +97,16 @@ export function useAuthServices() {
     }
 };
 
-const login = () => {
+const login = async () => {
   setIsLoggedIn(true);
   localStorage.setItem("isLoggedIn", "true");
+
+  try {
+    await fetchUserData();
+    console.log('User data updated after login', userData,);
+  } catch (error) {
+    console.error('Error fetching user data after login:', error);
+  }
 };
 
 

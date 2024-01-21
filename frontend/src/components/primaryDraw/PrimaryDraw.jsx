@@ -46,7 +46,7 @@ function PrimaryDraw({ children }) {
       "& .MuiDrawer-paper": closedMixin(), // Applies the closedMixin to the Drawer's paper component
     }),
   }));
-  console.log(below600);
+  // console.log(below600);
 
   useEffect(() => {
     setOpen(!below600);

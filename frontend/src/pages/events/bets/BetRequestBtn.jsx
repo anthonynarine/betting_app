@@ -12,7 +12,6 @@ const BetRequest = ({ betDetails, onSuccess, onError, errorMessage }) => {
     const { updateBetList, updateIndividualBet } = useBetData();
     const { updateUserData } = useUserServices();
 
-
     const createBet = async () => {
         setIsLoading(true);
         try {

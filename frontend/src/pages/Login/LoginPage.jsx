@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, use } from "react";
 import { Button, TextField, Container, Typography, Box, useTheme } from "@mui/material";
 import { useAuthServices } from "../../context/Auth/AuthServices";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,8 +20,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   const { obtainTokens, getUserIdFromToken, login, logout, } = useAuthServices();
-  // const { fetchUserDetails, setUserDetails } = useUserServices();
-  const { fetchUserData } = useUserServices()
+  const { fetchUserData, userData } = useUserServices()
  
   const theme = useTheme();
   const classes = LoginStyles(theme);
@@ -48,11 +47,8 @@ const LoginPage = () => {
       localStorage.setItem("accessToken", tokens.access);
       localStorage.setItem("refreshToken", tokens.refresh);
       localStorage.setItem("userId", getUserIdFromToken(tokens.access));
-
+  
       login();
-      // await fetchUserDetails();
-      await fetchUserData()
-
       // console.log("Access Token being stored:", tokens.access);
       // console.log("Refresh Token being stored:", tokens.refresh);
       // console.log("getUserIdFromToken:", getUserIdFromToken(tokens.access));

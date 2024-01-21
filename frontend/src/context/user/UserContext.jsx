@@ -8,6 +8,7 @@ export const UserContext = createContext();
 
 export function useUserServices() {
     const context = useContext(UserContext)
+    // console.log("UserServiceProvider rendered")
 
     if (!context) {
         throw new Error("useUserDetails must be used within a provider")
@@ -45,7 +46,7 @@ export function UserServiceProvider ({ children }) {
         try {
             const userData = await fetchData(`/users/${userID}`)
             setUserData(userData)
-            console.log("TESting user DATA from func call", userData)
+            // console.log("USER DATA FETCHED", userData, "user Id", userID)
             setIsLoading(false)
             return { success: true, data: userData };   
         } catch (error) {
@@ -75,11 +76,10 @@ export function UserServiceProvider ({ children }) {
         }        
     };
 
-
     // useEffect to fetch user data when the components mounts
     useEffect(()=>{
         fetchUserData();
-    },[])
+    },[userID])
 
     const value = {
         userData,

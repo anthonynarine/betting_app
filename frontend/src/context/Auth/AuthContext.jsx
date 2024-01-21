@@ -48,7 +48,7 @@ export function useAuth() {
 // Component that wraps parts of our app to provide them access to the AuthContext.
 export function AuthProvider({ children }) {
   // Log a message every time the AuthProvider is rendered. Useful for debugging.
-  console.log("AuthProvider rendered");
+  // console.log("AuthProvider rendered");
 
   // Call the custom hook `useAuthServices` to get services provided .
     const authServices = useAuthServices();

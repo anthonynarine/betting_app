@@ -14,7 +14,10 @@ const AccountMenuBtn = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  console.log("TESTING USER DATA", userData)
+  // console.log("TESTING USER DATA", userData)
+  // useEffect(() => {
+  //   console.log("User data in component AccountMenuBtn updated:", userData);
+  // }, [userData]);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -23,6 +26,7 @@ const AccountMenuBtn = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
 
   return (
     <>
@@ -63,9 +67,11 @@ const AccountMenuBtn = () => {
         open={open}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleClose}>
-          <Typography variant="subtitle1">Account</Typography>
-        </MenuItem>
+       { <MenuItem onClick={handleClose}>
+          <Typography variant="subtitle1">
+            {userData.username ?  userData.username : "Account"}
+            </Typography>
+        </MenuItem>}
 
         <MenuItem>
           <Typography variant="body2">

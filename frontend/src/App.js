@@ -25,14 +25,13 @@ import { loadStripe } from "@stripe/stripe-js";
 import useFetchStripeKey from "./stripe/FetchStripeKeyRequest";
 
 function App() {
-
   const { stripePublicKey } = useFetchStripeKey();
   const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
-  console.log(stripePromise)
+  // console.log(stripePromise);
 
   return (
-    <AuthProvider>
-      <UserServiceProvider>
+    <UserServiceProvider>
+      <AuthProvider>
         <ToggleColorModeProvider>
           <CssBaseline />
           <Routes>
@@ -53,15 +52,15 @@ function App() {
             <Route
               path="/addfunds"
               element={
-                <Elements stripe={stripePromise} >
+                <Elements stripe={stripePromise}>
                   <StripeChargeComponent />
                 </Elements>
               }
             />
           </Routes>
         </ToggleColorModeProvider>
-      </UserServiceProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </UserServiceProvider>
   );
 }
 

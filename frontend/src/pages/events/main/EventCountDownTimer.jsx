@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Typography, Box, Chip, IconButton } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle'; // Import the icon
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import CompleteEventForm from "./CompleteEventForm";
+import CompleteEventForm from "./CompleteEvent";
 
 
 /**
