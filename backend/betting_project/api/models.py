@@ -1,9 +1,7 @@
 # models.py in your Django app
 
 from decimal import Decimal
-from email.policy import default
-import imp
-from re import T
+from django.db.models import Sum
 from django.conf import settings
 from django.db import models
 from enum import Enum
@@ -98,6 +96,44 @@ class Group(models.Model):
         verbose_name = "Group"
         verbose_name_plural = "Groups"
 
+class Member(models.Model):
+    """
+    Represents a member of a group, which can have different roles such as 'admin' or 'normal'.
+    """
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.CASCADE,
+        related_name="members",
+        help_text="The group to which the member belongs."
+    )
+    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name="member_of",
+        on_delete=models.CASCADE,
+        related_query_name="membership",
+        help_text="The user who is a member of the group."
+    )
+    
+    admin = models.CharField(
+        max_length=10,
+        choices=[(tag.value, tag.name) for tag in UserType],
+        default=UserType.NORMAL.value,
+        help_text="The role of the member within the group. Defaults to 'normal'."
+    )
+    
+    joined_at = models.DateTimeField(auto_now_add=True,)
+
+    # METHODS
+    def __str__(self):
+        return (
+            f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"
+        )
+        
+    class Meta:
+        unique_together = ("user", "group")
+        ordering = ["joined_at"]
+
 class Event(models.Model):
     """
     Represents an event organized by a group, involving two teams.
@@ -168,6 +204,74 @@ class Event(models.Model):
         default=False,
         help_text="Indicates whether the event is archived.")
     
+    def get_participants_bets_and_potential_winnings(self):
+        """
+        Retrieves information about each participant's bet and calculates their 
+        potential winnings based on the total bet pool.
+
+        This method computes the total amount bet on the event and estimates the
+        potential winnings for each bet. It assumes an equal distribution of the
+        total bet pool among all bets.
+
+        Returns:
+            list of dicts: A list containing dictionaries for each bet. Each dictionary
+            includes the username, bet amount, estimated winning amount, and the total bet pool.
+            
+        Example:
+            [
+                {
+                    "username": "john_doe",
+                    "bet_amount": Decimal('50.00'),
+                    "estimated_winning_amount": Decimal('75.00'),
+                    "total_bet_pool": Decimal('100.00')
+                },
+                ...  # Other participants' info
+            ]
+        """
+        # Retrieve all bets related to the event
+        all_bets = self.bets.select_related("user").all()
+        # Aggregate the total bet amount
+        total_bet_amount = all_bets.aggregate(total=Sum("bet_amount"))["total"] or Decimal("0")
+
+        participants_info = []
+
+        # Iterate over each bet to calculate potential winnings
+        for bet in all_bets:
+            estimated_winning_amount = self._estimate_potential_winning(bet.bet_amount, total_bet_amount)
+            participants_info.append({
+                "username": bet.user.username,
+                "bet_amount": bet.bet_amount, 
+                "estimated_winning_amount": estimated_winning_amount,
+                "total_bet_pool": total_bet_amount
+            })
+
+        return participants_info
+            
+    def _estimate_potential_winning(self, bet_amount, total_bet_amount):
+        """
+        Estimates the potential winning amount for a given bet based on the total bet amount.
+
+        The estimated winning amount is calculated as the ratio of the bet amount to the total
+        bet amount, multiplied by 100. This represents the percentage of the total pool that
+        the bet could potentially win.
+
+        Args:
+            bet_amount (Decimal): The amount of the bet.
+            total_bet_amount (Decimal): The total amount bet on the event.
+
+        Returns:
+            Decimal: The estimated winning amount for the bet.
+
+        Example:
+            If a user bets Decimal('50.00') in a total pool of Decimal('100.00'), the
+            estimated winning amount would be Decimal('50.00').
+        """
+        if total_bet_amount > Decimal("0"):
+            # Calculate the potential winnings as a percentage of the total bet amount
+            return (Decimal(bet_amount) / total_bet_amount) * total_bet_amount
+        else:
+            return Decimal("0")
+    
     
     # METHODS
         # METHODS     
@@ -179,46 +283,6 @@ class Event(models.Model):
     
     def __str__(self):
         return f"{self.team1} vs {self.team2} at {self.start_time.strftime('%Y-%m-%d %H:%M')}"
-
-class Member(models.Model):
-    """
-    Represents a member of a group, which can have different roles such as 'admin' or 'normal'.
-    """
-    group = models.ForeignKey(
-        Group,
-        on_delete=models.CASCADE,
-        related_name="members",
-        help_text="The group to which the member belongs."
-    )
-    
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name="member_of",
-        on_delete=models.CASCADE,
-        related_query_name="membership",
-        help_text="The user who is a member of the group."
-    )
-    
-    admin = models.CharField(
-        max_length=10,
-        choices=[(tag.value, tag.name) for tag in UserType],
-        default=UserType.NORMAL.value,
-        help_text="The role of the member within the group. Defaults to 'normal'."
-    )
-    
-    joined_at = models.DateTimeField(auto_now_add=True,)
-
-    # METHODS
-    def __str__(self):
-        return (
-            f"{self.user.username} in {self.group.name} as {self.get_admin_display()}"
-        )
-        
-    class Meta:
-        unique_together = ("user", "group")
-        ordering = ["joined_at"]
-
-
 
 class Bet(models.Model):
     """
@@ -339,9 +403,12 @@ class Bet(models.Model):
         Overrides the save method to add the user to the event's participants.
         """
         # Check if the user is not already a participant of the event
-        if not self.event.participants.filter(id=self.user.id).exists();
+        if not self.event.participants.filter(id=self.user.id).exists():
         # Add the user to the event's participants
-        self.event.save()
+            self.event.participants.add(self.user)
+            # Save the event
+            self.event.save()
+        super(Bet, self).save()
         
     def __str__(self): 
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
