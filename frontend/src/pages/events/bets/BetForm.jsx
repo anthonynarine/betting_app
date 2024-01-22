@@ -105,6 +105,12 @@ const BetForm = ({ open, onClose }) => {
         onClose={onClose}
         aria-labelledby="bet-form"
         aria-describedby="form-to-create-a-bet"
+        sx={{
+          '& .MuiDialog-paper': { // Targeting the inner paper component
+            width: '400px', // Fixed width
+            maxWidth: '400px', // Maximum width
+          }
+        }}
       >
         <DialogTitle id="bet-form">Place A Bet</DialogTitle>
         {/* ... error message display ... */}

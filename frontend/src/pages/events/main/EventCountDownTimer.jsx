@@ -108,48 +108,50 @@ const CountDownTimer = ({ event }) => {
     };
 
     return (
-        <Box sx={{ 
-            maxWidth: "20rem",
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 4, 
-            padding: '6px 10px', 
-            borderRadius: '16px', 
-            backgroundColor: '#000',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
-            marginTop: "2px"
-        }}>
-            <Chip 
-                icon={<AccessTimeIcon />} 
-                label={status} 
-                size="medium" 
-                sx={{ 
-                    fontWeight: 'bold', 
-                    color: '#94959B', 
-                    backgroundColor: '#484950',
-                    display: 'flex',
-                    width: {
-                        xs: '6rem', 
-                        sm: '9rem', 
-                    }
-                }}
-            />
-            <Typography variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
-                {renderTimeLeft()}
-            </Typography>
-            {status === "Ended" && (
-                <IconButton onClick={toggleModal}>
-                    <EventAvailableIcon color="primary" />
-                </IconButton>
-            )}
+        <>
+            <Box sx={{ 
+                maxWidth: "20rem",
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 4, 
+                padding: '6px 10px', 
+                borderRadius: '16px', 
+                backgroundColor: '#000',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
+                marginTop: "2px"
+            }}>
+                <Chip 
+                    icon={<AccessTimeIcon />} 
+                    label={status} 
+                    size="medium" 
+                    sx={{ 
+                        fontWeight: 'bold', 
+                        color: '#94959B', 
+                        backgroundColor: '#484950',
+                        display: 'flex',
+                        width: {
+                            xs: '6rem', 
+                            sm: '9rem', 
+                        }
+                    }}
+                />
+                <Typography component="span" variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
+                    {renderTimeLeft()}
+                </Typography>
+                {status === "Ended" && (
+                    <IconButton onClick={toggleModal}>
+                        <EventAvailableIcon color="primary" />
+                    </IconButton>
+                )}
 
-            <CompleteEventForm
-                modalOpen={modalOpen}
-                toggleModal={toggleModal}
-                // onEventComplete={onEventComplete}
-                teams={[event.team1, event.team2]}
-            />
-        </Box>
+                <CompleteEventForm
+                    modalOpen={modalOpen}
+                    toggleModal={toggleModal}
+                    // onEventComplete={onEventComplete}
+                    teams={[event.team1, event.team2]}
+                />
+            </Box>
+        </>
     );
 };
 

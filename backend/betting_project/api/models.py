@@ -333,6 +333,16 @@ class Bet(models.Model):
         return self.event.team2
     
     #METHODS
+    
+    def save(self):
+        """
+        Overrides the save method to add the user to the event's participants.
+        """
+        # Check if the user is not already a participant of the event
+        if not self.event.participants.filter(id=self.user.id).exists();
+        # Add the user to the event's participants
+        self.event.save()
+        
     def __str__(self): 
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
 
