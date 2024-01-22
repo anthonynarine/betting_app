@@ -431,7 +431,17 @@ class Bet(models.Model):
                 participant.bet = self
                 participant.save()
 
-    def delete
+    def delete(self, *args, **kwargs):
+        """
+        Override the delete method to remove the user from the event's participants when their bet is deleted 
+        """
+        # Check if there's an associated participant record
+        participant = Participant.objects.filter(event=self.event, user=self.user).first()
+        if participant:
+            # If the participant's bet is the one being deleted, remove the participant
+            if participant.bet == self:
+                participant.delete()
+        super(Bet, self).delete(*args, **kwargs)
     
     def __str__(self): 
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
