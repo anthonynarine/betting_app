@@ -33,7 +33,7 @@ class EventAdmin(admin.ModelAdmin):
     fields = ["team1", "team2", "time", "group"]
     list_display = [field.name for field in Event._meta.fields]
 
-@admin.register
+@admin.register(Participant)
 class ParticipantAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Participant._meta.fields]
     
