@@ -198,77 +198,96 @@ class Event(models.Model):
         default=False,
         help_text="Indicates whether the event is archived.")
     
-    def get_participants_bets_and_potential_winnings(self):
+    # Primary method
+    def get_participants_bets_and_potential_winnings(self, winning_team_name):
         """
-        Retrieves information about each participant's bet and calculates their 
-        potential winnings based on the total bet pool.
+        Retrieves detailed information about each participant's bet for an event, and calculates 
+        their potential winnings based on their bet and the overall betting pool.
 
-        This method computes the total amount bet on the event and estimates the
-        potential winnings for each bet. It assumes an equal distribution of the
-        total bet pool among all bets.
+        The potential winnings depend on the total amount bet on the winning and losing teams. 
+        Special cases are handled where all bets are on either the winning or losing team, 
+        or if there's only one bettor.
+
+        Args:
+            winning_team_name (str): The name of the winning team.
 
         Returns:
-            list of dicts: A list containing dictionaries for each bet. Each dictionary
-            includes the username, bet amount, estimated winning amount, and the total bet pool.
-            
-        Example:
-            [
-                {
-                    "username": "john_doe",
-                    "bet_amount": Decimal('50.00'),
-                    "estimated_winning_amount": Decimal('75.00'),
-                    "total_bet_pool": Decimal('100.00')
-                },
-                ...  # Other participants' info
-            ]
+            List[Dict]: A list of dictionaries, each containing the following keys:
+                        - 'username': Username of the participant.
+                        - 'bet_amount': The amount bet by the participant.
+                        - 'estimated_winning_amount': The potential winning amount for the participant.
+                        - 'total_bet_pool': The total bet amount for the event.
         """
-        # Retrieve all bets related to the event
-        all_bets = self.bets.select_related("user").all()
-        # Aggregate the total bet amount
-        total_bet_amount = all_bets.aggregate(total=Sum("bet_amount"))["total"] or Decimal("0")
-
+        # Retrieve all participants associated with this event
+        participants = self.event_participants.all()
+        
+        # Identify the winning team based on the given team name
+        winning_team_label = self._determine_winning_team_label(winning_team_name)
+        if not winning_team_label:
+            # Return an empty list if the winning team name is invalid
+            return []
+        
+        # Calculate the total amount bet on the event
+        total_bet_amount = self.bets.aggregate(total=Sum("bet_amount"))["total"] or Decimal("0")
+        
+        # Filter bets based on the winning team and count them
+        winning_bets = self.bets.filter(team_choice=winning_team_label)
+        winning_bettors = winning_bets.count()
+        total_bettors = participants.count()
+        
+        # Calculate the total bet amount on the losing team
+        if total_bettors == 1 or winning_bettors == 0 or winning_bettors == total_bettors:
+            # If special cases are met, there is no money in the losing bet pool
+            losing_bet_total = Decimal("0")
+        else:
+            # Otherwise, calculate the total amount in the losing bet pool
+            winning_bet_total = winning_bets.aggregate(total=Sum("bet_amount"))["total"] or Decimal("0")
+            losing_bet_total = total_bet_amount - winning_bet_total
+        
+        # Prepare information about each participant's bet and potential winnings
         participants_info = []
-
-        # Iterate over each bet to calculate potential winnings
-        for bet in all_bets:
-            estimated_winning_amount = self._estimate_potential_winning(bet.bet_amount, total_bet_amount)
+        for participant in participants:
+            bet = participant.bet
+            estimated_winning_amount = Decimal("0")
+            if bet and bet.team_choice == winning_team_label and losing_bet_total > Decimal("0"):
+                # Calculate potential winnings for participants who bet on the winning team
+                estimated_winning_amount = self._estimate_potential_winning(bet.bet_amount, winning_bet_total, losing_bet_total)
+            
             participants_info.append({
-                "username": bet.user.username,
-                "bet_amount": bet.bet_amount, 
+                "username": participant.user.username,
+                "bet_amount": bet.bet_amount if bet else Decimal("0"),  # Default to 0 if no bet
                 "estimated_winning_amount": estimated_winning_amount,
                 "total_bet_pool": total_bet_amount
             })
-
+        
         return participants_info
-            
-    def _estimate_potential_winning(self, bet_amount, total_bet_amount):
-        """
-        Estimates the potential winning amount for a given bet based on the total bet amount.
 
-        The estimated winning amount is calculated as the ratio of the bet amount to the total
-        bet amount, multiplied by 100. This represents the percentage of the total pool that
-        the bet could potentially win.
+    # Helper methods
+    def _determine_winning_team_label(self, winning_team_name):
+        if winning_team_name == self.team1:
+            return "Team 1"
+        elif winning_team_name == self.team2:
+            return "Team 2"
+        else:
+            return None
+        
+    def _estimate_potential_winning(self, bet_amount, winning_bet_total, losing_bet_total):
+        """
+        Estimates the potential winnings for a bet.
 
         Args:
             bet_amount (Decimal): The amount of the bet.
-            total_bet_amount (Decimal): The total amount bet on the event.
+            winning_bet_total (Decimal): The total amount bet on the winning team.
+            losing_bet_total (Decimal): The total amount bet on the losing team.
 
         Returns:
             Decimal: The estimated winning amount for the bet.
-
-        Example:
-            If a user bets Decimal('50.00') in a total pool of Decimal('100.00'), the
-            estimated winning amount would be Decimal('50.00').
         """
-        if total_bet_amount > Decimal("0"):
-            # Calculate the potential winnings as a percentage of the total bet amount
-            return (Decimal(bet_amount) / total_bet_amount) * total_bet_amount
+        if winning_bet_total > Decimal("0"):
+            return (Decimal(bet_amount) / winning_bet_total) * losing_bet_total
         else:
             return Decimal("0")
-    
-    
-    # METHODS
-        # METHODS     
+
     def save(self, *args, **kwargs):
         # Capitalie the name before saving
         self.team1 = self.team1.title()

@@ -17,13 +17,6 @@ class GroupAdmin(admin.ModelAdmin):
             obj.creator = request.user
         super().save_model(request, obj, form, change)
 
-
-@admin.register(Event)
-class EventAdmin(admin.ModelAdmin):
-    fields = ["team1", "team2", "time", "team1_score", "team2_score", "group"]
-    list_display = [field.name for field in Event._meta.fields]
-
-
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
     fields = [
@@ -33,6 +26,10 @@ class MemberAdmin(admin.ModelAdmin):
     ]
     list_display = [field.name for field in Member._meta.fields]
 
+@admin.register(Event)
+class EventAdmin(admin.ModelAdmin):
+    fields = ["team1", "team2", "time", "team1_score", "team2_score", "group"]
+    list_display = [field.name for field in Event._meta.fields]
 
 @admin.register(Bet)
 class BetAdmin(admin.ModelAdmin):
