@@ -2,6 +2,7 @@
 
 from decimal import Decimal
 from operator import mod
+from venv import create
 from django.db.models import Sum
 from django.conf import settings
 from django.db import models
@@ -280,7 +281,7 @@ class Event(models.Model):
 class Participant(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_participants")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="event_participantions")
-    bet = models.OneToOneField('Bet', on_delete=models.CASCADE, related_name="participant", null=True, blank=True)
+    bet = models.OneToOneField('Bet', on_delete=models.CASCADE, related_name="participants", null=True, blank=True)
 
     def __str__(self):
         return f"{self.user.username} participating in {self.event}"
@@ -401,18 +402,37 @@ class Bet(models.Model):
     
     #METHODS
     
-    def save(self):
+    def save(self, *args, **kwargs):
         """
-        Overrides the save method to add the user to the event's participants.
-        """
-        # Check if the user is not already a participant of the event
-        if not self.event.participants.filter(id=self.user.id).exists():
-        # Add the user to the event's participants
-            self.event.participants.add(self.user)
-            # Save the event
-            self.event.save()
-        super(Bet, self).save()
+        Overrides the save method to create or update a Participant instance
+        when a bet is placed. This links the bet to the event and the user.
         
+        - If the bet is newly created, it either creates a new Participant instance
+        or updates an existing one with the new bet.
+        - If the bet is being updated (not newly created), it ensures the Participant
+        instance is linked to this bet.
+        """
+        # Check if this is a new bet or an update
+        created = self._state.adding
+
+        # Save the bet first to ensure it has an ID (important for new bets)
+        super(Bet, self).save(*args, **kwargs)
+
+        # Handle the creation or update of the Participant instance
+        if created:
+            # Attempt to get an existing Participant, or create a new one if it doesn't exist
+            participant, participant_created = Participant.objects.get_or_create(
+                event=self.event,
+                user=self.user,
+                defaults={"bet": self}
+            )
+            # If a Participant already existed, update it with this bet
+            if not participant_created:
+                participant.bet = self
+                participant.save()
+
+    def delete
+    
     def __str__(self): 
         return f"{self.user.username}'s bet on {self.event.team1} vs {self.event.team2} - Status: {self.status}"
 
