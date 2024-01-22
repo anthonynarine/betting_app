@@ -35,7 +35,6 @@ class EventSerializer(serializers.ModelSerializer):
             "organizer",
             "group",
             "group_id",
-            "participants",
             "is_complete"
         )
     def create (self, validated_data):
@@ -107,7 +106,6 @@ class EventBriefSerializer(serializers.ModelSerializer):
             "end_time",
             "is_complete" "organizer",
             "group",
-            "participants",
         )
 
 

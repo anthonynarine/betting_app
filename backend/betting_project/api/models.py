@@ -1,6 +1,7 @@
 # models.py in your Django app
 
 from decimal import Decimal
+from operator import mod
 from django.db.models import Sum
 from django.conf import settings
 from django.db import models
@@ -191,15 +192,7 @@ class Event(models.Model):
         related_query_name="event",
         help_text="The group under which this event is organized."
     )
-    
-    participants = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        related_name="attended_events",
-        blank=True,
-        related_query_name="attended_event",
-        help_text="The users who are participating in the event."
-    )
-    
+        
     is_archived = models.BooleanField(
         default=False,
         help_text="Indicates whether the event is archived.")
@@ -284,6 +277,16 @@ class Event(models.Model):
     def __str__(self):
         return f"{self.team1} vs {self.team2} at {self.start_time.strftime('%Y-%m-%d %H:%M')}"
 
+class Participant(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="event_participants")
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="event_participantions")
+    bet = models.OneToOneField('Bet', on_delete=models.CASCADE, related_name="participant", null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user.username} participating in {self.event}"
+    class Meta:
+        unique_together = ('event', 'user')
+    
 class Bet(models.Model):
     """
     
