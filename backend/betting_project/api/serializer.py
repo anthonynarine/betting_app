@@ -2,7 +2,7 @@ import re
 from django.forms import ValidationError
 from rest_framework import serializers
 from users.serializer import UserSerializer
-from .models import Group, Event, Member, Bet
+from .models import Group, Event, Member, Bet, Participant
 from django.utils import timezone
 from .serializer_mixins.mixins import BannerImageMixin
 
@@ -183,3 +183,9 @@ class BetSerializer(serializers.ModelSerializer):
         return data
 
 
+from rest_framework import serializers
+
+class ParticipantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Participant
+        fields = '__all__'  
