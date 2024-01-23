@@ -39,6 +39,6 @@ class ParticipantAdmin(admin.ModelAdmin):
     
 @admin.register(Bet)
 class BetAdmin(admin.ModelAdmin):
-    fields = ["user", "event", "team1_score", "team2_score", "points", "status"]
+    fields = ["user", "event", "points", "status"]
     list_display = [
         field.name for field in Bet._meta.fields ]

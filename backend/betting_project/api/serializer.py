@@ -11,16 +11,16 @@ class GroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ("id", "name", "location", "description", "user", "banner_image")
 
-
 class GroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
         fields = ("id", "name", "description", "user", "banner_image")
 
-
 class EventSerializer(serializers.ModelSerializer):
     group = GroupBriefSerializer(read_only=True)
     group_id = serializers.IntegerField(write_only=True)
+    participants_bets_and_winnings = serializers.SerializerMethodField()
+    
 
     class Meta:
         model = Event
@@ -35,8 +35,8 @@ class EventSerializer(serializers.ModelSerializer):
             "organizer",
             "group",
             "group_id",
-            "participants",
-            "is_complete"
+            "is_complete",
+            "participants_bets_and_winnings"
         )
     def create (self, validated_data):
         """
@@ -77,7 +77,7 @@ class EventSerializer(serializers.ModelSerializer):
         and update the "group" relationship accordingly
         
         Eact attribute in validated_data is set on the instace using setattr.
-        This handles all the fields of the event except for "grou_id".
+        This handles all the fields of the event except for "group_id".
         if "group_id" is porvided, fetch the corresponding Group instance
         and set it as the event's group.  If "group_id" is not provided,
         the group relationship is not modified
@@ -91,7 +91,13 @@ class EventSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-
+    def get_participants_bets_and_winnings(self, obj):
+        # Extract the winning team from the context
+        winning_tean_name = self.context.get("winning_team_name", None)
+        if winning_tean_name:
+            return obj.get_participants_bets_and_potential_winnings(winning_tean_name)
+        return None
+        
 class EventBriefSerializer(serializers.ModelSerializer):
     group = GroupBriefSerializer(read_only=True)
 
@@ -105,10 +111,10 @@ class EventBriefSerializer(serializers.ModelSerializer):
             "team2_score",
             "start_time",
             "end_time",
-            "is_complete" "organizer",
+            "is_complete",
+            "organizer",
             "group",
         )
-
 
 class MemberSerializer(serializers.ModelSerializer):
     user = UserSerializer(many=False)
@@ -116,7 +122,6 @@ class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = Member
         fields = ["user", "group", "admin", "joined_at"]
-
 
 class FullGroupSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
@@ -126,7 +131,6 @@ class FullGroupSerializer(serializers.ModelSerializer):
         model = Group
         fields = ("name", "id", "location", "description", "events", "members", "banner_image")
         
-
 class BetSerializer(serializers.ModelSerializer):
     chosen_team_name = serializers.SerializerMethodField("get_chosen_team_name")
     class Meta:
@@ -181,9 +185,6 @@ class BetSerializer(serializers.ModelSerializer):
             )
 
         return data
-
-
-from rest_framework import serializers
 
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:

@@ -124,8 +124,12 @@ class EventViewset(viewsets.ModelViewSet):
             event, winning_team, total_bet_amount
         )
         
-        # Step 4: Calculate and distribute winnings based on the event outcome
+        # Step 5: Calculate and distribute winnings based on the event outcome
         self._update_bet_status(event, winning_team)
+        
+        # Pass the winning_team as context to the serializer
+        serializer_context = {"winning_team_name": winning_team}
+        serializer = EventSerializer(event, context=serializer_context)
 
         event.is_complete = True
         event.save()
@@ -140,6 +144,7 @@ class EventViewset(viewsets.ModelViewSet):
                 "details": "Event completed and winnings distributed",
                 "winning_team": winning_team,
                 "winning_info": winning_info,
+                **serializer.data
             },
             status=status.HTTP_200_OK,
         )
