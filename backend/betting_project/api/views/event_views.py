@@ -88,11 +88,26 @@ class EventViewset(viewsets.ModelViewSet):
     )
     def complete_event(self, request, pk=None):
         """
-        Custom action to mark an event as complet. Steps below:
-        - User authentication check
-        - Winning team validation
-        - Calculation of the total bet amount
-        - Marking the event as complete in the database
+        Custom action to mark an event as complete. This method follows several steps:
+        1. User authentication check.
+        2. Winning team validation.
+        3. Calculation of the total bet amount.
+        4. Marking the event as complete in the database.
+        5. Updating the bet status based on the event outcome.
+
+        The winning team name is determined in this method and passed to the EventSerializer
+        as part of the context. This context is used by the serializer to accurately calculate
+        and display participants' bets and potential winnings in the get_participants_bets_and_winnings
+        method. It ensures that the serializer has the necessary dynamic data for processing 
+        the request, particularly the winning team information.
+
+        Args:
+            request: The HTTP request object.
+            pk: The primary key of the event to be marked as complete.
+
+        Returns:
+            A Response object with the event completion details, winnings information, 
+            and serialized event data.
         """
         
         # Retrieve the event based on the pk from the URL
