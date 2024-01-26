@@ -1,0 +1,22 @@
+
+Running Test
+runs test of specivic app 
+python manage.py test myapp.tests
+
+runs all test in project
+python manage.py test .
+
+pip install -r requirements.txt
+
+
+Running Django server:
+1. cd to backend folder
+2. start up virtual enviroment
+    source <virtual_envirment_name>/bin/activate
+    source betting_venv/bin/activate
+3. cd to project director (manage.py file should be in this directory)
+   python manage.py check(optional check for any errors)
+   python manage.py runserser
+
+4. control click url for server in terminal 
+    localhost:8000/admin
