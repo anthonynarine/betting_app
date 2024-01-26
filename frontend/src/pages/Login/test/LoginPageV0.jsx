@@ -9,7 +9,7 @@ function LoginTest() {
 
   const navigate = useNavigate();
 
-  const { obtainTokens, getUserIdFromToken, getUserDetails  } = useAuthServices();
+  const { obtainTokens, getUserIdFromToken, getUserDetails } = useAuthServices();
 
   const handleSubmit = async (e) => {
     e.preventDefault();

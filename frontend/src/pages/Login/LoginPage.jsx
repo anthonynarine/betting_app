@@ -21,7 +21,7 @@ const LoginPage = () => {
 
   const { obtainTokens, getUserIdFromToken, login, logout, } = useAuthServices();
   const { fetchUserData, userData } = useUserServices()
- 
+
   const theme = useTheme();
   const classes = LoginStyles(theme);
 
@@ -47,7 +47,7 @@ const LoginPage = () => {
       localStorage.setItem("accessToken", tokens.access);
       localStorage.setItem("refreshToken", tokens.refresh);
       localStorage.setItem("userId", getUserIdFromToken(tokens.access));
-  
+
       login();
       // console.log("Access Token being stored:", tokens.access);
       // console.log("Refresh Token being stored:", tokens.refresh);
@@ -121,9 +121,9 @@ const LoginPage = () => {
             variant="subtitle2"
             noWrap
             component="h1"
-            sx={{ alignItems: "center", fontWeight: 500, pb: 2 , pt:2}}
+            sx={{ alignItems: "center", fontWeight: 500, pb: 2, pt: 2 }}
           ><Link to={"/signup"}>Dont have an account? Signup</Link>
-            
+
           </Typography>
         </Box>
       </Container>

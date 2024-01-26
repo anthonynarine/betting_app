@@ -25,43 +25,43 @@ import { loadStripe } from "@stripe/stripe-js";
 import useFetchStripeKey from "./stripe/FetchStripeKeyRequest";
 
 function App() {
-  const { stripePublicKey } = useFetchStripeKey();
-  const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
-  // console.log(stripePromise);
+	const { stripePublicKey } = useFetchStripeKey();
+	const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
+	// console.log(stripePromise);
 
-  return (
-    <UserServiceProvider>
-      <AuthProvider>
-        <ToggleColorModeProvider>
-          <CssBaseline />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/group/:groupId" element={<DetailPage />} />
-            <Route path="/event/:eventId" element={<EventPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* <Route path="/login" element={<LoginPageV0 />} /> */}
-            <Route
-              path="/testlogin"
-              element={
-                <ProtectedRoute>
-                  <TestLogin />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/addfunds"
-              element={
-                <Elements stripe={stripePromise}>
-                  <StripeChargeComponent />
-                </Elements>
-              }
-            />
-          </Routes>
-        </ToggleColorModeProvider>
-      </AuthProvider>
-    </UserServiceProvider>
-  );
+	return (
+		<UserServiceProvider>
+			<AuthProvider>
+				<ToggleColorModeProvider>
+					<CssBaseline />
+					<Routes>
+						<Route path="/" element={<Home />} />
+						<Route path="/group/:groupId" element={<DetailPage />} />
+						<Route path="/event/:eventId" element={<EventPage />} />
+						<Route path="/login" element={<LoginPage />} />
+						<Route path="/signup" element={<Signup />} />
+						{/* <Route path="/login" element={<LoginPageV0 />} /> */}
+						<Route
+							path="/testlogin"
+							element={
+								<ProtectedRoute>
+									<TestLogin />
+								</ProtectedRoute>
+							}
+						/>
+						<Route
+							path="/addfunds"
+							element={
+								<Elements stripe={stripePromise}>
+									<StripeChargeComponent />
+								</Elements>
+							}
+						/>
+					</Routes>
+				</ToggleColorModeProvider>
+			</AuthProvider>
+		</UserServiceProvider>
+	);
 }
 
 export default App;

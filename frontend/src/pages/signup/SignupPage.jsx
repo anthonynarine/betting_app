@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Button, TextField, Container, Typography, Box, useTheme } from "@mui/material";
 import { useAuthServices } from "../../context/Auth/AuthServices";
 import { useNavigate } from "react-router-dom";
-import { LoginStyles } from "../login/LoginStyles";
+import { LoginStyles } from "../login/LoginStyles.jsx";
 import { validateSignupPassword, validateEmail } from "../login/validators/SingupValidators.jsx.jsx";
-import { validateUsername } from "../login/validators/LoginValidators";
+import { validateUsername } from "../login/validators/LoginValidators.jsx";
 
 const Signup = () => {
   //  Handles for textfields/inputfields
