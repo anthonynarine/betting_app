@@ -78,76 +78,7 @@ class EventViewset(viewsets.ModelViewSet):
         logger.info(
             "Event with ID %s deleted by user %s", event.id, request.user.username
         )
-        return super().destroy(request, *args, **kwargs)
-
-
-    def calculate_potential_winnings(self):
-        """
-        Calculates the potential winnings for each participant's bet based on 
-        the current betting pool. This method is used to provide an estimate 
-        of what participants might win, based on the bets currently placed on 
-        each team.
-
-        The potential winnings are calculated by:
-        - Summing the total bet amount for each team.
-        - For each bet, calculating what proportion of the team's total bet amount 
-          it represents.
-        - Using this proportion to determine what share of the opposite team's 
-          total bets the bet would win if successful.
-
-        Note: This is an estimation and the actual winnings might differ based 
-        on the event's final outcome.
-
-        Returns:
-            A list of dictionaries, each containing:
-            - 'user': Username of the participant.
-            - 'bet_amount': The amount bet by the participant.
-            - 'team_choice': The team chosen by the participant.
-            - 'potential_winning': The estimated winning amount for the participant.
-            - 'total_winnable_pool': The total pool of bets that can be won.
-
-        Example:
-            Let's say we have an event with two teams: Team A and Team B.
-            - Total bets on Team A: $1000
-            - Total bets on Team B: $800
-            - Participant X bets $100 on Team A.
-
-            The potential winning for Participant X is calculated as follows:
-            - Participant X's share of bets on Team A: $100 / $1000 = 10%
-            - If Team A wins, Participant X is entitled to 10% of Team B's total bets.
-            - Potential winning = 10% of $800 = $80
-            - Total Winnable Pool = $800 (Total bets on Team B)
-        """
-        
-        # Initialize the bets collections by retrieving all related to this event.
-        bets = self.bets.all()
-        # Initialize a dict to keep trasck of the total bet amount for each team (read up on python dictionary comprehension)
-        total_bet_amount = {team: Decimal("0") for team in [self.team1, self.team]}
-        #loop over each bet + add the bet amount to the correspoing team's total the total_bet_amount dict
-        for bet in bets:
-            total_bet_amount[bet.team_choice] += bet.bet_amount
-        
-        #initialize a list to store potential winnings
-        potential_winnings = []
-        for bet in bets:
-            if total_bet_amount[bet.team_choice] > 0:
-                # The total amount of money that can be won from the opposite team's bet pool.
-                winnable_amount = (total_bet_amount[self.team1] + total_bet_amount[self.team2] - total_bet_amount[bet.team_choice])
-                # The proportion of the bet in relation to the total bets placed on the chosen team.
-                winning_ratio = bet.bet_amount / total_bet_amount[bet.team_choice]
-                potential_winning = winning_ratio * winnable_amount
-                
-                potential_winning.append({
-                    'user': bet.user.username,
-                    'bet_amount': bet.bet_amount,
-                    'team_choice': bet.team_choice,
-                    'potential_winning': potential_winning,
-                    'total_winnable_pool': winnable_amount
-                    
-                })
-        
-        return potential_winnings
-    
+        return super().destroy(request, *args, **kwargs)  
     
     @action(
         detail=True,

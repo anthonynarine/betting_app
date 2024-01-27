@@ -92,11 +92,9 @@ class EventSerializer(serializers.ModelSerializer):
         return instance
 
     def get_participants_bets_and_winnings(self, obj):
-        # Extract the winning team from the context
-        winning_tean_name = self.context.get("winning_team_name", None)
-        if winning_tean_name:
-            return obj.get_participants_bets_and_potential_winnings(winning_tean_name)
-        return None
+        # obj is an instance of the Event model
+        # calculate_potential_winnings i called on the instance. 
+        return obj.calculate_potential_winnings()
         
 class EventBriefSerializer(serializers.ModelSerializer):
     group = GroupBriefSerializer(read_only=True)
