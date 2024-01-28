@@ -253,16 +253,22 @@ class Event(models.Model):
                 # Calculate the proportion of the bet in relation to the total bets placed on the chosen team.
                 winning_ratio = bet.bet_amount / total_bet_amount[bet.team_choice]
                 potential_winning = winning_ratio * winnable_amount
+            
+            if bet.team_choice == "Team 1":
+                team_name = bet.event.team1
+            elif bet.team_choice == "Team 2":
+                team_name = bet.event.team2
+            else:
+                team_name = "Unknown Team"
                 
                 # Append the calculated data to the potential_winnings list
-                potential_winning.append({
-                    'user': bet.user.username,
-                    'bet_amount': bet.bet_amount,
-                    'team_choice': getattr(bet.event, bet.team_choice.lower()),  # Gets the actual team name (e.g., "Lakers")
-                    'potential_winning': potential_winning,
-                    'total_winnable_pool': winnable_amount
-                    
-                })
+            potential_winnings.append({  # Correct usage of append
+                'user': bet.user.username,
+                'bet_amount': bet.bet_amount,
+                'team_choice': team_name,
+                'potential_winning': potential_winning,
+                'total_winnable_pool': winnable_amount
+            })
         
         return potential_winnings
 
