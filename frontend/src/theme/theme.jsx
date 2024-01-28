@@ -29,6 +29,14 @@ export const createBettingAppTheme = (mode) => {
           elevation: 0,
         },
       },
+      MuiAlert: {
+        styleOverrides: {
+          root: {
+            backgroundColor: "#f2f2f2",
+            color:" #333", // text color
+          }
+        }
+      },
       // MuiButton: {
       //   styleOverrides: {
       //     containedPrimary: {
