@@ -1,7 +1,8 @@
 import { AppBar, Toolbar, Typography, Box, IconButton, Drawer } from "@mui/material";
 import { Link } from "react-router-dom";
-import CasinoIcon from "@mui/icons-material/Casino";
-import { useResponsiveDrawer } from "../primaryDraw/useResponsive"; 
+// import CasinoIcon from "@mui/icons-material/Casino";
+import { LogoIcon } from "./LogoIcon";
+import { useResponsiveDrawer } from "../primaryDraw/useResponsive";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
 
@@ -21,17 +22,20 @@ function PrimaryAppBar() {
     <>
       <AppBar
         sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          backgroundColor: theme.palette.background.default,
-          borderBottom: `1px solid ${theme.palette.divider}`,
-          display: "flex",
-          justifyContent: "space-between",
+          backgroundColor: "#212121",
+          borderBottom: "1px solid #00C896",
+          // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)'
+          // zIndex: (theme) => theme.zIndex.drawer + 1,
+          // backgroundColor: theme.palette.background.default,
+          // borderBottom: `1px solid ${theme.palette.divider}`,
+          // display: "flex",
+          // justifyContent: "space-between",
           // backgroundImage: "url(https://source.unsplash.com/random/?green)"
           // backgroundImage: `url(${emblem})`,
         }}
       >
         <Toolbar
-          variant="dense"
+          variant="regular"
           sx={{
             height: theme.primaryAppBar.height,
             minHeight: theme.primaryAppBar.height,
@@ -62,15 +66,15 @@ function PrimaryAppBar() {
               noWrap
               component="div"
               sx={{
-                display: { fontWeight: 900, letterSpacing: "0.25px", color: "black" },
+                display: { fontWeight: 900, letterSpacing: "0.25px", color: "#00C896" },
               }}
             >
-              Bet on This
+              BET on THIS
             </Typography>
           </Link>
-          <CasinoIcon sx={{ marginLeft: "3px" }} />
+          <LogoIcon />
           <Box sx={{ flexGrow: 1 }}></Box>
-   
+
           <LoginLogoutButton />
           {/* <AccountButton /> */}
         </Toolbar>
