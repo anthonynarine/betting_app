@@ -39,9 +39,9 @@ const GroupList = ({ open }) => {
       <Box sx={classes.mainBox}>
         <Typography
           variant="h6"
-          sx={{ display: open ? "block" : "none", color: "#637C5B" }}
+          sx={{ display: open ? "block" : "none", color: "white" }}
         >
-         Group List
+          Group List
         </Typography>
       </Box>
       {apiData &&
@@ -56,10 +56,10 @@ const GroupList = ({ open }) => {
               to={`/group/${group.id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItemButton sx={{ minHeight: 0 }}>
-                <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
+              <ListItemButton sx={{ minHeight: 0, color: "white" }}>
+                <ListItemIcon sx={{ minWidth: 0, justifyContent: "center", color: "white" }}>
                   <ListItemAvatar sx={{ minWidth: "50px" }}>
-                    <Avatar alt="Group Icon" src={group.icon} />
+                    <Avatar alt="Group Icon" src={group.icon} sx={{ backgroundColor: "white" }} />
                   </ListItemAvatar>
                 </ListItemIcon>
                 <ListItemText
@@ -88,4 +88,3 @@ const GroupList = ({ open }) => {
 
 export default React.memo(GroupList);
 
-  

@@ -15,7 +15,7 @@ function GroupListCard() {
     fetchData(url);
   }, [groupId]);
 
-  
+
   const renderHeader = () => {
     if (groupId) {
       return null;
@@ -88,6 +88,7 @@ function GroupListCard() {
           sx={{
             display: {
               sm: "block",
+              color: "white",
               fontWeight: 700,
               fontSize: "48px",
               letterSpacing: "-.5px",
@@ -104,7 +105,7 @@ function GroupListCard() {
 
   return (
     <>
-      <Container maxWidth="xxl" sx={{ px: {sm: 3, md: 5, lg: 7 }, width: "100%" }}>
+      <Container maxWidth="xxl" sx={{ px: { sm: 3, md: 5, lg: 7 }, width: "100%" }}>
         <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
         <Box>{renderSubheader()}</Box>
         <Box>{renderGroupList()}</Box>

@@ -77,6 +77,9 @@ function PrimaryDraw({ children }) {
       PaperProps={{
         sx: {
           mt: `${theme.primaryAppBar.height}px`,
+          backgroundColor: "#212121",
+          borderTop: "1px solid #00C896",
+          borderRight: "1px solid #9e9e9e",
           height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
           width: theme.primaryDraw.width,
         },
