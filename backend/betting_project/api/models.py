@@ -205,23 +205,21 @@ class Event(models.Model):
             of what participants might win, based on the bets currently placed on 
             each team.
 
-            The potential winnings are calculated by:
-            - Summing the total bet amount for each team.
-            - For each bet, calculating what proportion of the team's total bet amount 
-            it represents.
-            - Using this proportion to determine what share of the opposite team's 
-            total bets the bet would win if successful.
-
-            Note: This is an estimation and the actual winnings might differ based 
-            on the event's final outcome.
-
+            Calculation Steps:
+            1. Sum the total bet amount for each team.
+            2. For each bet, calculate the proportion of that bet in its team's total bet amount.
+            3. Use this proportion to determine the potential share of the opposite team's total bets.
+            
             Returns:
                 A list of dictionaries, each containing:
                 - 'user': Username of the participant.
                 - 'bet_amount': The amount bet by the participant.
-                - 'team_choice': The team chosen by the participant.
+                - 'team_choice': The team chosen by the participant. (actual team name the event was created with not the db will store Team 1 or Team2
                 - 'potential_winning': The estimated winning amount for the participant.
                 - 'total_winnable_pool': The total pool of bets that can be won.
+
+        Note: This is an estimation and the actual winnings might differ based 
+            on the event's final outcome.
 
             Example:
                 Let's say we have an event with two teams: Team A and Team B.
@@ -237,9 +235,11 @@ class Event(models.Model):
         """     
         # Initialize the bets collections by retrieving all related to this event.
         bets = self.bets.all()
-        # Initialize a dict to keep trasck of the total bet amount for each team (read up on python dictionary comprehension)
-        total_bet_amount = {team: Decimal("0") for team in [self.team1, self.team]}
-        #loop over each bet + add the bet amount to the correspoing team's total the total_bet_amount dict
+
+        #initialize a dictionary to track the total bet amount for each team
+        total_bet_amount = {"Team 1": Decimal("0"), "Team 2": Decimal("0")}
+        
+        #loop over each bet and add the bet amount to the correspoing team's total 
         for bet in bets:
             total_bet_amount[bet.team_choice] += bet.bet_amount
         
@@ -247,16 +247,18 @@ class Event(models.Model):
         potential_winnings = []
         for bet in bets:
             if total_bet_amount[bet.team_choice] > 0:
-                # The total amount of money that can be won from the opposite team's bet pool.
-                winnable_amount = (total_bet_amount[self.team1] + total_bet_amount[self.team2] - total_bet_amount[bet.team_choice])
-                # The proportion of the bet in relation to the total bets placed on the chosen team.
+                # Calculate the total that can be won from the opposite team's bet pool.
+                winnable_amount = (total_bet_amount["Team 1"] + total_bet_amount["Team 2"] - total_bet_amount[bet.team_choice])
+                
+                # Calculate the proportion of the bet in relation to the total bets placed on the chosen team.
                 winning_ratio = bet.bet_amount / total_bet_amount[bet.team_choice]
                 potential_winning = winning_ratio * winnable_amount
                 
+                # Append the calculated data to the potential_winnings list
                 potential_winning.append({
                     'user': bet.user.username,
                     'bet_amount': bet.bet_amount,
-                    'team_choice': bet.team_choice,
+                    'team_choice': getattr(bet.event, bet.team_choice.lower()),  # Gets the actual team name (e.g., "Lakers")
                     'potential_winning': potential_winning,
                     'total_winnable_pool': winnable_amount
                     
