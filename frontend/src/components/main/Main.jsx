@@ -1,4 +1,4 @@
-import { Box, Typography  } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 
@@ -9,10 +9,12 @@ const Main = ({ children }) => {
     <Box
       sx={{
         flexGrow: 1,
+        color: "white",
+        backgroundColor: "#212121",
         mt: `${theme.primaryAppBar.height}px`,
         height: `calc(100vh - ${theme.primaryAppBar.height}px)`,
         overflow: "auto", //enable scrool with auto, disable with hidden
-        
+
       }}
     >
       {children}
