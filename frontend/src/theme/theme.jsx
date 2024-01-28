@@ -46,7 +46,7 @@ export const createBettingAppTheme = (mode) => {
       //     },
       //   },
       // },  
-    }  
+    }
   });
 
   theme = responsiveFontSizes(theme);
