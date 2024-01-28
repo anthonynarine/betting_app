@@ -245,7 +245,9 @@ class Event(models.Model):
         
         #initialize a list to store potential winnings
         potential_winnings = []
+        participants = set() # initialize set for number of unique participants
         for bet in bets:
+            participants.add(bet.user.username)
             if total_bet_amount[bet.team_choice] > 0:
                 # Calculate the total that can be won from the opposite team's bet pool.
                 winnable_amount = (total_bet_amount["Team 1"] + total_bet_amount["Team 2"] - total_bet_amount[bet.team_choice])
@@ -270,8 +272,10 @@ class Event(models.Model):
                 'total_winnable_pool': winnable_amount
             })
         
-        return potential_winnings
-
+        return {
+            "participants_info": potential_winnings,
+            "total_participants": len(participants) # total # of participants
+        }
     def save(self, *args, **kwargs):
         # Capitalie the name before saving
         self.team1 = self.team1.title()
