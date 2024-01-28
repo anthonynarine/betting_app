@@ -15,6 +15,8 @@ import {
   TextField,
   Typography,
   Box,
+  Alert,
+  Tooltip
 } from "@mui/material";
 
 /**
@@ -47,8 +49,15 @@ const BetForm = ({ open, onClose }) => {
   });
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [betAmountError, setBetAmountError] = useState('');
 
   useEffect(() => {
+    // Check if the error message is related to the bet amount and update the state
+    if (errorMessage && errorMessage.includes("bet amount")) {
+      setBetAmountError(errorMessage)
+    } else {
+      setBetAmountError('')
+    }
     console.log("Recieved error message", errorMessage);
   }, [errorMessage]);
 
@@ -115,20 +124,28 @@ const BetForm = ({ open, onClose }) => {
         <DialogTitle id="bet-form">Place A Bet</DialogTitle>
         {/* ... error message display ... */}
         <DialogContent id="form-to-create-a-bet">
+          {/* Error Alert */}
+          {errorMessage && (
+            <Alert severity="error" sx={{ mb:2}}>
+              {errorMessage}
+            </Alert>
+          )}
           {/* Team Choice Dropdown */}
-          <FormControl fullWidth margin="normal">
-            <InputLabel id="team-choice-label">Team Choice</InputLabel>
-            <Select
-              labelId="team-choice-label"
-              value={betDetails.team_choice}
-              onChange={handleInputChange}
-              name="team_choice"
-              label="Team Choice"
-            >
-              <MenuItem value="Team 1">{event.team1}</MenuItem>
-              <MenuItem value="Team 2">{event.team2}</MenuItem>
-            </Select>
-          </FormControl>
+          {/* <Tooltip title="Select the team you want to bet on" placement="right"> */}
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="team-choice-label">Team Choice</InputLabel>
+              <Select
+                labelId="team-choice-label"
+                value={betDetails.team_choice}
+                onChange={handleInputChange}
+                name="team_choice"
+                label="Team Choice"
+              >
+                <MenuItem value="Team 1">{event.team1}</MenuItem>
+                <MenuItem value="Team 2">{event.team2}</MenuItem>
+              </Select>
+            </FormControl>
+          {/* </Tooltip> */}
 
           {/* Bet Type Dropdown */}
           <FormControl fullWidth margin="normal">
@@ -157,6 +174,8 @@ const BetForm = ({ open, onClose }) => {
             fullWidth
             onChange={handleInputChange}
             aria-label="Bet Amount"
+            error={!!betAmountError}
+            helperText={betAmountError ||"Amount to bet"}
           />
         </DialogContent>
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "cen", paddingBottom:3}}>
