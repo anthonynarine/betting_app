@@ -24,7 +24,7 @@ export const BetDataProvider = ({ children }) => {
   console.log("BetDataProvider is rendeering"); // DEBUG TEST
 
   //
-  const { fetchData, createObject } = useCrud();
+  const { fetchData, createObject, updateObject } = useCrud();
   const { updateUserData } = useUserServices();
   let { eventId } = useParams();
   console.log("EVENT ID TEST:", eventId);
@@ -67,10 +67,10 @@ export const BetDataProvider = ({ children }) => {
     }
   }, [eventId]);
 
-  const createBet = async(betDetails, onSuccess, onError) => {
+  const createBet = async (betDetails, onSuccess, onError) => {
     try {
       const newBet = await createObject("/bets/", betDetails);
-      onSuccess(newBet) // passed to BetForm handleSuccess()
+      onSuccess(newBet) // Invoke the success callback
       updateBetListData()
       updateIndividualBetData(newBet.id) // Update BetDetails card (ui)
       updateUserData() // Updates the availabe funds on user icon in primary app bar
@@ -78,6 +78,18 @@ export const BetDataProvider = ({ children }) => {
     } catch (error) {
       console.error("Error placeing bet:", error)
       onError(error) // Pass the error to the OnError Callback in BetForm
+    }
+  }
+
+  const updateBet = async (betId, updatedBetDetails, onSuccess, onError) => {
+    try {
+      const updatedBet = await updateObject("/bets/", betId, updatedBetDetails)
+      onSuccess(updateBet); 
+      updateIndividualBetData(updatedBet.id)
+      updateUserData()
+    } catch (error) {
+      console.error("Error updating bet:", error)
+      onError(error)
     }
   }
 
@@ -102,6 +114,7 @@ export const BetDataProvider = ({ children }) => {
   const value = {
     bets,
     createBet,
+    updateBet,
     individualBet,
     updateBetListData,
     updateIndividualBetData,

@@ -28,10 +28,10 @@ import {
  * - open: Boolean indicating if the modal should be open.
  * - onClose: Function to call when the modal is requested to be closed.
  */
-const BetForm = ({ open, onClose }) => {
+const BetForm = ({ open, onClose, isUpdateMode = false, existingBetDetails = null }) => {
   const { event } = useEventData();
   const { eventId } = useParams();
-  const { createBet } = useBetData();
+  const { createBet, individualBet : currentBetData, updateBet } = useBetData();
   const userId = localStorage.getItem("userId");
 
   // State for managing bet details input
@@ -114,6 +114,27 @@ const BetForm = ({ open, onClose }) => {
       setErrorMessage(null);
     }
   }, [open]);
+
+  useEffect(() => {
+    // Check if the form is in update mode and currentBetData is available
+    // isUpdateMode: A boolean indicating whether the form is being used to update a bet
+    // currentBetData: An object containing the details of the bet to be updated
+    if (isUpdateMode && currentBetData) {
+      // If in update mode and currentBetData is present, pre-populate the form fields
+      // with the existing bet details. This allows the user to see and modify the 
+      // current details of the bet.
+      setBetDetails({
+        // Use currentBetData to pre-fill the form
+        event: currentBetData.event,
+        user: currentBetData.user,
+        team_choice: currentBetData.team_choice,
+        bet_type: currentBetData.bet_type,
+        bet_amount: currentBetData.bet_amount,
+      });
+    }
+  }, [isUpdateMode, currentBetData]);
+  
+
 
   return (
     <>
