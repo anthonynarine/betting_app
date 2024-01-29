@@ -189,12 +189,19 @@ const BetForm = ({ open, onClose }) => {
         </DialogContent>
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "cen", paddingBottom:3}}>
           <DialogActions>
-            <BetRequest
+            <Button
+              onClick={handleBetSubmission}
+              color="primary"
+              variant="outlined"
+              >
+                Place Bet
+              </Button>
+            {/* <BetRequest
               betDetails={betDetails}
               onSuccess={handleSuccess}
               onError={handleError}
               errorMessage={errorMessage}
-            />
+            /> */}
             <Button onClick={onClose} color="primary" variant="outlined">
               Cancel
             </Button>
