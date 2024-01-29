@@ -22,12 +22,13 @@ import { EventDetailCardStyles } from "./EventDetailCardStyles";
 
 //icons
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 //bet
 import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn";
-import BetForm from "../bets/BetForm";
+import BetForm from "../../../context/bet/BetForm";
 import BetDetailsCard from "../bets/BetDetailsCard";
 
 import { Link } from "react-router-dom";
@@ -213,7 +214,7 @@ export default function EventDetailsCard() {
         )}
         {userIsEventCreator && (
           <IconButton aria-label="update" onClick={toggleEventForm}>
-            <SettingsOutlinedIcon />
+            <EditIcon />
           </IconButton>
         )}
         {openUpdateEventForm && (

@@ -41,7 +41,7 @@ const BetRequest = ({ betDetails, onSuccess, onError, errorMessage }) => {
                 sx={{}}
                 // className={classes.confirmBetButton}
                 >
-                {isLoading ? "Placing Bet..." : "Confirm Bet"}
+                {isLoading ? "Placing Bet..." : "Place Bet"}
             </Button>
         </>
     );

@@ -43,7 +43,7 @@ export const BetDataProvider = ({ children }) => {
       }
     };
 
-    const fetchIndividualBet = async () => {
+    const fetchIndividualBetData = async () => {
       try {
         const individualBetData = await fetchData(
           `/bets/event-bet/?event_id=${eventId}`
@@ -61,7 +61,7 @@ export const BetDataProvider = ({ children }) => {
 
     fetchAllBets();
     if (eventId) {
-      fetchIndividualBet();
+      fetchIndividualBetData();
     }
   }, [eventId]);
 
@@ -74,7 +74,7 @@ export const BetDataProvider = ({ children }) => {
     }
   };
 
-  const updateIndividualBet = async (betId) => {
+  const updateIndividualBetData = async (betId) => {
     try {
       const updateIndividualBet = await fetchData(`/bets/${betId}`);
       setIndividualBet(updateIndividualBet);
@@ -87,7 +87,7 @@ export const BetDataProvider = ({ children }) => {
     bets,
     individualBet,
     updateBetList,
-    updateIndividualBet,
+    updateIndividualBetData,
   };
 
   return (

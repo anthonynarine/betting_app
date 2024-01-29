@@ -92,11 +92,11 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
     };
 
     // useEffect for debugging: Manually trigger the Snackbar for testing
-    useEffect(() => {
-        console.log("Snackbar Open: ", snackbarOpen);
-        setSnackbarMessage("Test error message");
-        setSnackbarOpen(true);
-    }, []);
+    // useEffect(() => {
+    //     console.log("Snackbar Open: ", snackbarOpen);
+    //     setSnackbarMessage("Test error message");
+    //     setSnackbarOpen(true);
+    // }, []);
 
     return (
         <>

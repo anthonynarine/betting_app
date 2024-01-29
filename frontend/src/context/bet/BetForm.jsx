@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import BetRequest from "./BetRequestBtn";
-import { useEventData } from "../../../context/eventData/EventDataProvider";
+import BetRequest from "../../pages/events/bets/BetRequest";
+import { useEventData } from "../eventData/EventDataProvider";
 import { useParams } from "react-router-dom";
+import CustomAlert from "../../pages/events/bets/placeBetBtn/CustomAlert";
 import {
   Button,
   Dialog,
@@ -13,10 +14,7 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography,
   Box,
-  Alert,
-  Tooltip
 } from "@mui/material";
 
 /**
@@ -126,9 +124,10 @@ const BetForm = ({ open, onClose }) => {
         <DialogContent id="form-to-create-a-bet">
           {/* Error Alert */}
           {errorMessage && (
-            <Alert severity="error" sx={{ mb:2}}>
-              {errorMessage}
-            </Alert>
+            // <Alert severity="error" sx={{ mb:2}}>
+            //   {errorMessage}
+            // </Alert>
+            <CustomAlert message={errorMessage} severity="error" />
           )}
           {/* Team Choice Dropdown */}
           {/* <Tooltip title="Select the team you want to bet on" placement="right"> */}
