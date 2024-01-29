@@ -3,6 +3,7 @@ import BetRequest from "../../pages/events/bets/BetRequest";
 import { useEventData } from "../eventData/EventDataProvider";
 import { useParams } from "react-router-dom";
 import CustomAlert from "../../pages/events/bets/placeBetBtn/CustomAlert";
+import { useBetData } from "./BetDataProvider";
 import {
   Button,
   Dialog,
@@ -30,6 +31,7 @@ import {
 const BetForm = ({ open, onClose }) => {
   const { event } = useEventData();
   const { eventId } = useParams();
+  const { createBet } = useBetData();
   const userId = localStorage.getItem("userId");
 
   // State for managing bet details input
@@ -43,8 +45,19 @@ const BetForm = ({ open, onClose }) => {
 
   const [errorMessage, setErrorMessage] = useState(null);
   const [betAmountError, setBetAmountError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-
+  const handleBetSubmission = async () => {
+    setIsLoading(true);
+    try {
+      await createBet(betDetails, handleSuccess, handleError);
+    } catch (error) {
+      console.error("Error placing bet:", error)
+      handleError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   /**
    * Handles input changes and updates the betDetails state.
