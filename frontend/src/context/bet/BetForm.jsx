@@ -222,12 +222,6 @@ const BetForm = ({ open, onClose, }) => {
               >
                 {currentBetData ? "Update Bet" : "Place Bet"}
               </Button>
-            {/* <BetRequest
-              betDetails={betDetails}
-              onSuccess={handleSuccess}
-              onError={handleError}
-              errorMessage={errorMessage}
-            /> */}
             <Button onClick={onClose} color="primary" variant="outlined">
               Cancel
             </Button>

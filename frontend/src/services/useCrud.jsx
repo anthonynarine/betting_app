@@ -153,7 +153,7 @@ const updateObject = async (url, id, data) => {
     const updatedData = response.data; // Extract updated data from response
 
     // Update local state with the new data
-    setApiData(apiData.map(item => item.id === id ? updatedData : item));
+    // setApiData(apiData.map(item => item.id === id ? updatedData : item));
 
     setError(null); // Reset any previous errors
     setIsLoading(false); // End loading state
