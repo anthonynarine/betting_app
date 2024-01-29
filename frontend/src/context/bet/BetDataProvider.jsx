@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useCrud from "../../services/useCrud";
 import { useParams } from "react-router-dom";
+import { useUserServices } from "../user/UserContext";
 
 //=== Context Creation ===
 // Create a new context for Bet data
@@ -23,7 +24,8 @@ export const BetDataProvider = ({ children }) => {
   console.log("BetDataProvider is rendeering"); // DEBUG TEST
 
   //
-  const { fetchData } = useCrud();
+  const { fetchData, createObject } = useCrud();
+  const { updateUserData } = useUserServices();
   let { eventId } = useParams();
   console.log("EVENT ID TEST:", eventId);
 
@@ -65,7 +67,21 @@ export const BetDataProvider = ({ children }) => {
     }
   }, [eventId]);
 
-  const updateBetList = async () => {
+  const createBet = async(betDetails, onSuccess, onError) => {
+    try {
+      const newBet = await createObject("/bets/", betDetails);
+      onSuccess(newBet) // passed to BetForm handleSuccess()
+      updateBetListData()
+      updateIndividualBetData(newBet.id) // Update BetDetails card (ui)
+      updateUserData() // Updates the availabe funds on user icon in primary app bar
+      console.log("Printing bet details:", betDetails)
+    } catch (error) {
+      console.error("Error placeing bet:", error)
+      onError(error) // Pass the error to the OnError Callback in BetForm
+    }
+  }
+
+  const updateBetListData = async () => {
     try {
       const allBetsData = await fetchData("/bets/");
       setBets(allBetsData);
@@ -85,8 +101,9 @@ export const BetDataProvider = ({ children }) => {
 
   const value = {
     bets,
+    createBet,
     individualBet,
-    updateBetList,
+    updateBetListData,
     updateIndividualBetData,
   };
 

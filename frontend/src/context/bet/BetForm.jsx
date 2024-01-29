@@ -28,13 +28,8 @@ import {
  * - onClose: Function to call when the modal is requested to be closed.
  */
 const BetForm = ({ open, onClose }) => {
-  // Retrieve event data from context
   const { event } = useEventData();
-
-  // Get the event ID from the URL parameters
   const { eventId } = useParams();
-
-  // Retrieve the user ID from local storage
   const userId = localStorage.getItem("userId");
 
   // State for managing bet details input
@@ -49,15 +44,7 @@ const BetForm = ({ open, onClose }) => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [betAmountError, setBetAmountError] = useState('');
 
-  useEffect(() => {
-    // Check if the error message is related to the bet amount and update the state
-    if (errorMessage && errorMessage.includes("bet amount")) {
-      setBetAmountError(errorMessage)
-    } else {
-      setBetAmountError('')
-    }
-    console.log("Recieved error message", errorMessage);
-  }, [errorMessage]);
+
 
   /**
    * Handles input changes and updates the betDetails state.
@@ -97,6 +84,16 @@ const BetForm = ({ open, onClose }) => {
       setErrorMessage(error.message); // Update the error message using setErrorMessage
     }
   };
+
+  useEffect(() => {
+    // Check if the error message is related to the bet amount and update the state
+    if (errorMessage && errorMessage.includes("bet amount")) {
+      setBetAmountError(errorMessage)
+    } else {
+      setBetAmountError('')
+    }
+    console.log("Recieved error message", errorMessage);
+  }, [errorMessage]);
 
   // Reset error message when the modal is closed
   useEffect(() => {
