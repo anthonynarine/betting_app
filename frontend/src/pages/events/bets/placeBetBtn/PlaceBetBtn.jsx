@@ -13,7 +13,7 @@ import { useBetData } from "../../../../context/bet/BetDataProvider";
 
 export const PlaceBetBtn = ({ toggleBetForm }) => {
   const { event } = useEventData();
-  const { individualBet } = useBetData();
+  const { individualBet: currentBetData } = useBetData();
   const [currentTime, setCurrentTime] = useState(Date.now())
 
   useEffect(()=>{
@@ -39,7 +39,7 @@ export const PlaceBetBtn = ({ toggleBetForm }) => {
   let eventHasStarted = currentTime >= eventStartTime;
 
   // Check if there is an active bet and it has not started
-  let hasActiveBet = individualBet && !individualBet.has_started;
+  let hasActiveBet = currentBetData && !currentBetData.has_started;
 
   let theme = useTheme();
   let classes = PlaceBetBtnStyles(theme);
@@ -57,6 +57,7 @@ export const PlaceBetBtn = ({ toggleBetForm }) => {
     buttonLabel = "Update Bet";
     buttonClickHandler = toggleBetForm;
   }
+
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
