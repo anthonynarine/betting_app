@@ -28,7 +28,7 @@ import {
  * - open: Boolean indicating if the modal should be open.
  * - onClose: Function to call when the modal is requested to be closed.
  */
-const BetForm = ({ open, onClose, isUpdateMode = false, existingBetDetails = null }) => {
+const BetForm = ({ open, onClose, isUpdateMode = false, }) => {
   const { event } = useEventData();
   const { eventId } = useParams();
   const { createBet, individualBet : currentBetData, updateBet } = useBetData();
@@ -50,14 +50,20 @@ const BetForm = ({ open, onClose, isUpdateMode = false, existingBetDetails = nul
   const handleBetSubmission = async () => {
     setIsLoading(true);
     try {
-      await createBet(betDetails, handleSuccess, handleError);
+      if (isUpdateMode) {
+        await updateBet(currentBetData.id, betDetails, handleSuccess, handleError);
+      } else{
+        //if not in update mode assume it's create mode
+        // call create func
+        await createBet(betDetails, handleSuccess, handleError)
+      }
     } catch (error) {
       console.error("Error placing bet:", error)
       handleError(error);
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   /**
    * Handles input changes and updates the betDetails state.
