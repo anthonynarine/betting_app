@@ -8,6 +8,9 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import LoginLogoutButton from "./LoginLogoutButton";
 import { useAuthServices } from "../../context/Auth/AuthServices";
+import BetList from "../../pages/events/bets/BetList";
+import EventsList from "../../pages/details/secondaryDraw/EventsList";
+// import UserBetsDrawer from "./UserBetsDrawer";
 
 
 function PrimaryAppBar() {
@@ -16,6 +19,18 @@ function PrimaryAppBar() {
   const { isDrawerVisible, toggleDrawer } = useResponsiveDrawer();
 
   const { isLoggedIn } = useAuthServices();
+
+
+  const list = () => (
+    <Box
+      sx={{ paddingTop: theme.primaryAppBar.height, minWidth: 200 }}
+      role="presentation"
+      onclick={toggleDrawer(false)}
+    //   onkeydown={toggleDrawer(false)}
+    >
+      <BetList />
+    </Box>
+  );
 
 
   return (
@@ -52,12 +67,14 @@ function PrimaryAppBar() {
               <MenuIcon />
             </IconButton>
           </Box>
+          {/* <UserBetsDrawer isOpen={isDrawerVisible} toggleDrawer={toggleDrawer} /> */}
           <Drawer anchor="left" open={isDrawerVisible} onClose={toggleDrawer(false)}>
-            {[...Array(100)].map((_, i) => (
+            {/* {[...Array(100)].map((_, i) => (
               <Typography key={i} paragraph>
                 {i + 1}
               </Typography>
-            ))}
+            ))} */}
+            {list()}
           </Drawer>
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
