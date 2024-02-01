@@ -32,14 +32,11 @@ function PrimaryAppBar() {
     <>
       <AppBar
         sx={{
-          backgroundColor: "#212121",
-          borderBottom: "1px solid #00C896",
-          // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)'
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          // backgroundColor: theme.palette.background.default,
-          // borderBottom: `1px solid ${theme.palette.divider}`,
-          // display: "flex",
-          // justifyContent: "space-between",
+          backgroundColor: theme.palette.background.default,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          display: "flex",
+          justifyContent: "space-between",
           // backgroundImage: "url(https://source.unsplash.com/random/?green)"
           // backgroundImage: `url(${emblem})`,
         }}
@@ -68,7 +65,7 @@ function PrimaryAppBar() {
                 {i + 1}
               </Typography>
             ))} */}
-  
+
             {list()}
           </Drawer>
 
@@ -78,7 +75,7 @@ function PrimaryAppBar() {
               noWrap
               component="div"
               sx={{
-                display: { fontWeight: 900, letterSpacing: "0.25px", color: "#00C896" },
+                display: { fontWeight: 900, letterSpacing: "0.25px" },
               }}
             >
               BET on THIS

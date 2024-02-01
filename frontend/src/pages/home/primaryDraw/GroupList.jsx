@@ -39,7 +39,7 @@ const GroupList = ({ open }) => {
       <Box sx={classes.mainBox}>
         <Typography
           variant="h6"
-          sx={{ display: open ? "block" : "none", color: "white" }}
+          sx={{ display: open ? "block" : "none" }}
         >
           Group List
         </Typography>
@@ -56,8 +56,8 @@ const GroupList = ({ open }) => {
               to={`/group/${group.id}`}
               style={{ textDecoration: "none", color: "inherit" }}
             >
-              <ListItemButton sx={{ minHeight: 0, color: "white" }}>
-                <ListItemIcon sx={{ minWidth: 0, justifyContent: "center", color: "white" }}>
+              <ListItemButton sx={{ minHeight: 0 }}>
+                <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
                   <ListItemAvatar sx={{ minWidth: "50px" }}>
                     <Avatar alt="Group Icon" src={group.icon} sx={{ backgroundColor: "white" }} />
                   </ListItemAvatar>
