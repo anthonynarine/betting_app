@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Box, IconButton, Drawer } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 // import CasinoIcon from "@mui/icons-material/Casino";
 import { LogoIcon } from "./LogoIcon";
@@ -70,18 +70,40 @@ function PrimaryAppBar() {
           </Drawer>
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography
-              variant="h4"
-              noWrap
-              component="div"
-              sx={{
-                display: { fontWeight: 900, letterSpacing: "0.25px" },
-              }}
-            >
-              BET on THIS
-            </Typography>
+            <Stack direction="row" spacing={0}>
+              <LogoIcon />
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 900 },
+                }}
+              >
+                BET
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 200 },
+                }}
+              >
+                on
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 900 },
+                }}
+              >
+                THIS
+              </Typography>
+            </Stack>
           </Link>
-          <LogoIcon />
           <Box sx={{ flexGrow: 1 }}></Box>
 
           <LoginLogoutButton />
