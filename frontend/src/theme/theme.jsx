@@ -10,7 +10,7 @@ export const createBettingAppTheme = (mode) => {
       },
     },
     primaryAppBar: {
-      height: 100,
+      height: 65,
     },
     primaryDraw: {
       width: 250,
