@@ -8,7 +8,7 @@ import { useUserServices } from "../../context/user/UserContext";
 
 const AccountMenuBtn = () => {
 
-  const navigate  = useNavigate();  
+  const navigate = useNavigate();
   const { logout, } = useAuthServices();
   const { userData } = useUserServices();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,7 +31,7 @@ const AccountMenuBtn = () => {
   return (
     <>
       <IconButton
-        size="large"
+        size="medium"
         edge="end"
         aria-label="accout of current user"
         aria-controls="menu-appbar"
@@ -40,10 +40,10 @@ const AccountMenuBtn = () => {
         color="inherit"
         sx={{
           mr: 1.5,
-          color: "#000",
+          color: "primary",
           "&:hover": {
-            color: "#00DE49",
-            bgcolor: "#000",
+            color: "inherit",
+            bgcolor: "inherit",
           },
           bgcolor: "#E0E0E0", // Customize background color
           boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)", // Add elevation
@@ -52,7 +52,7 @@ const AccountMenuBtn = () => {
         <AccountCircleIcon />
       </IconButton>
 
-      <Menu   
+      <Menu
         id="menu-appbar"
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -67,10 +67,10 @@ const AccountMenuBtn = () => {
         open={open}
         onClose={handleClose}
       >
-       { <MenuItem onClick={handleClose}>
+        {<MenuItem onClick={handleClose}>
           <Typography variant="subtitle1">
-            {userData.username ?  userData.username : "Account"}
-            </Typography>
+            {userData.username ? userData.username : "Account"}
+          </Typography>
         </MenuItem>}
 
         <MenuItem>
