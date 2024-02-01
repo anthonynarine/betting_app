@@ -19,7 +19,6 @@ export default function LoginLogoutButton() {
 
 
   return (
-    
     <Box
       sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center", height: 100 }}
     >
@@ -27,23 +26,23 @@ export default function LoginLogoutButton() {
         <AccountMenuBtn key={userData.id} />
       ) : (
         <>
-        <Button
-          variant="outlined"
-          sx={{
-            backgroundColor: "#000",
-            color: "#fff",
-            borderRadius: "50px",
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "#00DE49",
-              color: "#121214",
-            },
-          }}
-          onClick={handleLogin}
-        >
-          Login
-        </Button>
-      </>
+          <Button
+            variant="outlined"
+            sx={{
+              backgroundColor: "#000",
+              color: "#fff",
+              borderRadius: "50px",
+              textTransform: "none",
+              "&:hover": {
+                backgroundColor: "#00DE49",
+                color: "#121214",
+              },
+            }}
+            onClick={handleLogin}
+          >
+            Login
+          </Button>
+        </>
       )}
     </Box>
   );
