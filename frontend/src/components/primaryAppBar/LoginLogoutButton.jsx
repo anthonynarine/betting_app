@@ -17,7 +17,6 @@ export default function LoginLogoutButton() {
     navigate("/login");
   };
 
-
   return (
     <Box
       sx={{ display: { xs: "none", sm: "flex" }, alignItems: "center", height: 100 }}
