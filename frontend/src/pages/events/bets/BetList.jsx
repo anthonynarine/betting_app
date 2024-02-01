@@ -22,7 +22,7 @@ import {
     const classes = ListViewStyles(theme);
   
     const { bets } = useBetData();
-    console.log("All Bets Received form context:", bets)  //DEBUG TEST
+    // console.log("All Bets Received form context:", bets)  //DEBUG TEST
   
     useEffect(()=>{},[bets])
   

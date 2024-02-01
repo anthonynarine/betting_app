@@ -8,7 +8,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import LoginLogoutButton from "./LoginLogoutButton";
 import { useAuthServices } from "../../context/Auth/AuthServices";
-
+import BetList from "../../pages/events/bets/BetList";
 
 function PrimaryAppBar() {
   const theme = useTheme();
@@ -17,6 +17,16 @@ function PrimaryAppBar() {
 
   const { isLoggedIn } = useAuthServices();
 
+  const list = () => (
+    <Box
+      sx={{ paddingTop: `${theme.primaryAppBar.height}px`, minWidth: 200 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeydown={toggleDrawer(false)}
+    >
+      <BetList open={toggleDrawer} />
+    </Box>
+  );
 
   return (
     <>
@@ -25,7 +35,7 @@ function PrimaryAppBar() {
           backgroundColor: "#212121",
           borderBottom: "1px solid #00C896",
           // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)'
-          // zIndex: (theme) => theme.zIndex.drawer + 1,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
           // backgroundColor: theme.palette.background.default,
           // borderBottom: `1px solid ${theme.palette.divider}`,
           // display: "flex",
@@ -58,7 +68,8 @@ function PrimaryAppBar() {
                 {i + 1}
               </Typography>
             ))} */}
-            testasdfasjdfasjf;asdjfl;asjdfjasl;j
+  
+            {list()}
           </Drawer>
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
