@@ -278,7 +278,7 @@ class Event(models.Model):
         
         return {
             "participants_info": potential_winnings,
-            "total_participants": len(participants) # total # of participants
+            # "total_participants": len(participants) # total # of participants
         }
     def save(self, *args, **kwargs):
         # Capitalie the name before saving
