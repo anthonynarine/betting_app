@@ -10,7 +10,7 @@ export const createBettingAppTheme = (mode) => {
       },
     },
     primaryAppBar: {
-      height: 100,
+      height: 65,
     },
     primaryDraw: {
       width: 250,
@@ -33,7 +33,7 @@ export const createBettingAppTheme = (mode) => {
         styleOverrides: {
           root: {
             backgroundColor: "#f2f2f2",
-            color:" #333", // text color
+            color: " #333", // text color
           }
         }
       },

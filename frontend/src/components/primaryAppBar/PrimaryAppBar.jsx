@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Button } from "@mui/material";
+=======
+import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Stack } from "@mui/material";
+>>>>>>> 79621906153257b6a87fedca5940b08ba1fee635
 import { Link } from "react-router-dom";
 // import CasinoIcon from "@mui/icons-material/Casino";
 import { LogoIcon } from "./LogoIcon";
@@ -33,14 +37,11 @@ function PrimaryAppBar() {
     <>
       <AppBar
         sx={{
-          backgroundColor: "#212121",
-          borderBottom: "1px solid #00C896",
-          // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)'
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          // backgroundColor: theme.palette.background.default,
-          // borderBottom: `1px solid ${theme.palette.divider}`,
-          // display: "flex",
-          // justifyContent: "space-between",
+          backgroundColor: theme.palette.background.default,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+          display: "flex",
+          justifyContent: "space-between",
           // backgroundImage: "url(https://source.unsplash.com/random/?green)"
           // backgroundImage: `url(${emblem})`,
         }}
@@ -69,22 +70,48 @@ function PrimaryAppBar() {
                 {i + 1}
               </Typography>
             ))} */}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 79621906153257b6a87fedca5940b08ba1fee635
             {list()}
           </Drawer>
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
-            <Typography
-              variant="h4"
-              noWrap
-              component="div"
-              sx={{
-                display: { fontWeight: 900, letterSpacing: "0.25px", color: "#00C896" },
-              }}
-            >
-              BET on THIS
-            </Typography>
+            <Stack direction="row" spacing={0}>
+              <LogoIcon />
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 900 },
+                }}
+              >
+                BET
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 200 },
+                }}
+              >
+                on
+              </Typography>
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{
+                  display: { fontWeight: 900 },
+                }}
+              >
+                THIS
+              </Typography>
+            </Stack>
           </Link>
-          <LogoIcon />
           <Box sx={{ flexGrow: 1 }}></Box>
           <LoginLogoutButton />
           {/* <AccountButton /> */}

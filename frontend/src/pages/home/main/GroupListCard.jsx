@@ -88,7 +88,6 @@ function GroupListCard() {
           sx={{
             display: {
               sm: "block",
-              color: "white",
               fontWeight: 700,
               fontSize: "48px",
               letterSpacing: "-.5px",

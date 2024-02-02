@@ -5,9 +5,10 @@ export function LogoIcon() {
         <Box
             component="img"
             sx={{
-                height: 40,
-                width: 40,
-                marginLeft: .5
+                height: 28,
+                width: 28,
+                marginLeft: .5,
+                marginRight: .25,
                 // maxHeight: { xs: 233, md: 167 },
                 // maxWidth: { xs: 350, md: 250 },
             }}
