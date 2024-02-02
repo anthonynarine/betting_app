@@ -1,4 +1,4 @@
-import { AppBar, Toolbar, Typography, Box, IconButton, Drawer } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 // import CasinoIcon from "@mui/icons-material/Casino";
 import { LogoIcon } from "./LogoIcon";
@@ -24,6 +24,7 @@ function PrimaryAppBar() {
       onClick={toggleDrawer(false)}
       onKeydown={toggleDrawer(false)}
     >
+      {/* <LoginLogoutButton /> */}
       <BetList open={toggleDrawer} />
     </Box>
   );
@@ -68,7 +69,6 @@ function PrimaryAppBar() {
                 {i + 1}
               </Typography>
             ))} */}
-  
             {list()}
           </Drawer>
 
@@ -86,7 +86,6 @@ function PrimaryAppBar() {
           </Link>
           <LogoIcon />
           <Box sx={{ flexGrow: 1 }}></Box>
-
           <LoginLogoutButton />
           {/* <AccountButton /> */}
         </Toolbar>
