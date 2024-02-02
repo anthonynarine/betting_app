@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Button } from "@mui/material";
-=======
-import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Stack } from "@mui/material";
->>>>>>> 79621906153257b6a87fedca5940b08ba1fee635
+import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Button, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 // import CasinoIcon from "@mui/icons-material/Casino";
 import { LogoIcon } from "./LogoIcon";
@@ -70,10 +66,7 @@ function PrimaryAppBar() {
                 {i + 1}
               </Typography>
             ))} */}
-<<<<<<< HEAD
-=======
 
->>>>>>> 79621906153257b6a87fedca5940b08ba1fee635
             {list()}
           </Drawer>
 
