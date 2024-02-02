@@ -1,9 +1,7 @@
 # models.py in your Django app
-
+from django.db import models
+from django.db.models import Count
 from decimal import Decimal
-from operator import mod
-from venv import create
-from django.db.models import Sum
 from django.conf import settings
 from django.db import models
 from enum import Enum
@@ -135,6 +133,12 @@ class Member(models.Model):
     class Meta:
         unique_together = ("user", "group")
         ordering = ["joined_at"]
+
+class EventManager(models.Manager):
+    def order_by_participants(self):
+        return self.get_queryset().annotate(
+            num_participants=Count("bets__user", distinct=True)
+        ).order_by("-num_participants")
 
 class Event(models.Model):
     """

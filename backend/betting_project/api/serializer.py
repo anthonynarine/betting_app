@@ -20,6 +20,7 @@ class EventSerializer(serializers.ModelSerializer):
     group = GroupBriefSerializer(read_only=True)
     group_id = serializers.IntegerField(write_only=True)
     participants_bets_and_winnings = serializers.SerializerMethodField()
+    num_participants = serializers.IntegerField(read_only=True)
     
 
     class Meta:
@@ -36,7 +37,8 @@ class EventSerializer(serializers.ModelSerializer):
             "group",
             "group_id",
             "is_complete",
-            "participants_bets_and_winnings"
+            "participants_bets_and_winnings",
+            "num_participants",
         )
     def create (self, validated_data):
         """
