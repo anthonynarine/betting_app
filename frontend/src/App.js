@@ -1,5 +1,4 @@
-import Home from "./pages/home/Home";
-// import DetailPage from "./pages/detailsPage/DetailsPage";
+
 
 import DetailPage from "./pages/details/DetailsPage";
 import { Route, Routes } from "react-router-dom";
@@ -12,6 +11,8 @@ import { BetDataProvider } from "./context/bet/BetDataProvider";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 
+import Home from "./pages/home/Home";
+import HomeV2 from "./pages/home/Home-V2";
 import TestLogin from "./pages/login/test/testLogin";
 import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
@@ -37,7 +38,8 @@ function App() {
 					<ToggleColorModeProvider>
 						<CssBaseline />
 						<Routes>
-							<Route path="/" element={<Home />} />
+							{/* <Route path="/" element={<Home />} /> */}
+							<Route path="/" element={<HomeV2 />} />
 							<Route path="/group/:groupId" element={<DetailPage />} />
 							<Route path="/event/:eventId" element={<EventPage />} />
 							<Route path="/login" element={<LoginPage />} />
