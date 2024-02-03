@@ -5,22 +5,18 @@ import Main from "../../components/main/Main";
 import GroupListCard from "./main/GroupListCard";
 import GroupList from "./primaryDraw/GroupList";
 import BettingTabs from "./BettingTabs";
-
-
+import Footer from "./Footer";
 
 
 const HomeV2 = () => {
 
-
-
   return (
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
         <CssBaseline />
         <PrimaryAppBar />
         <BettingTabs />
-        {/* <Main>
-          <GroupListCard />
-        </Main> */}
+        <Footer />
+        
       </Box>
 
   );

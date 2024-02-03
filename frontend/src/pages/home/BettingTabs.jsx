@@ -7,6 +7,7 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import GroupList from './primaryDraw/GroupList';
+import GroupListCard from "./main/GroupListCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -20,7 +21,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 3, bgcolor: 'background.default' }}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -49,30 +50,30 @@ export default function BettingTabs() {
     setValue(newValue);
   };
 
-
-
   return (
-    <Box sx={{ bgcolor: 'background.paper', width: '100%' , pt: `${theme.primaryAppBar.height}px` }}> {/* Adjust width as needed */}
-      <AppBar position="static">
+    <Box sx={{ width: '100%', pt: `${theme.primaryAppBar.height}px`, bgcolor: '#121212' }}> 
+      <AppBar position="static" sx={{ backgroundColor: '#0A0A0A', color: '#FFC0CB' }}> 
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="secondary"
+          indicatorColor="secondary" // Consider customizing this color if needed
           textColor="inherit"
           variant="fullWidth"
           aria-label="full width tabs example"
+          sx={{
+            '.MuiTabs-indicator': { backgroundColor: '#D81B60' }, 
+          }}
         >
-          <Tab label="Groups" {...a11yProps(0)} />
-          <Tab label="All Bets" {...a11yProps(1)} />
-          <Tab label="Popular Events" {...a11yProps(2)} />
+          <Tab label="Groups" {...a11yProps(0)} sx={{ color: '#FFF' }} />
+          <Tab label="All Bets" {...a11yProps(1)} sx={{ color: '#FFF' }} />
+          <Tab label="Popular Events" {...a11yProps(2)} sx={{ color: '#FFF' }} />
         </Tabs>
       </AppBar>
-      {/* Directly using TabPanel without SwipeableViews */}
       <TabPanel value={value} index={0} dir={theme.direction}>
-        <GroupList />
+      <GroupListCard />
       </TabPanel>
       <TabPanel value={value} index={1} dir={theme.direction}>
-        Item Two
+      
       </TabPanel>
       <TabPanel value={value} index={2} dir={theme.direction}>
         Item Three
