@@ -20,6 +20,7 @@ class EventSerializer(serializers.ModelSerializer):
     group = GroupBriefSerializer(read_only=True)
     group_id = serializers.IntegerField(write_only=True)
     participants_bets_and_winnings = serializers.SerializerMethodField()
+    num_participants = serializers.IntegerField(read_only=True)
     
 
     class Meta:
@@ -28,15 +29,16 @@ class EventSerializer(serializers.ModelSerializer):
             "id",
             "team1",
             "team2",
-            "team1_score",
-            "team2_score",
+            # "team1_score",
+            # "team2_score",
             "start_time",
             "end_time",
             "organizer",
             "group",
             "group_id",
             "is_complete",
-            "participants_bets_and_winnings"
+            "participants_bets_and_winnings",
+            "num_participants",
         )
     def create (self, validated_data):
         """
@@ -131,16 +133,17 @@ class FullGroupSerializer(serializers.ModelSerializer):
         
 class BetSerializer(serializers.ModelSerializer):
     chosen_team_name = serializers.SerializerMethodField("get_chosen_team_name")
+    event = EventSerializer(read_only=True)
     class Meta:
         model = Bet
         fields = [
             "id",
-            # "user",
+            "user",
             "event",
             "team_choice",
             "bet_type",
-            "team1_score",
-            "team2_score",
+            # "team1_score",
+            # "team2_score",
             "bet_amount",
             "created_at",
             "updated_at",

@@ -1,85 +1,90 @@
+import React from 'react';
 import {
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Box,
-    Typography,
-    ListItemButton,
-    useTheme,
-  } from "@mui/material";
-  
-  import ListItemAvatar from "@mui/material/ListItemAvatar";
-  import Avatar from "@mui/material/Avatar";
-  import { Link } from "react-router-dom";
-  import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles"; 
-  import React, { useEffect } from "react";
-  import { useBetData } from "../../../context/bet/BetDataProvider";
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
+import { useBetData } from '../../../context/bet/BetDataProvider';
+import { useUserServices } from '../../../context/user/UserContext';
 
+const BetList = () => {
+  const { bets } = useBetData();
+  const { userData } = useUserServices();
 
-  
-  const BetList = ({ open }) => {
-    const theme = useTheme();
-    const classes = ListViewStyles(theme);
-  
-    const { bets } = useBetData();
-    // console.log("All Bets Received form context:", bets)  //DEBUG TEST
-  
-    useEffect(()=>{},[bets])
-  
-  
-    return (
-      <>
-        <Box sx={classes.mainBox}>
-          <Typography
-            variant="h6"
-            sx={{ display: open ? "block" : "none", color: "#637C5B" }}
-          >
-            {/* {`${name} members`} */}
-            All Current Bets
-          </Typography>
-        </Box>
-        {bets &&
-          bets.map((bet, index) => {
-            // console.log(`Current member object at index ${index}:`, member);
-            if (!bet) {
-              // console.error("member.user is undefined for member:", member);
-              return null; // Skip this iteration
-            }
-            return (
-              <ListItem
-                key={bet.id}
-                disablePadding
-                sx={{ display: "block" }}
-                dense={true}
-              >
-                <ListItemButton sx={{ minHeight: 0 }}>
-                  <ListItemIcon sx={{ minWidth: 0, justifyContent: "center" }}>
-                  </ListItemIcon>
-                  {open && (
-                    <ListItemText
-                      primary={
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            fontWeight: 500,
-                            lineHeight: 1.2,
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {bet.chosen_team_name} to {bet.bet_type}  ${bet.bet_amount}
-                        </Typography>
-                      }
-                    />
-                  )}
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-      </>
-    );
+  // Define a style for list items to make them visually appealing
+  const listItemStyle = {
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: '#f5f5f5', // Light grey background for each list item for contrast
+    padding: '8px 16px',
+    margin: '8px 0',
+    borderRadius: '4px',
   };
-  
-  export default BetList;
+
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Grid container spacing={4} justifyContent="center">
+        {bets && bets.length > 0 ? (
+          bets.map((bet) => {
+            // Extract necessary details for display
+            const numberOfParticipants = bet.event.participants_bets_and_winnings.participants_info.length;
+            const currentUserBetInfo = bet.event.participants_bets_and_winnings.participants_info.find(participant => participant.user === userData.username);
+            const totalWinnablePool = currentUserBetInfo ? currentUserBetInfo.total_winnable_pool : 0;
+            const potentialWinning = currentUserBetInfo ? currentUserBetInfo.potential_winning : 0;
+
+            return (
+              <Grid item key={bet.id} xs={12} sm={6} md={4}>
+                <Card raised sx={{ minWidth: 275, maxWidth: 345, m: 'auto', backgroundColor: 'black' }}>
+                  <CardContent>
+                    <Typography variant="h5" component="div" gutterBottom sx={{color: "white"}}>
+                      {bet.event.group.name}
+                    </Typography>
+                    <Typography sx={{ mb: 1.5 }} color="white">
+                      {bet.event.team1} vs {bet.event.team2}
+                    </Typography>
+                    <List sx={{ padding: 0 }}>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Bet on: ${bet.chosen_team_name}`} />
+                      </ListItem>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Amount: $${bet.bet_amount}`} />
+                      </ListItem>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Type: ${bet.bet_type}`} />
+                      </ListItem>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Participants: ${numberOfParticipants}`} />
+                      </ListItem>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Total Winnable Pool: $${totalWinnablePool}`} />
+                      </ListItem>
+                      <ListItem sx={listItemStyle}>
+                        <ListItemText primary={`Your Potential Winning: $${potentialWinning}`} />
+                      </ListItem>
+                    </List>
+                  </CardContent>
+                </Card>
+              </Grid>
+            );
+          })
+        ) : (
+          <Typography variant="subtitle1" sx={{ mt: 4, textAlign: 'center', width: '100%' }}>
+            No bets placed yet.
+          </Typography>
+        )}
+      </Grid>
+    </Container>
+  );
+};
+
+export default BetList;
+
+
+
+
   

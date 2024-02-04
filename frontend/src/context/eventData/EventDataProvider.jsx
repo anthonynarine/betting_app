@@ -21,8 +21,8 @@ export const useEventData = () => {
 };
 export default EventDataContext;
 
-// === Provider Creation ===
-// The Provider component that wraps parts of the app
+
+
 export const EventDataProvider = ({ children }) => {
   // console.log("EventDataProvider is re-rendering"); // DEBUG TEST
 
@@ -30,6 +30,8 @@ export const EventDataProvider = ({ children }) => {
   const { fetchData, updateObject } = useCrud();
 
   //State needed for Events
+  const [allEvents, setAllEvents] = useState([]);
+  const [allUserEvent, setAllUserEvents] = useState([]);
   const [event, setEvent] = useState([]);
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
@@ -38,26 +40,38 @@ export const EventDataProvider = ({ children }) => {
   // Function to check if the logged-in user is the organizer
   const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
   // console.log(typeof(userIsEventCreator))
-  
-  // Feth event data when eventId changes
+
   useEffect(() => {
-    if (eventId) {
-      const fetchEventData = async () => {
-        // const accessToken = localStorage.getItem("accessToken"); // 
+    const fetchAllAndUserEvents = async () => {
+      try {
+        const data = await fetchData("/events/all_and_user_events/");
+        setAllEvents(data.all_events); // Correctly set all events ordered by most participants
+        setAllUserEvents(data.user_events || []); // Sets user events if a user is logged in; defaults to empty if undefined.
+      } catch (error) {
+        console.error("Error fetching all and user events:", error);
+      }
+    };
+  
+    
+    const fetchEventData = async () => {
+      if (eventId) {
         try {
           const data = await fetchData(`/events/${eventId}`);
           setEvent(data);
           setGroup(data.group);
           setParticipants(data.participants);
           setOrganizer(data.organizer);
-          console.log("organizer id", organizer);
+          // Removed the console.log from here as organizer might not be updated immediately due to setState being asynchronous
         } catch (error) {
-          console.error("Error fetching event data:", error);
+          console.error("Error fetching event data by ID:", error);
         }
-      };
-      fetchEventData();
-    }
+      }
+    };
+  
+    fetchAllAndUserEvents();
+    fetchEventData();
   }, [eventId]);
+  
 
   // Function to update event data
   const updateEventData = (updatedEventData) => {
@@ -66,6 +80,8 @@ export const EventDataProvider = ({ children }) => {
 }
 
   const value = {
+    allEvents,
+    allUserEvent,
     event, 
     eventId,
     group,
