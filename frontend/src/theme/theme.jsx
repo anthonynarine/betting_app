@@ -35,7 +35,7 @@ export const createBettingAppTheme = (mode) => {
       },
       background: {
         default: mode === 'light' ? '#f7f7f7' : '#EBF0F9', // Adjust the default background color based on theme mode
-        paper: mode === 'light' ? '#ffffff' : '#424242', // Adjust the background color for paper elements based on theme mode
+        paper: mode === 'light' ? '#ffffff' : '#EBF0F9', // Adjust the background color for paper elements based on theme mode
       },
     },
     components: {
