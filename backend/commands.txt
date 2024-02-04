@@ -15,11 +15,11 @@ Running Django server:
     source <virtual_envirment_name>/bin/activate
     source betting_venv/bin/activate
 3. cd to project director (manage.py file should be in this directory)
+    cd betting_project
    python manage.py check(optional check for any errors)
 
 4. restart MySql server 
     brew services restart MySql
-
     to verify start
 
 5. runserver command to star your server
