@@ -11,13 +11,10 @@ import {
   } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
-// components data source
-import { useGroupData } from '../../../context/groupData/GroupDataProvider';
 
-export default function GroupCardTest({ group }) {
+export default function GroupCardV2({ group }) {
 
-    const { groups } = useGroupData();
-    console.log("Testing Data in GroupTestCard", groups)  // DATA TEST 
+    console.log("Testing Data in GroupTestCard")  // DATA TEST 
     const cardImageURL = "https://source.unsplash.com/random/?plants"
     const avatarURL = "https://source.unsplash.com/random/?animal"
     const groupNameUppercase = group.name.toUpperCase();

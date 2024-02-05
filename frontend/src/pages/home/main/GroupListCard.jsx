@@ -3,7 +3,6 @@ import React, { useEffect, } from "react";
 import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "./GroupCard";
-import GroupCardTest from "./GroupCardTest";
 import GroupDetailsCard from "../../details/main/GroupDetailsCard";
 
 function GroupListCard() {
@@ -65,8 +64,8 @@ function GroupListCard() {
                 xl={2}
                 style={{ width: "100%" }}
               >
-                {/* <GroupCard group={group} /> */}
-                <GroupCardTest group={group} />
+                <GroupCard group={group} />
+
               </Grid>
             ))}
         </Grid>
