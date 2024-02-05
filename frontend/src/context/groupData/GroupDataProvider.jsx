@@ -40,23 +40,25 @@ export const GroupDataProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
 
   // Fetch group data when groupId changes
-  useEffect(() => {
-    if (groupId) {
-      const fetchGroupData = async () => {
-        try {
-          const data = await fetchData(`/groups/${groupId}`);
-          setGroup(data);
-          setEvents(data.events || []);
-          setMembers(data.members || []);
-        } catch (error) {
-          console.error("Error fetching group data:", error);
-        }
-      };
-      fetchGroupData();
-    }
-  }, [groupId]); // refetches data when groupId changes
 
-  
+  useEffect(() => {
+    const fetchGroupData = async () => {
+      try {
+        if (groupId) {
+          const data = await fetchGroupData(`/groups/${groupId}`);
+          setGroup(data);
+          setEvents(data.event || []);
+          setMembers(data.members || []);
+        } else {
+          const allGroupsData = await fetchData("/groups");
+          setGroups(allGroupsData);
+        }
+      } catch (error) {
+        console.error("Error fetching data", error)
+      }
+    }
+    fetchGroupData();
+  }, [groupId]);
 
   useEffect(() => {
     console.log("Current Member State: ", members);
@@ -83,6 +85,7 @@ export const GroupDataProvider = ({ children }) => {
     userId,
     groupId,
     group,
+    groups,
     setGroup,
     updateGroup,
     events,
