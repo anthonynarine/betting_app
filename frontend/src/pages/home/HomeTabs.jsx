@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import GroupListCard from "../main/GroupListCard";
-import ReusableTabs from '../../../components/tabs/ReusableTabs';
-import BetList from '../../events/bets/BetList';
+import GroupListCard from "./main/GroupListCard";
+import GroupsList from './GroupsList';
+import ReusableTabs from '../../components/tabs/ReusableTabs';
+import BetList from '../events/bets/BetList';
 import { Typography } from '@mui/material';
 
 
@@ -10,7 +11,7 @@ export default function HomeTabs() {
   const tabsConfig = [
     {
       label: "Groups",
-      content: <GroupListCard />, 
+      content: <GroupsList />, 
     },
     {
       label: "My Bets",
