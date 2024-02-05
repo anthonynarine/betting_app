@@ -16,11 +16,11 @@ const BetList = () => {
   const { bets } = useBetData();
   const { userData } = useUserServices();
 
-  // Define a style for list items to make them visually appealing
+
   const listItemStyle = {
     display: 'flex',
     justifyContent: 'space-between',
-    backgroundColor: '#f5f5f5', // Light grey background for each list item for contrast
+    backgroundColor: '#f5f5f5', 
     padding: '8px 16px',
     margin: '8px 0',
     borderRadius: '4px',
@@ -31,7 +31,7 @@ const BetList = () => {
       <Grid container spacing={4} justifyContent="center">
         {bets && bets.length > 0 ? (
           bets.map((bet) => {
-            // Extract necessary details for display
+      
             const numberOfParticipants = bet.event.participants_bets_and_winnings.participants_info.length;
             const currentUserBetInfo = bet.event.participants_bets_and_winnings.participants_info.find(participant => participant.user === userData.username);
             const totalWinnablePool = currentUserBetInfo ? currentUserBetInfo.total_winnable_pool : 0;
@@ -39,7 +39,7 @@ const BetList = () => {
 
             return (
               <Grid item key={bet.id} xs={12} sm={6} md={4}>
-                <Card raised sx={{ minWidth: 275, maxWidth: 345, m: 'auto', backgroundColor: 'black' }}>
+                <Card  sx={{ minWidth: 275, maxWidth: 345, m: 'auto', backgroundColor: 'black' }}>
                   <CardContent>
                     <Typography variant="h5" component="div" gutterBottom sx={{color: "white"}}>
                       {bet.event.group.name}
