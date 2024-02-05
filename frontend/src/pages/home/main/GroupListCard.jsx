@@ -11,6 +11,7 @@ function GroupListCard() {
   const url = groupId ? `/groups/${groupId}/` : "/groups/";
 
   const { apiData, fetchData } = useCrud(url);
+  console.log("api", apiData)
 
   useEffect(() => {
     fetchData(url);

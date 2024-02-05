@@ -6,10 +6,6 @@ from .models import Group, Event, Member, Bet, Participant
 from django.utils import timezone
 from .serializer_mixins.mixins import BannerImageMixin
 
-class GroupSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Group
-        fields = ("id", "name", "location", "description", "user", "banner_image")
 
 class GroupBriefSerializer(serializers.ModelSerializer):
     class Meta:
@@ -123,7 +119,7 @@ class MemberSerializer(serializers.ModelSerializer):
         model = Member
         fields = ["user", "group", "admin", "joined_at"]
 
-class FullGroupSerializer(serializers.ModelSerializer):
+class GroupSerializer(serializers.ModelSerializer):
     events = EventSerializer(many=True, read_only=True)
     members = MemberSerializer(many=True, read_only=True)
 

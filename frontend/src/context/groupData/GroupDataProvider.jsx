@@ -31,24 +31,23 @@ export const GroupDataProvider = ({ children }) => {
   // const apiEndpoint = groupId ? `/groups/${groupId}/` : "/groups/";
 
   // Use the custom CRUD hook to fetch data
-  const { apiData, fetchData, isLoading, error } = useCrud();
+  const { fetchData, isLoading, error } = useCrud();
 
   // State variables for events, members, and groups
   const [events, setEvents] = useState([]);
   const [members, setMembers] = useState([]);
   const [group, setGroup] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   // Fetch group data when groupId changes
   useEffect(() => {
     if (groupId) {
       const fetchGroupData = async () => {
-        const accessToken = localStorage.getItem("accessToken");
         try {
-          const data = await fetchData(`/groups/${groupId}`, accessToken);
-          setEvents(data.events);
-          setMembers(data.members);
+          const data = await fetchData(`/groups/${groupId}`);
           setGroup(data);
-          console.log("Groups DATA ApiDataProvider:", data); // CONSOLE TEST
+          setEvents(data.events || []);
+          setMembers(data.members || []);
         } catch (error) {
           console.error("Error fetching group data:", error);
         }
@@ -81,7 +80,6 @@ export const GroupDataProvider = ({ children }) => {
 
   // The value that will be available to components wrapped in this Provider
   const value = {
-    apiData,
     userId,
     groupId,
     group,
