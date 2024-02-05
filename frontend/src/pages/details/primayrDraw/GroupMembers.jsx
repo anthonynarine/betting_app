@@ -19,9 +19,7 @@ import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 const GroupMembers = ({ open }) => {
   const theme = useTheme();
   const classes = ListViewStyles(theme);
-
   const { members } = useGroupData();
-  // console.log("GroupMembers Full member object:", members)  //DEBUG TEST
 
   useEffect(()=>{},[members])
 
