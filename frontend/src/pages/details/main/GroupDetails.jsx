@@ -5,7 +5,7 @@ import GroupDetailsCard from "./GroupDetailsCard";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
 function GroupDetails() {
-  
+
   const { groupId, groups } = useGroupData()
   console.log("Groups DetailPage DATA:", groups)
 
@@ -98,7 +98,7 @@ function GroupDetails() {
 
   return (
     <>
-      <Container maxWidth="xxl" sx={{ px: {sm: 3, md: 5, lg: 7 }, width: "100%" }}>
+      <Container maxWidth="xxl" sx={{ px: { sm: 3, md: 5, lg: 7 }, width: "100%" }}>
         <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
         <Box>{renderSubheader()}</Box>
         <Box>{renderGroupList()}</Box>
