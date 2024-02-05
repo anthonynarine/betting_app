@@ -14,7 +14,7 @@ import {
 // import StarRating from "./StarRating";
 
 const GroupCard = ({ group }) => {
-    
+
   // console.log("GroupCard props:", group);
 
   return (
@@ -51,9 +51,9 @@ const GroupCard = ({ group }) => {
         />
         <CardContent sx={{ flexGrow: 1, p: 0, "&:last-child": { paddingBottom: 0 } }}>
           <ListItem disablePadding>
-            <ListItemIcon sx={{ minWidth: "50px", margin:1 }}>
+            <ListItemIcon sx={{ minWidth: "50px", margin: 1 }}>
               <ListItemAvatar sx={{ pt: "5px" }}>
-                <Avatar alt="movie icon" src={"https://source.unsplash.com/random/?denseforest"}/>
+                <Avatar alt="movie icon" src={"https://source.unsplash.com/random/?denseforest"} />
               </ListItemAvatar>
             </ListItemIcon>
             <ListItemText
@@ -75,7 +75,7 @@ const GroupCard = ({ group }) => {
               }
               secondary={
                 <Typography variant="body2"
-                sx={{
+                  sx={{
                     fontWeight: 700,
                     textOverflow: "ellipsis",
                     overflow: "hidden",
@@ -84,7 +84,7 @@ const GroupCard = ({ group }) => {
                     flexGrow: 1, // Allow text to take available space
                   }}
                 >
-                Join this group
+                  Join this group
                   {/* <StarRating rating={movie.avg_rating} /> */}
                 </Typography>
               }
