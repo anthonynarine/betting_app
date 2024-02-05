@@ -1,4 +1,3 @@
-
 Running Test
 runs test of specivic app 
 python manage.py test myapp.tests
@@ -28,3 +27,13 @@ Running Django server:
 4. control click url in terminal or go to url below
     localhost:8000/admin
 
+
+QUICK COMMANDS / CHEAT SHEET
+1. cd backend
+2. source betting_venv/bin/activate
+3. cd betting_project
+4. python manage.py check (OPTIONAL)
+5. brew services restart mysql
+6. python manage.py runserver
+
+Check Admin Panel? -> localhost:8000/admin

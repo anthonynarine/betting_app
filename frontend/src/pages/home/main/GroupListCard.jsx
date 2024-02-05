@@ -3,6 +3,7 @@ import React, { useEffect, } from "react";
 import useCrud from "../../../services/useCrud";
 import { useParams } from "react-router-dom";
 import GroupCard from "./GroupCard";
+import GroupCardTest from "./GroupCardTest";
 import GroupDetailsCard from "../../details/main/GroupDetailsCard";
 
 function GroupListCard() {
@@ -16,30 +17,30 @@ function GroupListCard() {
   }, [groupId]);
 
 
-  const renderHeader = () => {
-    if (groupId) {
-      return null;
-    } else {
-      return (
-        <Typography
-          variant="h3"
-          noWrap
-          component="h1"
-          sx={{
-            display: {
-              sm: "block",
-              fontWeight: 700,
-              fontSize: "48px",
-              letterSpacing: "-2px",
-            },
-            textAlign: { xs: "center", sm: "left" },
-          }}
-        >
-          Active Groups
-        </Typography>
-      );
-    }
-  };
+  // const renderHeader = () => {
+  //   if (groupId) {
+  //     return null;
+  //   } else {
+  //     return (
+  //       <Typography
+  //         variant="h3"
+  //         noWrap
+  //         component="h1"
+  //         sx={{
+  //           display: {
+  //             sm: "block",
+  //             fontWeight: 700,
+  //             fontSize: "48px",
+  //             letterSpacing: "-2px",
+  //           },
+  //           textAlign: { xs: "center", sm: "left" },
+  //         }}
+  //       >
+  //         Active Groupsss
+  //       </Typography>
+  //     );
+  //   }
+  // };
 
   const renderGroupList = () => {
     if (groupId) {
@@ -63,7 +64,8 @@ function GroupListCard() {
                 xl={2}
                 style={{ width: "100%" }}
               >
-                <GroupCard group={group} />
+                {/* <GroupCard group={group} /> */}
+                <GroupCardTest group={group} />
               </Grid>
             ))}
         </Grid>
@@ -71,42 +73,42 @@ function GroupListCard() {
     }
   };
 
-  const renderSubheader = () => {
-    if (groupId) {
-      return (
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <GroupDetailsCard apiData={apiData} groupId={groupId} />
-        </Box>
-      );
-    } else {
-      return (
-        <Typography
-          variant="h6"
-          noWrap
-          component="h2"
-          color="textSecondary"
-          sx={{
-            display: {
-              sm: "block",
-              fontWeight: 700,
-              fontSize: "48px",
-              letterSpacing: "-.5px",
-            },
-            textAlign: { xs: "center", sm: "left" },
-            paddingBottom: 1,
-          }}
-        >
-          Groups
-        </Typography>
-      );
-    }
-  };
+  // const renderSubheader = () => {
+  //   if (groupId) {
+  //     return (
+  //       <Box display="flex" justifyContent="center" alignItems="center">
+  //         <GroupDetailsCard apiData={apiData} groupId={groupId} />
+  //       </Box>
+  //     );
+  //   } else {
+  //     return (
+  //       <Typography
+  //         variant="h6"
+  //         noWrap
+  //         component="h2"
+  //         color="textSecondary"
+  //         sx={{
+  //           display: {
+  //             sm: "block",
+  //             fontWeight: 700,
+  //             fontSize: "48px",
+  //             letterSpacing: "-.5px",
+  //           },
+  //           textAlign: { xs: "center", sm: "left" },
+  //           paddingBottom: 1,
+  //         }}
+  //       >
+  //         Groups
+  //       </Typography>
+  //     );
+  //   }
+  // };
 
   return (
     <>
-      <Container maxWidth="xxl" sx={{ px: { sm: 3, md: 5, lg: 7 }, width: "100%" }}>
-        <Box sx={{ pt: 4 }}>{renderHeader()}</Box>
-        <Box>{renderSubheader()}</Box>
+      <Container maxWidth="xxl" sx={{ px: { sm: 3, md: 5, lg: 7 }, width: "100%", marginTop: "20px" }}>
+        {/* <Box sx={{ pt: 4 }}>{renderHeader()}</Box> */}
+        {/* <Box>{renderSubheader()}</Box> */}
         <Box>{renderGroupList()}</Box>
       </Container>
     </>
