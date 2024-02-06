@@ -47,7 +47,7 @@ class EventSerializer(serializers.ModelSerializer):
         the corresonding Group instance and then create the Event instance w/
         this group.
         
-       
+      
         """ 
         # Extract group_id from validated data
         group_id = validated_data.pop("group_id", None)
