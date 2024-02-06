@@ -202,7 +202,7 @@ class Event(models.Model):
         default=False,
         help_text="Indicates whether the event is archived.")
     
-    def calculate_potential_winnings(self):
+    def calculate_potential_winnings_and_odds(self):
         """
             Calculates the potential winnings for each participant's bet based on 
             the current betting pool. This method is used to provide an estimate 
@@ -236,16 +236,33 @@ class Event(models.Model):
                 - If Team A wins, Participant X is entitled to 10% of Team B's total bets.
                 - Potential winning = 10% of $800 = $80
                 - Total Winnable Pool = $800 (Total bets on Team B)
+            - 'odds': A dictionary containing the odds for each team.
         """     
         # Initialize the bets collections by retrieving all related to this event.
         bets = self.bets.all()
-
-        #initialize a dictionary to track the total bet amount for each team
-        total_bet_amount = {"Team 1": Decimal("0"), "Team 2": Decimal("0")}
         
+        # Initialize a dictionary to track the total bet amount for each team's and the odds
+        total_bet_amount = {"Team 1": Decimal("0"), "Team 2": Decimal("0")}
+        odds = {}
+                
         #loop over each bet and add the bet amount to the correspoing team's total 
         for bet in bets:
             total_bet_amount[bet.team_choice] += bet.bet_amount
+            
+        # Calculate the total bets placed on team
+        total_bet_team1 = total_bet_amount["Team 1"]
+        total_bet_team2 = total_bet_amount["Team 2"]
+        
+        # Calculate the odds for each team
+        if total_bet_team1 > 0:
+            odds["Team 1"] = total_bet_team2 / total_bet_team1
+        else:
+            odds["Team 1"] = Decimal("0")
+        
+        if total_bet_team2 > 0:
+            odds["Team 2"] = total_bet_team1 / total_bet_team2
+        else:
+            odds["Team 2"] = Decimal("0")
         
         #initialize a list to store potential winnings
         potential_winnings = []
@@ -278,8 +295,10 @@ class Event(models.Model):
         
         return {
             "participants_info": potential_winnings,
+            "odds" : odds
             # "total_participants": len(participants) # total # of participants
         }
+        
     def save(self, *args, **kwargs):
         # Capitalie the name before saving
         self.team1 = self.team1.title()
