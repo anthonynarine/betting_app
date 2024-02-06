@@ -13,8 +13,6 @@ import Avatar from '@mui/material/Avatar';
 
 
 export default function GroupCardV2({ group }) {
-
-    console.log("Testing Data in GroupTestCard")  // DATA TEST 
     const cardImageURL = "https://source.unsplash.com/random/?plants"
     const avatarURL = "https://source.unsplash.com/random/?animal"
     const groupNameUppercase = group.name.toUpperCase();

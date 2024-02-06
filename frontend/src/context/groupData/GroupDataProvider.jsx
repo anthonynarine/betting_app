@@ -42,22 +42,33 @@ export const GroupDataProvider = ({ children }) => {
   // Fetch group data when groupId changes
 
   useEffect(() => {
-    const fetchGroupData = async () => {
-      try {
-        if (groupId) {
-          const data = await fetchGroupData(`/groups/${groupId}`);
+    if (groupId) {
+      const fetchSingleGroupData = async () => {
+        try {
+          const data = await fetchData(`/groups/${groupId}`);
           setGroup(data);
-          setEvents(data.event || []);
+          setEvents(data.events || []);
           setMembers(data.members || []);
-        } else {
+        } catch (error) {
+          console.error("Error fetching single group data", error);
+        }
+      };
+      fetchSingleGroupData();
+    }
+  }, [groupId]);
+
+  useEffect(() => {
+    if (!groupId) {
+      const fetchAllGroupsData = async () => {
+        try {
           const allGroupsData = await fetchData("/groups");
           setGroups(allGroupsData);
+        } catch (error) {
+          console.error("Error fetching all groups data", error);
         }
-      } catch (error) {
-        console.error("Error fetching data", error)
-      }
+      };
+      fetchAllGroupsData();
     }
-    fetchGroupData();
   }, [groupId]);
 
   useEffect(() => {

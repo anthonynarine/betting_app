@@ -96,7 +96,7 @@ export default function GroupDetailsCard() {
         title={
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
             <Typography variant="h6" style={{ fontWeight: "bold" }}>
-              {group.name}
+            {group && group.name ? group.name : "Loading..."}
             </Typography>
           </Link>
         }

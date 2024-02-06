@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import GroupListCard from "./main/GroupListCard";
 import GroupsList from './GroupsList';
 import ReusableTabs from '../../components/tabs/ReusableTabs';
 import BetList from '../events/bets/BetList';
 import { Typography } from '@mui/material';
-
 
 
 export default function HomeTabs() {
@@ -19,6 +16,10 @@ export default function HomeTabs() {
     },
     {
       label: "Popular Events",
+      content: <Typography variant='h1'>"UNDER CONSTRUCTION"</Typography>, 
+    },
+    {
+      label: "My Event",
       content: <Typography variant='h1'>"UNDER CONSTRUCTION"</Typography>, 
     },
     // Add more tabs if needed
