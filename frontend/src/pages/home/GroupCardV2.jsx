@@ -8,7 +8,8 @@ import {
     Button,
     CardActionArea,
     CardActions,
-    Grid
+    Grid,
+    Box
 } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
 import Avatar from '@mui/material/Avatar';
@@ -20,7 +21,7 @@ export default function GroupCardV2({ group }) {
     console.log(group);
     // 
     return (
-        <Card>
+        <Card sx={{ maxWidth: 750 }}>
             {/* <CardActionArea> */}
             {/* <CardMedia
                     component="img"
@@ -44,7 +45,7 @@ export default function GroupCardV2({ group }) {
                 <Typography variant="body2" sx={{ marginLeft: "8px" }}>
                     {group.members.length} {group.members.length > 1 ? ` Members` : ` Member`}
                 </Typography>
-                <Grid>
+                <Grid sx={{ ml: "auto" }}>
                     <Button
                         variant="contained"
                         endIcon={<LoginIcon />}
