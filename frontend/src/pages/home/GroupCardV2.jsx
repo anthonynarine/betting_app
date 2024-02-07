@@ -20,7 +20,6 @@ export default function GroupCardV2({ group }) {
     console.log(group);
     // 
     return (
-
         <Card>
             {/* <CardActionArea> */}
             {/* <CardMedia
