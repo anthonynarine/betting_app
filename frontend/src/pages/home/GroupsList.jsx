@@ -8,8 +8,6 @@ export default function GroupsList() {
     const { groups, members } = useGroupData();
     console.log("testing", members)
 
-
-
     return (
         <Box>
             <Grid container spacing={3} >
