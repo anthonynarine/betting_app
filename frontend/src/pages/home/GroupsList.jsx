@@ -11,13 +11,13 @@ export default function GroupsList() {
 
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" > 
-            <Grid container spacing={2} justifyContent="center">
+        <Box>
+            <Grid container spacing={3} >
                 {groups.map((group) => (
-                    <Grid item key={group.id} xs={12} sm={4} md={4} lg={3}>
+                    <Grid item key={group.id} xs={12} sm={12} md={12} lg={12} display="flex" justifyContent="center" alignItems="center" >
                         <GroupCardV2 group={group} />
                     </Grid>
-                    
+
                 ))}
             </Grid>
         </Box>
