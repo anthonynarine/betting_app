@@ -5,51 +5,58 @@ import {
     CardMedia,
     Typography,
     Stack,
-    Button, 
+    Button,
     CardActionArea,
-    CardActions
-  } from '@mui/material';
+    CardActions,
+    Grid,
+    Box
+} from '@mui/material';
+import LoginIcon from '@mui/icons-material/Login';
 import Avatar from '@mui/material/Avatar';
 
 
 export default function GroupCardV2({ group }) {
     const cardImageURL = "https://source.unsplash.com/random/?plants"
     const avatarURL = "https://source.unsplash.com/random/?animal"
-    const groupNameUppercase = group.name.toUpperCase();
+    console.log(group);
+    // 
     return (
-    
-        <Card sx={{ maxWidth: 250, paddingBottom: .5 }}>
-            <CardActionArea>
-                <CardMedia
+        <Card sx={{ maxWidth: 750 }}>
+            {/* <CardActionArea> */}
+            {/* <CardMedia
                     component="img"
                     height="140"
                     image={cardImageURL}
                     alt="Group Event Image"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                        {groupNameUppercase}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                        Versus: [TEAM A] vs [TEAM B]
-                        Pot: [POT AMOUNT]
-                        Number of Participants: [NUMBER]
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
+                /> */}
+            <CardContent>
+                <Typography gutterBottom variant="h5" component="div" fontWeight="bold">
+                    {group.name.toUpperCase()}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                    {group.description.toUpperCase()}
+                </Typography>
+                <Typography variant="body2">
+                    NUMBER OF EVENTS: {group.events.length}
+                </Typography>
+            </CardContent>
+            {/* </CardActionArea> */}
             <CardActions>
-                <Stack direction="row" spacing={12}>
-                    <Avatar alt="Don Jon" src={avatarURL} />
+                <Typography variant="body2" sx={{ marginLeft: "8px" }}>
+                    {group.members.length} {group.members.length > 1 ? ` Members` : ` Member`}
+                </Typography>
+                <Grid sx={{ ml: "auto" }}>
                     <Button
                         variant="contained"
+                        endIcon={<LoginIcon />}
                         size="small"
                         color="secondary"
                         href={`/group/${group.id}`}
-                        sx={{ marginLeft: "5px", marginBottom: "5px" }}>
+                        sx={{ marginRight: "8px", marginBottom: "6px", maxWidth: "145px", maxHeight: "45px" }}>
                         Join Group
                     </Button>
-                </Stack>
+                </Grid>
             </CardActions>
-        </Card>
+        </Card >
     );
 }
