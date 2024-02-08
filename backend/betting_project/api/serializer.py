@@ -128,6 +128,7 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ("name", "id", "location", "description", "events", "members", "banner_image")
         
 class BetSerializer(serializers.ModelSerializer):
+    event_id = serializers.IntegerField(write_only=True, required =True)
     chosen_team_name = serializers.SerializerMethodField("get_chosen_team_name")
     event = EventSerializer(read_only=True)
     class Meta:
@@ -136,10 +137,9 @@ class BetSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "event",
+            "event_id",
             "team_choice",
             "bet_type",
-            # "team1_score",
-            # "team2_score",
             "bet_amount",
             "created_at",
             "updated_at",
@@ -168,20 +168,41 @@ class BetSerializer(serializers.ModelSerializer):
         # If neither "Team 1" nor "Team 2" is chosen, return None
         return None
 
+    def validate_event_id(self, value):
+        try:
+            event = Event.objects.get(pk=value)
+            if event.start_time <= timezone.now():
+                raise serializers.ValidationError("Cannot place a bet on an event that has already started.")
+            return value
+        except Event.DoesNotExist:
+            raise serializers.ValidationError("This event does not exist")
+
     def validate(self, data):
         """
-        Check that the bet is valid.
+        Check that the bet is valid:
+            - Ensure the event has not started.
+            - Ensure the event is not in progress
+            - Ensure the event has not ended
         """
-        # When creating a new bet, ensure the event has not already passed
-        if data["event"].start_time < timezone.now():
-            raise serializers.ValidationError("Cannot place a bet on a past event.")
-        # When updating an existing bet, ensure the event has not started
-        elif self.instance and self.instance.event.start_time <= timezone.now():
-            raise serializers.ValidationError(
-                "Cannot update a bet after the event has started."
-            )
+        # Extract the event_id from the incoming data or instance (for updates)
+        event_id = data.get("event_id", self.instance.event_id if self.instance else None)
 
+        # Fetch the event based on event_id
+        try:
+            event = Event.objects.get(id=event_id)
+        except Event.DoesNotExist:
+            raise serializers.ValidationError({"event_id": "This event does not exist"})
+        
+        current_time = timezone.now()
+
+        # Check if the event has started or ended
+        if event.start_time <= current_time:
+            raise serializers.ValidationError("Cannot place a bet on an event that has already started")
+        if hasattr(event, "end_time") and event.end_time and event.end_time <= current_time:
+            raise serializers.ValidationError("Cannot place bet on an event that has already ended")
+        
         return data
+
 
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
