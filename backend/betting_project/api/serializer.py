@@ -203,6 +203,17 @@ class BetSerializer(serializers.ModelSerializer):
         
         return data
 
+    def create(self, validated_data):
+        """
+        The create override will primarily focus on associating the bet with the correct event
+        """
+        # Assuming, "event_id" has been validated and used to set the "event" in validated_data
+        event_id = validated_data.pop("event_id", None) # remove "event_id" it's not a model field
+        event = Event.objects.get(id=event_id)
+        validated_data["event"] = event
+
+        # Now call the superclass method on the handle actual object creation
+        return super().create(validated_data)
 
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
