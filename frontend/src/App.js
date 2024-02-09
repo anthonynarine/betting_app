@@ -10,13 +10,13 @@ import { GroupDataProvider } from "./context/groupData/GroupDataProvider";
 import { EventDataProvider } from "./context/eventData/EventDataProvider";
 import { BetDataProvider } from "./context/bet/BetDataProvider";
 import UserServiceProvider from "./context/user/UserContext";
-import LoginPageV0 from "./pages/Login/test/LoginPageV0";
+import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 
 import Home from "./pages/home/Home";
 import HomeV2 from "./pages/home/HomeV2"
-import TestLogin from "./pages/Login/test/testLogin";
-import LoginPage from "./pages/Login/LoginPage";
+import TestLogin from "./pages/login/test/testLogin";
+import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./context/Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE

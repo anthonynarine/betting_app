@@ -6,8 +6,7 @@ import CustomAlert from "../../pages/events/bets/placeBetBtn/CustomAlert";
 import { useBetData } from "./BetDataProvider";
 import {
   Button,
-  Dialog,
-  DialogActions,
+  Di
   DialogContent,
   DialogTitle,
   FormControl,
@@ -36,7 +35,7 @@ const BetForm = ({ open, onClose, }) => {
 
   // State for managing bet details input
   const [betDetails, setBetDetails] = useState({
-    event: eventId,
+    event_id: eventId,
     user: userId,
     team_choice: "",
     bet_type: "",
