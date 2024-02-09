@@ -3,7 +3,7 @@ import { Button, TextField, Container, Typography, Box, useTheme } from "@mui/ma
 import { useAuthServices } from "../../context/Auth/AuthServices";
 import { useNavigate } from "react-router-dom";
 import { LoginStyles } from "../login/LoginStyles.jsx";
-import { validateSignupPassword, validateEmail } from "../Login/validators/SingupValidators.jsx.jsx";
+import { validateSignupPassword, validateEmail } from "../login/validators/SingupValidators.jsx.jsx";
 import { validateUsername } from "../login/validators/LoginValidators.jsx";
 
 const Signup = () => {
