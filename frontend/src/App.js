@@ -40,7 +40,7 @@ function App() {
 								<CssBaseline />
 								<Routes>
 									{/* <Route path="/" element={<Home />} /> */}
-									<Route path="/" element={<HomeV2 />} />
+									<Route path="/" element={<Home />} />
 									<Route path="/group/:groupId" element={<DetailPage />} />
 									<Route path="/event/:eventId" element={<EventPage />} />
 									<Route path="/login" element={<LoginPage />} />

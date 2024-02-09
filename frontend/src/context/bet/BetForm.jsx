@@ -36,7 +36,7 @@ const BetForm = ({ open, onClose, }) => {
 
   // State for managing bet details input
   const [betDetails, setBetDetails] = useState({
-    event: eventId,
+    event_id: eventId,
     user: userId,
     team_choice: "",
     bet_type: "",

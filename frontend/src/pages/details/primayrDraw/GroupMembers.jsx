@@ -11,7 +11,7 @@ import {
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
+import { ListViewStyles } from "../../home/ListViewStyles";
 import React, { useEffect } from "react";
 // import { useMembers } from "../../../context/membersContext/MemberContext"
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";

@@ -15,7 +15,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 // import { MEDIA_URL } from "../../config";
 import { Link } from "react-router-dom";
-import { ListViewStyles } from "../../home/primaryDraw/ListViewStyles";
+import { ListViewStyles } from "../../home/ListViewStyles";
 import React from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
