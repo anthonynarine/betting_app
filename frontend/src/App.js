@@ -1,5 +1,3 @@
-
-
 import DetailPage from "./pages/details/DetailsPage";
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,8 +11,8 @@ import UserServiceProvider from "./context/user/UserContext";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 
-
-import Home from "./pages/home/Home"
+import Home from "./pages/home/Home";
+import HomeV2 from "./pages/home/HomeV2";
 import TestLogin from "./pages/login/test/testLogin";
 import LoginPage from "./pages/login/LoginPage";
 import Signup from "./pages/signup/SignupPage";

@@ -63,13 +63,13 @@ export default function GroupDetailsCard() {
           maxWidth: 400,
           maxHeight: "none",
         },
-            // Override for large screens
+        // Override for large screens
         "@media (min-width: 900px)": {
           maxWidth: 600, // Max width for large screens
         },
-            // Override for extra-large (XL) screens
-      "@media (min-width: 1536px)": {
-        maxWidth: 800, // Max width for XL screens
+        // Override for extra-large (XL) screens
+        "@media (min-width: 1536px)": {
+          maxWidth: 800, // Max width for XL screens
         },
       }}
       elevation={3}
@@ -96,7 +96,7 @@ export default function GroupDetailsCard() {
         title={
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
             <Typography variant="h6" style={{ fontWeight: "bold" }}>
-            {group && group.name ? group.name : "Loading..."}
+              {group && group.name ? group.name : "Loading..."}
             </Typography>
           </Link>
         }
@@ -119,100 +119,100 @@ export default function GroupDetailsCard() {
       />
 
       <CardContent>
-      <Box sx={{ margin: 2 }}>
-  <Typography variant="h5" color="#000" style={{ fontWeight: "bold" }}>
-    Events
-  </Typography>
-  {events && events.length > 0 && (
-    events.map((event) => (
-      <Box
-        key={event.id}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          backgroundColor: "#fff",
-          padding: "15px",
-          borderRadius: "8px",
-          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
-          margin: "10px 0",
-          position: "relative", 
-        }}
-      >
-        {/* Team names and 'vs' */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-            marginBottom: "8px",
-          }}
-        >
-          <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
-            <Typography
-              variant="body1"
-              sx={{
-                fontWeight: "600",
-                fontFamily: "'Roboto', sans-serif",
-                color: "black",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {event.team1}
-            </Typography>
-          </Box>
-
-          <Typography
-            variant="body1"
-            sx={{
-              fontWeight: "bold",
-              fontFamily: "'Roboto', sans-serif",
-              color: "black",
-              mx: 2, // margin for left and right
-              textAlign: "center",
-              minWidth: "40px", // Ensure some space for 'vs' text
-            }}
-          >
-            vs
+        <Box sx={{ margin: 2 }}>
+          <Typography variant="h5" color="#000" style={{ fontWeight: "bold" }}>
+            Events
           </Typography>
+          {events && events.length > 0 && (
+            events.map((event) => (
+              <Box
+                key={event.id}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  backgroundColor: "#fff",
+                  padding: "15px",
+                  borderRadius: "8px",
+                  boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.2)",
+                  margin: "10px 0",
+                  position: "relative",
+                }}
+              >
+                {/* Team names and 'vs' */}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    marginBottom: "8px",
+                  }}
+                >
+                  <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontWeight: "600",
+                        fontFamily: "'Roboto', sans-serif",
+                        color: "black",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {event.team1}
+                    </Typography>
+                  </Box>
 
-          <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
-            <Typography
-              variant="body1"
-              sx={{
-                fontWeight: "600",
-                fontFamily: "'Roboto', sans-serif",
-                color: "black",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {event.team2}
-            </Typography>
-          </Box>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: "bold",
+                      fontFamily: "'Roboto', sans-serif",
+                      color: "black",
+                      mx: 2, // margin for left and right
+                      textAlign: "center",
+                      minWidth: "40px", // Ensure some space for 'vs' text
+                    }}
+                  >
+                    vs
+                  </Typography>
+
+                  <Box sx={{ flex: 1, textAlign: "center", overflow: "hidden" }}>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontWeight: "600",
+                        fontFamily: "'Roboto', sans-serif",
+                        color: "black",
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {event.team2}
+                    </Typography>
+                  </Box>
+                </Box>
+
+                {/* Countdown Timer */}
+                <Typography
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "'Roboto', sans-serif",
+                    color: "gray",
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  <CountDownTimer event={event} />
+                </Typography>
+              </Box>
+            ))
+          )}
         </Box>
-
-        {/* Countdown Timer */}
-        <Typography
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "'Roboto', sans-serif",
-            color: "gray",
-            fontSize: "0.9rem",
-          }}
-        >
-          <CountDownTimer event={event} />
-        </Typography>
-      </Box>
-    ))
-  )}
-</Box>
       </CardContent>
 
       <CardActions disableSpacing>
