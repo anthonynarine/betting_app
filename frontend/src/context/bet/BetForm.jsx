@@ -6,7 +6,8 @@ import CustomAlert from "../../pages/events/bets/placeBetBtn/CustomAlert";
 import { useBetData } from "./BetDataProvider";
 import {
   Button,
-  Di
+  Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   FormControl,
