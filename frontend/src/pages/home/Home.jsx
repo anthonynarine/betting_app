@@ -1,30 +1,17 @@
 import { Box, CssBaseline } from "@mui/material";
 import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
-import PrimaryDraw from "../../components/primaryDraw/PrimaryDraw";
-import Main from "../../components/main/Main";
-import GroupListCard from "./main/GroupListCard";
-import GroupList from "./primaryDraw/GroupList";
+import HomeTabs from "./HomeTabs";
+import Footer from "./Footer";
 
-
-
-
-const Home = () => {
-
-
-
+const HomeV2 = () => {
   return (
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <PrimaryAppBar />
-        <PrimaryDraw>
-          <GroupList />
-        </PrimaryDraw>
-        <Main>
-          <GroupListCard />
-        </Main>
-      </Box>
-
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <CssBaseline />
+      <PrimaryAppBar />
+      <HomeTabs />
+      <Footer />
+    </Box>
   );
 };
 
-export default Home;
+export default HomeV2;

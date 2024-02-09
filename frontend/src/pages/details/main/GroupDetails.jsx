@@ -1,6 +1,5 @@
 import { Typography, Box, Container, Grid } from "@mui/material";
 import React, { useEffect, } from "react";
-import GroupCard from "../../home/main/GroupCard";
 import GroupDetailsCard from "./GroupDetailsCard";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 
@@ -57,7 +56,7 @@ function GroupDetails() {
                 xl={2}
                 style={{ width: "100%" }}
               >
-                <GroupCard group={group} />
+
               </Grid>
             ))}
         </Grid>
