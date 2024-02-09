@@ -7,7 +7,10 @@ import {
     CardActions,
     Grid,
 } from '@mui/material';
-import LoginIcon from '@mui/icons-material/Login';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import GroupsIcon from '@mui/icons-material/Groups';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import NearMeIcon from '@mui/icons-material/NearMe';
 
 export default function GroupCardV2({ group }) {
 
@@ -21,7 +24,8 @@ export default function GroupCardV2({ group }) {
                     {name.toUpperCase()}
                 </Typography>
                 <Stack direction="row">
-                    <Typography variant="subtitle1" fontWeight="medium">
+                    <EventAvailableIcon fontSize="medium" sx={{ marginRight: ".3rem", paddingTop: ".1rem" }} />
+                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem" }}>
                         Number of Events:
                     </Typography>
                     <Typography variant="subtitle1" fontWeight="medium">
@@ -29,8 +33,9 @@ export default function GroupCardV2({ group }) {
                     </Typography>
                 </Stack>
                 <Stack direction="row">
-                    <Typography variant="subtitle1" fontWeight="medium">
-                        Number of Members:
+                    <GroupsIcon fontSize="medium" sx={{ marginRight: ".3rem", paddingTop: ".1rem" }} />
+                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem" }}>
+                        Members:
                     </Typography>
                     <Typography variant="subtitle1" fontWeight="medium">
                         {members.length}
@@ -40,17 +45,18 @@ export default function GroupCardV2({ group }) {
             </CardContent>
 
             <CardActions>
+                <NearMeIcon fontSize="medium" sx={{ marginLeft: ".4rem", paddingTop: ".1rem" }} />
                 <Typography variant="body2" fontWeight="medium" sx={{ ml: ".5rem" }}>
                     {location}
                 </Typography>
                 <Grid sx={{ ml: "auto" }}>
                     <Button
                         variant="contained"
-                        endIcon={<LoginIcon />}
+                        endIcon={<PersonAddAlt1Icon />}
                         size="small"
                         color="secondary"
                         href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
-                        sx={{ marginRight: "8px", marginBottom: "6px", maxWidth: "145px", maxHeight: "45px" }}>
+                        sx={{ marginRight: ".6rem", marginBottom: ".5rem", maxWidth: "145px", maxHeight: "30px" }}>
                         Join Group
                     </Button>
                 </Grid>
