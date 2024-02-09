@@ -1,49 +1,47 @@
-// Mut tools
 import {
     Card,
     CardContent,
-    CardMedia,
     Typography,
     Stack,
     Button,
-    CardActionArea,
     CardActions,
     Grid,
-    Box
 } from '@mui/material';
 import LoginIcon from '@mui/icons-material/Login';
-import Avatar from '@mui/material/Avatar';
-
 
 export default function GroupCardV2({ group }) {
-    const cardImageURL = "https://source.unsplash.com/random/?plants"
-    const avatarURL = "https://source.unsplash.com/random/?animal"
-    console.log(group);
-    // 
+
+    const { name, events, members, location } = group;
+
     return (
-        <Card sx={{ maxWidth: 750 }}>
-            {/* <CardActionArea> */}
-            {/* <CardMedia
-                    component="img"
-                    height="140"
-                    image={cardImageURL}
-                    alt="Group Event Image"
-                /> */}
+        <Card sx={{ width: { xs: '90%', sm: 450, md: 650 } }}>
+
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div" fontWeight="bold">
-                    {group.name.toUpperCase()}
+                <Typography gutterBottom variant="h4" component="div" fontWeight="bold">
+                    {name.toUpperCase()}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {group.description.toUpperCase()}
-                </Typography>
-                <Typography variant="body2">
-                    NUMBER OF EVENTS: {group.events.length}
-                </Typography>
+                <Stack direction="row">
+                    <Typography variant="subtitle1" fontWeight="medium">
+                        Number of Events:
+                    </Typography>
+                    <Typography variant="subtitle1" fontWeight="medium">
+                        {events.length}
+                    </Typography>
+                </Stack>
+                <Stack direction="row">
+                    <Typography variant="subtitle1" fontWeight="medium">
+                        Number of Members:
+                    </Typography>
+                    <Typography variant="subtitle1" fontWeight="medium">
+                        {members.length}
+                    </Typography>
+
+                </Stack>
             </CardContent>
-            {/* </CardActionArea> */}
+
             <CardActions>
-                <Typography variant="body2" sx={{ marginLeft: "8px" }}>
-                    {group.members.length} {group.members.length > 1 ? ` Members` : ` Member`}
+                <Typography variant="body2" fontWeight="medium" sx={{ ml: ".5rem" }}>
+                    {location}
                 </Typography>
                 <Grid sx={{ ml: "auto" }}>
                     <Button
@@ -51,7 +49,7 @@ export default function GroupCardV2({ group }) {
                         endIcon={<LoginIcon />}
                         size="small"
                         color="secondary"
-                        href={`/group/${group.id}`}
+                        href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
                         sx={{ marginRight: "8px", marginBottom: "6px", maxWidth: "145px", maxHeight: "45px" }}>
                         Join Group
                     </Button>
