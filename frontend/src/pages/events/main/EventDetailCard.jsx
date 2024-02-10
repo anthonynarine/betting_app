@@ -28,7 +28,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 
 //bet
 import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn";
-import BetForm from "../../../context/bet/BetForm";
+import BetForm from "../bets/BetForm";
 import BetDetailsCard from "../bets/BetDetailsCard";
 
 import { Link } from "react-router-dom";

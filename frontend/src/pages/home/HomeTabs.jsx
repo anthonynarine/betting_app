@@ -12,7 +12,7 @@ export default function HomeTabs() {
     },
     {
       label: "My Bets",
-      content: <BetList open={true} />,
+      content: <BetList />,
     },
     {
       label: "Popular Events",

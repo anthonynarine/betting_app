@@ -3,15 +3,25 @@ import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
 import HomeTabs from "./HomeTabs";
 import Footer from "./Footer";
 
-const HomeV2 = () => {
+// Data from context
+import { BetDataProvider } from "../../context/bet/BetDataProvider";
+import { EventDataProvider } from "../../context/eventData/EventDataProvider";
+
+
+const Home = () => {
+
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      <CssBaseline />
-      <PrimaryAppBar />
-      <HomeTabs />
-      <Footer />
-    </Box>
+    <EventDataProvider>
+      <BetDataProvider>
+        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+          <CssBaseline />
+          <PrimaryAppBar />
+          <HomeTabs />
+          <Footer />
+        </Box>
+      </BetDataProvider>
+    </EventDataProvider>
   );
 };
 
-export default HomeV2;
+export default Home;

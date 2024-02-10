@@ -97,6 +97,7 @@ export const BetDataProvider = ({ children }) => {
     try {
       const allBetsData = await fetchData("/bets/");
       setBets(allBetsData);
+      console.log("Bet List updated:", allBetsData)
     } catch (error) {
       console.error("Error refreshing bets", error);
     }
@@ -121,6 +122,6 @@ export const BetDataProvider = ({ children }) => {
   };
 
   return (
-    <BetDataContext.Provider value={value}>{children}</BetDataContext.Provider>
+    <BetDataContext.Provider value={{...value}}>{children}</BetDataContext.Provider>
   );
 };

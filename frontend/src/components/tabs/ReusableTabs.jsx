@@ -14,7 +14,7 @@ function ReusableTabs({ tabsConfig }) {
   let theme = useTheme();
 
   // State hook for manageing the active tab.  "value" is the index of the currently active tab
-  let [value, setValue] = useState(0);
+  let [value, setValue] = useState(1);
 
   // Handles changing the active tab. 
   let handleChange = (event, newValue) => {

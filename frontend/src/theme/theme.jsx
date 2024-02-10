@@ -56,6 +56,11 @@ export const createBettingAppTheme = (mode) => {
     }
   });
 
+    // Calculate the top position to sit below the primary app bar
+    theme.dialogTopPosition = {
+      top: `calc(100% + ${theme.primaryAppBar.height}px)`,
+    };
+
   theme = responsiveFontSizes(theme);
 
   return theme;

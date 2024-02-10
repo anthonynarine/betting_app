@@ -3,6 +3,7 @@ import { Button, } from "@mui/material";
 import useCrud from "../../../services/useCrud";
 import { useBetData } from "../../../context/bet/BetDataProvider";
 import { useUserServices } from "../../../context/user/UserContext";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -11,6 +12,8 @@ const BetRequest = ({ betDetails, onSuccess, onError, errorMessage }) => {
     const { createObject } = useCrud(); // Use the createObject function from useCrud
     const { updateBetList, updateIndividualBet } = useBetData();
     const { updateUserData } = useUserServices();
+    const navigate = useNavigate();
+
 
     const createBet = async () => {
         setIsLoading(true);
@@ -22,6 +25,7 @@ const BetRequest = ({ betDetails, onSuccess, onError, errorMessage }) => {
             updateBetList();  // Update BetList (ui)
             updateIndividualBet(newBet.id) // Update BetDetails card (ui)
             updateUserData(); // Updates the availabe funds on user icon in primary app bar
+            navigate("/")
             console.log("Printing bet details:", betDetails)
         } catch (error) {
             console.error('Error placing bet:', error);
