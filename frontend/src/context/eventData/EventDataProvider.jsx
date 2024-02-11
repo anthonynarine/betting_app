@@ -30,9 +30,11 @@ export const EventDataProvider = ({ children }) => {
   const { fetchData, updateObject } = useCrud();
 
   //State needed for Events
+  const [loading, setIsLoading] = useState(false);
+  const [error, setError]  = useState(null);
   const [allEvents, setAllEvents] = useState([]);
   const [allUserEvent, setAllUserEvents] = useState([]);
-  const [event, setEvent] = useState([]);
+  const [event, setEvent] = useState({});
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [organizer, setOrganizer] = useState(null);
@@ -41,22 +43,24 @@ export const EventDataProvider = ({ children }) => {
   const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
   // console.log(typeof(userIsEventCreator))
 
-  useEffect(() => {
+
     const fetchAllAndUserEvents = async () => {
+      setIsLoading(true);
       try {
         const data = await fetchData("/events/all_and_user_events/");
         setAllEvents(data.all_events); // Correctly set all events ordered by most participants
         setAllUserEvents(data.user_events || []); // Sets user events if a user is logged in; defaults to empty if undefined.
       } catch (error) {
         console.error("Error fetching all and user events:", error);
+        setError(error);
+        setIsLoading(false);
       }
     };
   
-    
-    const fetchEventData = async () => {
-      if (eventId) {
+    const fetchEventData = async (id) => {
+      setIsLoading(true); 
         try {
-          const data = await fetchData(`/events/${eventId}`);
+          const data = await fetchData(`/events/${id || eventId}`);
           setEvent(data);
           setGroup(data.group);
           setParticipants(data.participants);
@@ -64,14 +68,18 @@ export const EventDataProvider = ({ children }) => {
           // Removed the console.log from here as organizer might not be updated immediately due to setState being asynchronous
         } catch (error) {
           console.error("Error fetching event data by ID:", error);
-        }
+          setError(error);
+          setIsLoading(false);
       }
     };
-  
-    fetchAllAndUserEvents();
-    fetchEventData();
-  }, [eventId]);
-  
+
+    useEffect(()=> {
+      fetchAllAndUserEvents();
+      if (eventId) {
+        fetchEventData(eventId)
+      }
+    }, [eventId])
+    
 
   // Function to update event data
   const updateEventData = (updatedEventData) => {
@@ -89,6 +97,8 @@ export const EventDataProvider = ({ children }) => {
     organizer,
     userIsEventCreator,
     updateEventData,
+    error,
+    loading
   };
 
   return (

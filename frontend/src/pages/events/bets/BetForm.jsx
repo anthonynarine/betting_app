@@ -16,30 +16,50 @@ import CustomAlert from "./placeBetBtn/CustomAlert";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import { useBetData } from "../../../context/bet/BetDataProvider";
 
-const BetForm = ({ open, onClose }) => {
+const BetForm = ({ open, onClose, bet }) => {
   // Hooks
-  const { event } = useEventData();
   const { eventId } = useParams();
-  const { createBet, individualBet: currentBetData, updateBet } = useBetData();
-  const userId = localStorage.getItem("userId");
+  const { createBet, updateBet } = useBetData();
+  const { event: contextEvent, loading: eventLoading, error: eventError } = useEventData();
 
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [betAmountError, setBetAmountError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const userId = localStorage.getItem("userId");
+  
   const [betDetails, setBetDetails] = useState({
-    event_id: eventId,
+    event_id: bet ? bet.event.id : eventId,
     user: userId,
     team_choice: "",
     bet_type: "",
     bet_amount: "",
   });
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [betAmountError, setBetAmountError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+
+  console.log("testing props bet data in betform", bet)
+  console.log("testing context bet data in betform", contextEvent)
+
+
+  // Initialize or reset betDetials based on the bet prop or new bet create
+  useEffect(()=>{
+    setBetDetails({
+      event_id: bet ? bet.event.id : eventId,
+      user: userId,
+      team_choice: bet?.team_choice || "",
+      bet_type: bet?.bet_type || "",
+      bet_amount: bet?.bet_amount || "",
+    });
+  },[bet, eventId, userId ])
+  
+  // Determine initial event_id: for new bets, use the eventId from params for updates use the bet's nested event id
+  const event = bet ? bet.event: contextEvent
 
   // Handlers
   const handleBetSubmission = async () => {
     setIsLoading(true);
     try {
-      if (currentBetData) {
-        await updateBet(currentBetData.id, betDetails, handleSuccess, handleError);
+      if (bet) {
+        await updateBet(bet.id, betDetails, handleSuccess, handleError);
       } else {
         await createBet(betDetails, handleSuccess, handleError);
       }
@@ -87,19 +107,12 @@ const BetForm = ({ open, onClose }) => {
     }
   }, [open]);
 
-  useEffect(() => {
-    if (currentBetData) {
-      setBetDetails({
-        event: currentBetData.event,
-        user: currentBetData.user,
-        team_choice: currentBetData.team_choice,
-        bet_type: currentBetData.bet_type,
-        bet_amount: currentBetData.bet_amount,
-      });
-    }
-  }, [currentBetData]);
+
+  // if (eventLoading) return <div>Loading event details...</div>;
+  // if (eventError) return <div>Error loading event details: {eventError.message}</div>;
 
   return (
+
     <Dialog
       open={open}
       onClose={onClose}
@@ -109,7 +122,7 @@ const BetForm = ({ open, onClose }) => {
       maxWidth="xs"
     >
       {/* Dialog Title */}
-      <DialogTitle id="bet-form">Place A Bet</DialogTitle>
+      <DialogTitle id="bet-form">{bet ? "Update Bet" : "Place A Bet"}</DialogTitle>
       {/* Dialog Content */}
       <DialogContent id="form-to-create-a-bet">
         {/* Error Alert */}
@@ -164,7 +177,7 @@ const BetForm = ({ open, onClose }) => {
       {/* Dialog Actions */}
       <DialogActions>
         <Button onClick={handleBetSubmission} color="primary" variant="outlined">
-          {currentBetData ? "Update Bet" : "Place Bet"}
+          {bet ? "Update Bet" : "Place Bet"}
         </Button>
         <Button onClick={onClose} color="primary" variant="outlined">
           Cancel

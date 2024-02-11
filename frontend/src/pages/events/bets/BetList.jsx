@@ -8,9 +8,9 @@ const BetList = () => {
   const { bets } = useBetData();
   const { userData } = useUserServices();
 
-  const [openBetForm, setBetFormOpen] = useState(false);
-  const toggleBetForm = () => {
-    setBetFormOpen(!openBetForm)
+  const [openBetFormId, setBetFormOpenId] = useState(false);
+  const toggleBetForm = (betId) => {
+    setBetFormOpenId(prevId => prevId === betId ? null : betId);
   };
 
   return (
@@ -22,8 +22,9 @@ const BetList = () => {
               <BetCard
                 bet={bet}
                 userData={userData}
-                toggleBetForm={toggleBetForm}
-                openBetForm={openBetForm}
+                toggleBetForm={() => toggleBetForm(bet.id)}
+                openBetFormId={openBetFormId === bet.id}
+                
               />
             </Grid>
           ))

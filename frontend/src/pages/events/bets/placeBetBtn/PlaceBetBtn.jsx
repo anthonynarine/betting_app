@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Tooltip, Box, useTheme } from "@mui/material";
+import { Button, Box, useTheme } from "@mui/material";
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 
 export const PlaceBetBtn = ({ bet, toggleBetForm }) => {

@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Divider, Grid, Box } from '@mui/material
 import { PlaceBetBtn } from './placeBetBtn/PlaceBetBtn'; // Adjust the import path as needed
 import BetForm from './BetForm'; 
 
-const BetCard = ({ bet, userData, toggleBetForm, openBetForm }) => {
+const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
   // Extract necessary data from the bet object
   const currentUserBetInfo = bet.event.participants_bets_and_winnings.participants_info.find(participant => participant.user === userData.username);
   const totalWinnablePool = currentUserBetInfo ? currentUserBetInfo.total_winnable_pool : 0;
@@ -11,14 +11,6 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetForm }) => {
 
   return (
     <Card sx={{ m: 'auto', bgcolor: 'background.paper', boxShadow: 3 }}>
-      {/* Dialog anchored to the top center of the card */}
-      <Box position="absolute" top={0} left="50%" transform="translateX(-50%)">
-        <Box sx={{ pt: 1, pr: 1, pb: 1 }} display="flex" justifyContent="center" flexGrow={1}>
-          <PlaceBetBtn toggleBetForm={toggleBetForm} bet={bet} />
-          <BetForm open={openBetForm} onClose={toggleBetForm} bet={bet}/>
-        </Box>
-      </Box>
-
       <CardContent>
         {/* Header with Group Name and Event Matchup */}
         <Grid container alignItems="center" justifyContent="flex-start">
@@ -31,7 +23,7 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetForm }) => {
           <Box ml={2}>
             <Box sx={{ pt: 1, pr: 1, pb: 1 }} display="flex" justifyContent="center" flexGrow={1}>
               <PlaceBetBtn toggleBetForm={toggleBetForm} bet={bet} />
-              <BetForm open={openBetForm} onClose={toggleBetForm} />
+              <BetForm open={openBetFormId} onClose={toggleBetForm} bet={bet} />
             </Box>
           </Box>
         </Grid>
