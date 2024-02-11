@@ -83,15 +83,17 @@ export const BetDataProvider = ({ children }) => {
 
   const updateBet = async (betId, updatedBetDetails, onSuccess, onError) => {
     try {
-      const updatedBet = await updateObject("/bets/", betId, updatedBetDetails)
-      onSuccess(updateBet); 
-      updateIndividualBetData(updatedBet.id)
-      updateUserData()
+      const updatedBet = await updateObject("/bets/", betId, updatedBetDetails);
+      onSuccess(updatedBet); // Invoke the success callback with the updated bet
+      updateBetListData(); // Refresh the list of bets to reflect the update
+      updateIndividualBetData(updatedBet.id); // Update individual bet details in the UI
+      updateUserData(); // Updates the available funds on user icon in primary app bar
     } catch (error) {
-      console.error("Error updating bet:", error)
-      onError(error)
+      console.error("Error updating bet:", error);
+      onError(error); // Pass the error to the onError callback in BetForm
     }
-  }
+  };
+  
 
   const updateBetListData = async () => {
     try {

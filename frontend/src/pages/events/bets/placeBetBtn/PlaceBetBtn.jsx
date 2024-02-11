@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 
-export const PlaceBetBtn = ({ bet, toggleBetForm }) => {
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
+
+export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet }) => { // Assume onDeleteBet is a prop function to handle bet deletion
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   useEffect(() => {
@@ -23,32 +26,45 @@ export const PlaceBetBtn = ({ bet, toggleBetForm }) => {
   let theme = useTheme();
   let classes = PlaceBetBtnStyles(theme);
 
-  let buttonLabel = "Place Bet"; // Default label suggesting new bet placement
-  let buttonDisabled = false;
+  let buttonElement; // This will hold the JSX for our buttons
 
-  // Assign buttonClickHandler based on the event and bet status
-  let buttonClickHandler = toggleBetForm; // Use passed toggleBetForm function for handling clicks
+  // Determine if the bet can be edited
+  const canEditBet = bet && !eventInProgress && !eventHasEnded;
 
-  if (bet) { // If a bet exists, adjust button behavior based on event timing
-    if (eventInProgress || eventHasEnded) {
-      buttonLabel = "Betting Closed";
-      buttonDisabled = true;
-      buttonClickHandler = undefined; // No action when betting is closed
-    } else {
-      buttonLabel = "Update Bet"; // Allows updating the bet before the event starts
-    }
+  if (canEditBet) {
+    // Bet can be edited, display the EditIcon and DeleteIcon with tooltips for editing and deleting
+    buttonElement = (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Tooltip
+          title="Edit Bet"
+          placement="top"
+          PopperProps={classes.tooltipConfig.PopperProps}
+          PaperProps={classes.tooltipConfig.PaperProps}
+        >
+          <IconButton onClick={toggleBetForm} sx={classes.placeBet}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip
+          title="Delete Bet"
+          placement="top"
+          PopperProps={classes.tooltipConfig.PopperProps}
+          PaperProps={classes.tooltipConfig.PaperProps}
+        >
+          <IconButton onClick={onDeleteBet} sx={classes.placeBet}> {/* Assuming onDeleteBet handles bet deletion */}
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    );
+  } else {
+    // Bet cannot be edited or there is no bet; do not display icons
+    buttonElement = (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        {/* Display alternative content or nothing if no editable bet */}
+      </Box>
+    );
   }
 
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Button
-        variant="outlined"
-        disabled={buttonDisabled}
-        sx={buttonDisabled ? classes.bettingClosed : classes.placeBet}
-        onClick={buttonClickHandler}
-      >
-        {buttonLabel}
-      </Button>
-    </Box>
-  );
+  return buttonElement;
 };

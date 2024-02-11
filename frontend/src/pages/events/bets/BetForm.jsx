@@ -171,6 +171,7 @@ const BetForm = ({ open, onClose, bet }) => {
           onChange={handleInputChange}
           aria-label="Bet Amount"
           helperText={betAmountError || "Amount to bet"}
+          sx={{ marginY: 1 }}
         />
       </DialogContent>
 

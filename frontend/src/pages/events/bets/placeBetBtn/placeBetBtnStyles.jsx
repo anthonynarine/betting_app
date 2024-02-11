@@ -1,36 +1,55 @@
 export const PlaceBetBtnStyles = (theme) => ({
   bettingClosed: {
-    borderColor: "#000",
-    backgroundColor: "#000",
+    borderColor: "#EBF0F9",
+    backgroundColor: "#EBF0F9",
     color: "white",
     borderRadius: "15px",
     fontWeight: "500",
-    // textShadow: "1px 1px 2px #aaa",
-    padding: "3px 12px", // Smaller padding
-    fontSize: "0.875rem", // Smaller font size
+    padding: "3px 12px",
+    fontSize: "0.875rem",
     textTransform: "none",
     "&.Mui-disabled": {
-      color: "red", // Override for disabled state
+      color: "red",
       borderColor: "#000",
     },
   },
   placeBet: {
-    borderColor: "#000",
-    backgroundColor: "#000",
-    color: "#00DE49",
+    borderColor: "#EBF0F9",
+    backgroundColor:"#EBF0F9",
+    color: "#000",
     borderRadius: "15px",
     fontWeight: "500",
-    // textShadow: "1px 1px 2px #aaa",
-    padding: "3px 12px", // Smaller padding
-    fontSize: "0.875rem", // Smaller font size
+    padding: "3px 12px",
+    fontSize: "0.875rem",
     textTransform: "none",
     "&:hover": {
-      borderColor: "#00DE49",
-      backgroundColor: "#00DE49",
+      borderColor: "#EBF0F9",
+      backgroundColor: "#EBF0F9",
       color: "black",
     },
   },
+  tooltipConfig: {
+    PaperProps: {
+      style: {
+        backgroundColor: "#EBF0F9",
+        color: "#000",
+        fontSize: "0.75rem",
+        borderRadius: "4px",
+      },
+    },
+    PopperProps: {
+      modifiers: [
+        {
+          name: "offset",
+          options: {
+            offset: [0, 4], // Adjust this value to control the tooltip's offset
+          },
+        },
+      ],
+    },
+  },
 });
+
 
 //   to acces in component needed
 //   import { useTheme } from "@mui/material";
