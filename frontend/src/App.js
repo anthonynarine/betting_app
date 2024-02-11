@@ -8,6 +8,7 @@ import { GroupDataProvider } from "./context/groupData/GroupDataProvider";
 import { EventDataProvider } from "./context/eventData/EventDataProvider";
 import { BetDataProvider } from "./context/bet/BetDataProvider";
 import UserServiceProvider from "./context/user/UserContext";
+import ThemeWrapper from "./theme/ThemeProvider";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 
@@ -33,44 +34,46 @@ function App() {
 	console.log(stripePromise);
 
 	return (
-		<UserServiceProvider>
-			<AuthProvider>
-				<GroupDataProvider>
-					<EventDataProvider>
-						<BetDataProvider>
-							<ToggleColorModeProvider>
-								<CssBaseline />
-								<Routes>
-									{/* <Route path="/" element={<Home />} /> */}
-									<Route path="/" element={<Home />} />
-									<Route path="/group/:groupId" element={<DetailPage />} />
-									<Route path="/event/:eventId" element={<EventPage />} />
-									<Route path="/login" element={<LoginPage />} />
-									<Route path="/signup" element={<Signup />} />
-									{/* <Route path="/login" element={<LoginPageV0 />} /> */}
-									<Route
-										path="/testlogin"
-										element={
-											<ProtectedRoute>
-												<TestLogin />
-											</ProtectedRoute>
-										}
-									/>
-									<Route
-										path="/addfunds"
-										element={
-											<Elements stripe={stripePromise}>
-												<StripeChargeComponent />
-											</Elements>
-										}
-									/>
-								</Routes>
-							</ToggleColorModeProvider>
-						</BetDataProvider>
-					</EventDataProvider>
-				</GroupDataProvider>
-			</AuthProvider>
-		</UserServiceProvider>
+		<ThemeWrapper> 
+			<UserServiceProvider>
+				<AuthProvider>
+					<GroupDataProvider>
+						<EventDataProvider>
+							<BetDataProvider>
+								<ToggleColorModeProvider>
+									<CssBaseline />
+									<Routes>
+										{/* <Route path="/" element={<Home />} /> */}
+										<Route path="/" element={<Home />} />
+										<Route path="/group/:groupId" element={<DetailPage />} />
+										<Route path="/event/:eventId" element={<EventPage />} />
+										<Route path="/login" element={<LoginPage />} />
+										<Route path="/signup" element={<Signup />} />
+										{/* <Route path="/login" element={<LoginPageV0 />} /> */}
+										<Route
+											path="/testlogin"
+											element={
+												<ProtectedRoute>
+													<TestLogin />
+												</ProtectedRoute>
+											}
+										/>
+										<Route
+											path="/addfunds"
+											element={
+												<Elements stripe={stripePromise}>
+													<StripeChargeComponent />
+												</Elements>
+											}
+										/>
+									</Routes>
+								</ToggleColorModeProvider>
+							</BetDataProvider>
+						</EventDataProvider>
+					</GroupDataProvider>
+				</AuthProvider>
+			</UserServiceProvider>
+		</ThemeWrapper>
 	);
 }
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Chip, IconButton } from '@mui/material';
+import { Typography, Box, Chip, IconButton, useTheme } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import CompleteEventForm from "./CompleteEvent";
@@ -13,6 +13,8 @@ import CompleteEventForm from "./CompleteEvent";
  * @returns React component.
  */
 const CountDownTimer = ({ event }) => {
+
+    const theme = useTheme(); 
     // State to store the remaining time until the event.
     const [timeLeft, setTimeLeft] = useState({});
 
@@ -110,28 +112,28 @@ const CountDownTimer = ({ event }) => {
     return (
         <>
             <Box sx={{ 
-                maxWidth: "20rem",
+                maxWidth: "15rem",
                 display: 'flex', 
                 alignItems: 'center', 
                 gap: 4, 
                 padding: '6px 10px', 
                 borderRadius: '16px', 
-                backgroundColor: '#000',
+                backgroundColor: theme.palette.primary.dark,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
-                marginTop: "2px"
+                marginTop: "1px"
             }}>
                 <Chip 
-                    icon={<AccessTimeIcon />} 
+                    // icon={<AccessTimeIcon />} 
                     label={status} 
                     size="medium" 
                     sx={{ 
                         fontWeight: 'bold', 
-                        color: '#94959B', 
-                        backgroundColor: '#484950',
+                        color: theme.palette.secondary.main, 
+                        backgroundColor: theme.palette.primary.dark,
                         display: 'flex',
                         width: {
-                            xs: '6rem', 
-                            sm: '9rem', 
+                            xs: '5rem', 
+                            sm: '6rem', 
                         }
                     }}
                 />

@@ -1,23 +1,27 @@
 import React from 'react';
-import { Card, CardContent, Typography, Divider, Grid, Box } from '@mui/material';
-import { PlaceBetBtn } from './placeBetBtn/PlaceBetBtn'; // Adjust the import path as needed
+import { Card, CardContent, Typography, Divider, Grid, Box, useTheme } from '@mui/material';
+
+// Independent components 
+import { PlaceBetBtn } from './placeBetBtn/PlaceBetBtn'; 
+import CountDownTimer from '../main/EventCountDownTimer'; // Ensure this import path is correct
 import BetForm from './BetForm'; 
 
 const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
+  const theme = useTheme();
   // Extract necessary data from the bet object
   const currentUserBetInfo = bet.event.participants_bets_and_winnings.participants_info.find(participant => participant.user === userData.username);
   const totalWinnablePool = currentUserBetInfo ? currentUserBetInfo.total_winnable_pool : 0;
   const potentialWinning = currentUserBetInfo ? currentUserBetInfo.potential_winning : 0;
 
   return (
-    <Card sx={{ m: 'auto', bgcolor: 'background.paper', boxShadow: 3 }}>
+    <Card sx={{ m: 'auto', bgcolor: theme.palette.secondary.contrastText, boxShadow: 3 }}>
       <CardContent>
         {/* Header with Group Name and Event Matchup */}
         <Grid container alignItems="center" justifyContent="flex-start">
-          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'text.primary', display: 'inline' }}>
+          <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'text.primary', display: { xs: "none", sm: "inline"} }}>
             {bet.event.group.name}
           </Typography>
-          <Typography variant="subtitle1" sx={{ flexGrow: 1, textAlign: 'center', color: 'text.secondary', display: 'inline' }}>
+          <Typography variant="subtitle1" sx={{ flexGrow: 1, fontWeight: "bold", textAlign: 'center', color: 'text.primary', display: 'inline' }}>
             {bet.event.team1} vs {bet.event.team2}
           </Typography>
           <Box ml={2}>
@@ -42,10 +46,19 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
               Total Pool: <span style={{ fontWeight: 'bold' }}>${totalWinnablePool}</span> - Participants: <span style={{ fontWeight: 'bold' }}>{bet.event.participants_bets_and_winnings.participants_info.length}</span>
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+        </Grid>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} sm={6}>
             <Typography variant="body1" sx={{ color: 'text.secondary', mt: 1 }}>
               Potential Winning: <span style={{ fontWeight: 'bold' }}>${potentialWinning}</span>
             </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} sx={{mt:1}}>
+            {/* Countdown Timer */}
+            <CountDownTimer event={bet.event} />
           </Grid>
         </Grid>
       </CardContent>

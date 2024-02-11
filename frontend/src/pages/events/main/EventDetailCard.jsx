@@ -107,6 +107,7 @@ export default function EventDetailsCard() {
             justifyContent="center"
             flexGrow={1}
           >
+            test
             <PlaceBetBtn toggleBetForm={toggleBetForm} />
             <BetForm open={openBetForm} onClose={toggleBetForm} />
           </Box>

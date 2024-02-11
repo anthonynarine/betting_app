@@ -5,7 +5,7 @@ import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
 
-export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet }) => { // Assume onDeleteBet is a prop function to handle bet deletion
+export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet }) => { 
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet }) => { // Assume 
   if (canEditBet) {
     // Bet can be edited, display the EditIcon and DeleteIcon with tooltips for editing and deleting
     buttonElement = (
-      <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1} }}>
         <Tooltip
           title="Edit Bet"
           placement="top"

@@ -23,14 +23,14 @@ export const createBettingAppTheme = (mode) => {
       mode,
       primary: {
         light: '#909090', // A lighter shade of black for light contexts
-        main: '#1B1B1B', // A medium dark shade that works well for various UI elements
+        main: "#20212E", // A medium dark shade that works well for various UI elements
         dark: '#0A0A0A', // Your preferred dark shade for primary elements
-        contrastText: '#ffffff', // White text for the best contrast on primary elements
+        contrastText: '#00DE49', // White text for the best contrast on primary elements
       },
       secondary: {
         light: '#FF5C8D', // A lighter, softer pink for secondary elements that need to stand out less
         main: '#D81B60', // Your chosen accent color, perfect for buttons, icons, etc.
-        dark: '#A00037', // A darker shade of the accent color for hover states or active states
+        dark: '#C3073F', // A darker shade of the accent color for hover states or active states
         contrastText: '#ffffff', // White text for optimal readability against the secondary color
       },
       background: {
