@@ -36,9 +36,6 @@ const BetForm = ({ open, onClose, bet }) => {
     bet_amount: "",
   });
 
-  console.log("testing props bet data in betform", bet)
-  console.log("testing context bet data in betform", contextEvent)
-
 
   // Initialize or reset betDetials based on the bet prop or new bet create
   useEffect(()=>{

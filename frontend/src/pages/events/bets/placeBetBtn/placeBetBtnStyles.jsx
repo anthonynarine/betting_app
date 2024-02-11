@@ -2,8 +2,8 @@
 
 export const PlaceBetBtnStyles = (theme) => ({
   bettingClosed: {
-    borderColor: "#ffffff",
-    backgroundColor: "#ffffff",
+    borderColor: "#EBF0F9",
+    backgroundColor: "#EBF0F9",
     color: "white",
     borderRadius: "15px",
     fontWeight: "500",
@@ -16,8 +16,8 @@ export const PlaceBetBtnStyles = (theme) => ({
     },
   },
   placeBet: {
-    borderColor: "#ffffff",
-    backgroundColor:"#ffffff",
+    borderColor: "#EBF0F9",
+    backgroundColor:"#EBF0F9",
     color: "#000",
     borderRadius: "15px",
     fontWeight: "500",
@@ -25,15 +25,15 @@ export const PlaceBetBtnStyles = (theme) => ({
     fontSize: "0.875rem",
     textTransform: "none",
     "&:hover": {
-      borderColor: "#ffffff",
-      backgroundColor: "#ffffff",
+      borderColor: "#C3073F",
+      backgroundColor: "#C3073F",
       color: "black",
     },
   },
   tooltipConfig: {
     PaperProps: {
       style: {
-        backgroundColor: "#ffffff",
+        backgroundColor: "#EBF0F9",
         color: "#000",
         fontSize: "0.75rem",
         borderRadius: "4px",

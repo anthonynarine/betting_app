@@ -72,36 +72,16 @@ function PrimaryAppBar() {
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
             <Stack direction="row" spacing={0}>
-              <LogoIcon />
+            <LogoIcon sx={(theme) => ({ backgroundColor: theme.palette.secondary.dark })} />
               <Typography
                 variant="h6"
                 noWrap
                 component="div"
                 sx={{
-                  display: { fontWeight: 900 },
+                  display: { fontWeight: 900, color: theme.palette.primary.dark },
                 }}
               >
-                BET
-              </Typography>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  display: { fontWeight: 200 },
-                }}
-              >
-                on
-              </Typography>
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  display: { fontWeight: 900 },
-                }}
-              >
-                THIS
+                WagerWorld
               </Typography>
             </Stack>
           </Link>

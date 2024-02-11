@@ -14,10 +14,10 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
   const potentialWinning = currentUserBetInfo ? currentUserBetInfo.potential_winning : 0;
 
   return (
-    <Card sx={{ m: 'auto', bgcolor: theme.palette.secondary.contrastText, boxShadow: 3 }}>
+    <Card sx={{ m: 'auto', bgcolor: theme.palette.background, boxShadow: 3 }}>
       <CardContent>
         {/* Header with Group Name and Event Matchup */}
-        <Grid container alignItems="center" justifyContent="flex-start">
+        <Grid container alignItems="center" justifyContent="space-evenly">
           <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'text.primary', display: { xs: "none", sm: "inline"} }}>
             {bet.event.group.name}
           </Typography>
@@ -37,12 +37,12 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
         {/* Bet Details */}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            <Typography variant="subtitle1" fontWeight="medium" sx={{ color: 'text.primary', fontWeight: "bold" }}>
               Bet on: <span style={{ fontWeight: 'bold' }}>{bet.chosen_team_name}</span> - Amount: <span style={{ fontWeight: 'bold' }}>${bet.bet_amount}</span>
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            <Typography variant="subtitle1"  fontWeight="medium" sx={{ color: 'text.primary' }}>
               Total Pool: <span style={{ fontWeight: 'bold' }}>${totalWinnablePool}</span> - Participants: <span style={{ fontWeight: 'bold' }}>{bet.event.participants_bets_and_winnings.participants_info.length}</span>
             </Typography>
           </Grid>
@@ -52,7 +52,7 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
 
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1" sx={{ color: 'text.secondary', mt: 1 }}>
+            <Typography variant="subtitle1" fontWeight="medium" sx={{ color: 'text.primary', mt: 1 }}>
               Potential Winning: <span style={{ fontWeight: 'bold' }}>${potentialWinning}</span>
             </Typography>
           </Grid>

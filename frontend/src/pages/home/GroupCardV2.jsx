@@ -6,13 +6,22 @@ import {
     Button,
     CardActions,
     Grid,
+    useTheme,
+    IconButton,
 } from '@mui/material';
+
+// Icons
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import NearMeIcon from '@mui/icons-material/NearMe';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+
+
 
 export default function GroupCardV2({ group }) {
+
+    let theme = useTheme();
 
     const { name, events, members, location } = group;
 
@@ -40,10 +49,14 @@ export default function GroupCardV2({ group }) {
                     <Typography variant="subtitle1" fontWeight="medium">
                         {members.length}
                     </Typography>
-
+                </Stack>
+                <Stack direction="row">
+                    <AddCircleOutlineOutlinedIcon />
+                    <Typography>
+                        {group.description}
+                    </Typography>
                 </Stack>
             </CardContent>
-
             <CardActions>
                 <NearMeIcon fontSize="medium" sx={{ marginLeft: ".4rem", paddingTop: ".1rem" }} />
                 <Typography variant="body2" fontWeight="medium" sx={{ ml: ".5rem" }}>
