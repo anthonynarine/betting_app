@@ -12,10 +12,9 @@ import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
-import EventTimeStamp from "../../details/main/EventTimeStamp";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import CountDownTimer from "./EventCountDownTimer";
+import EventTimeStamp from "../../groups/main/EventTimeStamp"
 
 // Styles
 import { EventDetailCardStyles } from "./EventDetailCardStyles";
@@ -31,7 +30,8 @@ import { PlaceBetBtn } from "../bets/placeBetBtn/PlaceBetBtn";
 import BetForm from "../bets/BetForm";
 import BetDetailsCard from "../bets/BetDetailsCard";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 //crud
 import useCrud from "../../../services/useCrud";

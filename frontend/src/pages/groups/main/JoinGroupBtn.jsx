@@ -19,7 +19,7 @@ export const JoinGroupBtn = ({ groupId }) => {
     try {
       // Step 1: Attempt to join the group
       const newMemberData = await createObject(`/groups/${groupId}/join/`, {});
-      updateGroups(groupId, newMemberData);
+      updateGroups(groupId, "add", newMemberData);
       setSnackbarMessage("Successfully joined the group");
       setOpenSnackbar(true);
     } catch (error) {

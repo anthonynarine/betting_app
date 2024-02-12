@@ -18,7 +18,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { JoinGroupBtn } from '../details/main/JoinGroupBtn';
+import { JoinGroupBtn } from '../groups/main/JoinGroupBtn';
 
 
 

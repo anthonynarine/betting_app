@@ -13,7 +13,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import EventTimestamp from "./EventTimeStamp";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import { JoinGroupBtn } from "./JoinGroupBtn";
 import { LeaveGroupBtn } from "./LeaveGroupBtn";
