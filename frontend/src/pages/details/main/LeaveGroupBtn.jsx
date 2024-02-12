@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Button, Tooltip, Snackbar, Box } from "@mui/material";
-import useAxiosWithInterceptor from "../../../services/jwtinterceptor-jwtNotReq"; // Replace with your actual import
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
-
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import useCrud from "../../../services/useCrud";
 
 
 export const LeaveGroupBtn = () => {
-  const accessToken = localStorage.getItem("accessToken");
-  const jwtAxios = useAxiosWithInterceptor();
   const [open, setOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
 

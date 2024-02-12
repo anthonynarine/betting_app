@@ -80,13 +80,19 @@ export const GroupDataProvider = ({ children }) => {
     setGroup(newGroup);
   };
 
-  const updateGroups = (groupId, newMemberData) => {
+  const updateGroups = (groupId, action, memberData) => {
     setGroups ((currentGroups) => {
       return currentGroups.map((group) => {
         if (group.id === groupId) {
-          // update the arry group.member
-          const updatedMembers = [...group.members, newMemberData];
-          return {...group, members: updatedMembers}
+          if (action === "add") {
+            // For "add", append the new member data to the members array
+            const updatedMembers = [...group.members, memberData]
+            return { ...group, members: updatedMembers};
+          } else if (action === "remove") {
+            // For 'remove' filter out the memberData (will be userId)
+            const updatedMembers = group.members.filter(member => member.userId !== memberData);
+            return {...group, members: updatedMembers}
+          }
         }
         return group;
       });
