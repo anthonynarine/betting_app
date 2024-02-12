@@ -75,21 +75,36 @@ export const GroupDataProvider = ({ children }) => {
     console.log("Current Member State: ", members);
   }, [members]);
 
-  // Update the GroupMembers component list
+  
+  const updateGroup = (newGroup) => {
+    setGroup(newGroup);
+  };
+
+  const updateGroups = (groupId, newMemberData) => {
+    setGroups ((currentGroups) => {
+      return currentGroups.map((group) => {
+        if (group.id === groupId) {
+          // update the arry group.member
+          const updatedMembers = [...group.members, newMemberData];
+          return {...group, members: updatedMembers}
+        }
+        return group;
+      });
+    });
+  };
+  
+
   const updateMembers = (newMembers) => {
     console.log("New members to set:", newMembers);
     setMembers(newMembers);
   };
 
-  const updateGroup = (newGroup) => {
-    setGroup(newGroup);
-  };
-  
-  // updated the EventList component list
   const updateEventList = (newEventData) => {
     console.log("updatingGroupData function called")
     setEvents((preEvents) => [...preEvents, newEventData]);
-  }
+  };
+
+
 
   // The value that will be available to components wrapped in this Provider
   const value = {
@@ -99,6 +114,7 @@ export const GroupDataProvider = ({ children }) => {
     groups,
     setGroup,
     updateGroup,
+    updateGroups,
     events,
     members,
     setMembers,

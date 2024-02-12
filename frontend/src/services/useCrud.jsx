@@ -90,7 +90,7 @@ const fetchData = useCallback(
  * createObject('/groups/', groupData)
  * createObject('/events/', eventData)
  */
-const createObject = async (url, data) => {
+const createObject = async (url, data = {}) => {
   setIsLoading(true); // Start loading state
   try {
     const response = await jwtReqAxios.post(url, data); // Make the POST request

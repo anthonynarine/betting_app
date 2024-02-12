@@ -18,6 +18,7 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import NearMeIcon from '@mui/icons-material/NearMe';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { JoinGroupBtn } from '../details/main/JoinGroupBtn';
 
 
 
@@ -56,9 +57,9 @@ export default function GroupCardV2({ group }) {
                 </Stack>
                 <Stack direction="row">
                     <Tooltip title="Join" arrow placement="left">
-                        <AddCircleOutlineOutlinedIcon onClick={toggleCreateEventForm} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", pt: "0.1rem"}} />
+                        <JoinGroupBtn groupId={group.id} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", }} />
                     </Tooltip>
-                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem" }} >
+                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem", pt: "0.5" }} >
                         Join Group
                     </Typography>
                 </Stack>

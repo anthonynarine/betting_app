@@ -5,8 +5,8 @@ import GroupCardV2 from './GroupCardV2';
 import { useGroupData } from '../../context/groupData/GroupDataProvider';
 
 export default function GroupsList() {
-    const { groups, members } = useGroupData();
-    console.log("testing", members)
+    const { groups } = useGroupData();
+    console.log("testing", groups)
 
     return (
         <Box>
