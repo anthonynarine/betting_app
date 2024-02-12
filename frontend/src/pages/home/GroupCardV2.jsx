@@ -17,8 +17,8 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import NearMeIcon from '@mui/icons-material/NearMe';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { JoinGroupBtn } from '../groups/main/JoinGroupBtn';
+import { MembershipToggleButton } from '../groups/members/MembershipToggleButton';
+
 
 
 
@@ -57,7 +57,7 @@ export default function GroupCardV2({ group }) {
                 </Stack>
                 <Stack direction="row">
                     <Tooltip title="Join" arrow placement="left">
-                        <JoinGroupBtn groupId={group.id} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", }} />
+                        <MembershipToggleButton groupId={group.id} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", }} />
                     </Tooltip>
                     <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem", pt: "0.5" }} >
                         Join Group

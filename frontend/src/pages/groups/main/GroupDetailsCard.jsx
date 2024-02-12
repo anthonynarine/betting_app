@@ -14,8 +14,6 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
-import { JoinGroupBtn } from "./JoinGroupBtn";
-import { LeaveGroupBtn } from "./LeaveGroupBtn";
 import { Link } from "react-router-dom";
 import CountDownTimer from "../../events/main/EventCountDownTimer";
 
@@ -74,24 +72,24 @@ export default function GroupDetailsCard() {
       elevation={3}
     >
       <CardHeader
-        action={
-          <Box
-            sx={{ pt: 1.25, pr: 1 }}
-            display="flex"
-            justifyContent="center"
-            flexGrow={1}
-          >
-            {isMember ? (
-              <IconButton aria-label="leave-group">
-                <LeaveGroupBtn />
-              </IconButton>
-            ) : (
-              <IconButton aria-label="join-group">
-                <JoinGroupBtn />
-              </IconButton>
-            )}
-          </Box>
-        }
+        // action={
+        //   <Box
+        //     sx={{ pt: 1.25, pr: 1 }}
+        //     display="flex"
+        //     justifyContent="center"
+        //     flexGrow={1}
+        //   >
+        //     {isMember ? (
+        //       <IconButton aria-label="leave-group">
+        //         <LeaveGroupBtn />
+        //       </IconButton>
+        //     ) : (
+        //       <IconButton aria-label="join-group">
+        //         <JoinGroupBtn />
+        //       </IconButton>
+        //     )}
+        //   </Box>
+        // }
         title={
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
             <Typography variant="h6" style={{ fontWeight: "bold" }}>
