@@ -8,8 +8,10 @@ import {
     Grid,
     useTheme,
     IconButton,
+    Tooltip,
 } from '@mui/material';
-
+import CreateEventForm from '../events/crud-forms/CreateEventForm';
+import { useState } from 'react';
 // Icons
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import GroupsIcon from '@mui/icons-material/Groups';
@@ -21,9 +23,11 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 
 export default function GroupCardV2({ group }) {
 
-    let theme = useTheme();
-
+    const theme = useTheme();
     const { name, events, members, location } = group;
+
+    const [openCreateEventForm, setCreateEventFormOpen] = useState(false);
+    const toggleCreateEventForm = () => setCreateEventFormOpen(!openCreateEventForm);
 
     return (
         <Card sx={{ width: { xs: '90%', sm: 450, md: 650 } }}>
@@ -51,9 +55,11 @@ export default function GroupCardV2({ group }) {
                     </Typography>
                 </Stack>
                 <Stack direction="row">
-                    <AddCircleOutlineOutlinedIcon />
-                    <Typography>
-                        {group.description}
+                    <Tooltip title="Join" arrow placement="left">
+                        <AddCircleOutlineOutlinedIcon onClick={toggleCreateEventForm} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", pt: "0.1rem"}} />
+                    </Tooltip>
+                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem" }} >
+                        Join Group
                     </Typography>
                 </Stack>
             </CardContent>

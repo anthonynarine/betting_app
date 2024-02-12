@@ -14,7 +14,7 @@ const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
   const potentialWinning = currentUserBetInfo ? currentUserBetInfo.potential_winning : 0;
 
   return (
-    <Card sx={{ m: 'auto', bgcolor: theme.palette.background, boxShadow: 3 }}>
+    <Card sx={{ m: 'auto', bgcolor: theme.palette.background, boxShadow: 3, maxWidth: { xs: "100%", sm: "95%"} }}>
       <CardContent>
         {/* Header with Group Name and Event Matchup */}
         <Grid container alignItems="center" justifyContent="space-evenly">
