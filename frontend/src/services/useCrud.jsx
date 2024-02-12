@@ -50,11 +50,8 @@ const fetchData = useCallback(
       if (!BASE_URL) {
         throw new Error("BASE_URL is not defined");
       }
-
       const response = await jwtReqAxios.get(`${BASE_URL}${url}`); // Make the GET request
       const data = response.data; // Extract data from response
-
-      setApiData(data); // Update local state with the fetched data
 
       setError(null); // Reset any previous errors
       setIsLoading(false); // End loading state
@@ -98,9 +95,6 @@ const createObject = async (url, data) => {
   try {
     const response = await jwtReqAxios.post(url, data); // Make the POST request
     const createdData = response.data; // Extract created data from response
-
-    setApiData([...apiData, createdData]); // Add the created data to the existing list
-
     setError(null); // Reset any previous errors
     setIsLoading(false); // End loading state
     return createdData; // Return the newly created object
@@ -151,10 +145,6 @@ const updateObject = async (url, id, data) => {
 
     const response = await jwtReqAxios.put(fullUrl, data); // Make the PUT request
     const updatedData = response.data; // Extract updated data from response
-
-    // Update local state with the new data
-    // setApiData(apiData.map(item => item.id === id ? updatedData : item));
-
     setError(null); // Reset any previous errors
     setIsLoading(false); // End loading state
     return updatedData; // Return the updated object
@@ -195,10 +185,6 @@ const deleteObject = async (url, id) => {
     const fullUrl = `${url}${id}/`; // Construct the full URL
     await jwtReqAxios.delete(fullUrl); // Make the DELETE request
 
-    console.log("Data Before delete"); // Debugging log
-    // Update local state by filtering out the deleted item
-    setApiData(currentApiData => currentApiData.filter(item => item.id !== id));
-
     setError(null); // Reset any previous errors
     setIsLoading(false); // End loading state
   } catch (error) {
@@ -211,7 +197,6 @@ const deleteObject = async (url, id) => {
 };
 
   return {
-    apiData,
     error,
     isLoading,
     fetchData,
