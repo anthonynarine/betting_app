@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IconButton, Snackbar, Grow } from '@mui/material';
+import { IconButton, Snackbar, Grow, Stack, Typography } from '@mui/material';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useGroupData } from '../../../context/groupData/GroupDataProvider';
@@ -49,9 +49,14 @@ export const MembershipToggleButton = ({ groupId }) => {
 
     return (
         <>
-            <IconButton aria-label={isMember ? "leave group" : "join group"} onClick={handleToggleMembership}>
-                {isMember ? <RemoveCircleOutlineIcon /> : <AddCircleOutlineOutlinedIcon />}
-            </IconButton>
+            <Stack direction="row">
+                <IconButton aria-label="Group Button" onClick={handleToggleMembership} sx={{ margin: "0px", padding: "0px" }} >
+                    {isMember ? <RemoveCircleOutlineIcon /> : <AddCircleOutlineOutlinedIcon />}
+                </IconButton>
+                <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".4rem", mr: ".5rem" }}>
+                    {isMember ? "Leave Group" : "Join Group"}
+                </Typography>
+            </Stack>
             <Snackbar
                 open={openSnackbar}
                 autoHideDuration={6000}
