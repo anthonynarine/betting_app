@@ -81,23 +81,27 @@ export const GroupDataProvider = ({ children }) => {
   };
 
   const updateGroups = (groupId, action, memberData) => {
-    setGroups ((currentGroups) => {
-      return currentGroups.map((group) => {
-        if (group.id === groupId) {
-          if (action === "add") {
-            // For "add", append the new member data to the members array
-            const updatedMembers = [...group.members, memberData]
-            return { ...group, members: updatedMembers};
-          } else if (action === "remove") {
-            // For 'remove' filter out the memberData (will be userId)
-            const updatedMembers = group.members.filter(member => member.userId !== memberData);
-            return {...group, members: updatedMembers}
-          }
-        }
-        return group;
-      });
+    console.log(`updateGroups called with groupId: ${groupId}, action: ${action}, and memberData:`, memberData);
+
+    setGroups((currentGroups) => {
+        return currentGroups.map((group) => {
+            if (group.id === groupId) {
+                let updatedMembers = group.members;
+                if (action === "add") {
+                    console.log(`Adding member to group with ID: ${groupId}`);
+                    updatedMembers = [...group.members, memberData];
+                    console.log(`Updated members after adding:`, updatedMembers);
+                } else if (action === "remove") {
+                    console.log(`Removing member from group with ID: ${groupId}`);
+                    updatedMembers = group.members.filter(member => member.user.id !== memberData);
+                    console.log(`Updated members after removing:`, updatedMembers);
+                }
+                return { ...group, members: updatedMembers };
+            }
+            return group;
+        });
     });
-  };
+};
   
 
   const updateMembers = (newMembers) => {

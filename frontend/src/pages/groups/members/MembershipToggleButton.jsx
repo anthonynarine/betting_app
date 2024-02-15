@@ -10,15 +10,16 @@ export const MembershipToggleButton = ({ groupId }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
+    // Context and CRUD operations
     const { groups, userId, updateGroups } = useGroupData();
     const { createObject, deleteObject } = useCrud();
 
     useEffect(() => {
         console.log("Effect running: Checking membership status...");
         const group = groups.find(group => group.id === groupId);
-        const memberStatus = group?.members.some(member => member.userId === userId);
-        console.log(`Membership status for group ${groupId}:`, memberStatus);
+        const memberStatus = group?.members.some(member => member.user.id === userId);
         setIsMember(memberStatus);
+        console.log(`Membership status for group ${groupId}:`, memberStatus);
     }, [groups, groupId, userId]);
 
     const handleCloseSnackbar = () => setOpenSnackbar(false);
@@ -29,10 +30,20 @@ export const MembershipToggleButton = ({ groupId }) => {
                 await deleteObject(`/groups/${groupId}/leave/`);
                 updateGroups(groupId, "remove", userId);
                 setSnackbarMessage("Sad to see you go");
+                setIsMember(false);
             } else {
-                const newMemberData = await createObject(`/groups/${groupId}/join/`, {});
-                updateGroups(groupId, "add", newMemberData);
-                setSnackbarMessage("Welcome to the group!");
+                const response = await createObject(`/groups/${groupId}/join/`, {});
+                // Check if the response contains the member data before trying to use it
+                if (response.data && response.data.member) {
+                    updateGroups(groupId, "add", response.data.member);
+                    setSnackbarMessage("Welcome to the group!");
+                    setIsMember(true);
+                } else {
+                    // Handle cases where member data is not found in the response
+                    console.error("Unexpected response structure:", response);
+                    setSnackbarMessage("Joined the group, but member details are unavailable.");
+                    setIsMember(true); // Assuming the join was successful even if member data isn't returned
+                }
             }
             setOpenSnackbar(true);
         } catch (error) {
@@ -46,6 +57,8 @@ export const MembershipToggleButton = ({ groupId }) => {
             setOpenSnackbar(true);
         }
     };
+    
+    
 
     return (
         <>
@@ -59,7 +72,7 @@ export const MembershipToggleButton = ({ groupId }) => {
             </Stack>
             <Snackbar
                 open={openSnackbar}
-                autoHideDuration={6000}
+                autoHideDuration={2000}
                 onClose={handleCloseSnackbar}
                 message={snackbarMessage}
                 TransitionComponent={Grow}
