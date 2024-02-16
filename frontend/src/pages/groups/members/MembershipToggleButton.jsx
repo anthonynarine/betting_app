@@ -16,10 +16,11 @@ export const MembershipToggleButton = ({ groupId }) => {
 
     useEffect(() => {
         console.log("Effect running: Checking membership status...");
-        const group = groups.find(group => group.id === groupId);
-        const memberStatus = group?.members.some(member => member.user.id === userId);
-        setIsMember(memberStatus);
-        console.log(`Membership status for group ${groupId}:`, memberStatus);
+        const userIdToNumber = +userId; // userId converted to number
+        const groupFind = groups.find(group => group.id === groupId);
+        const isMemberStatus = groupFind?.members.some(member => member.user.id === userIdToNumber);
+        setIsMember(isMemberStatus);
+        console.log(`Membership status for group ${groupId}:`, isMemberStatus);
     }, [groups, groupId, userId]);
 
     const handleCloseSnackbar = () => setOpenSnackbar(false);
@@ -57,8 +58,8 @@ export const MembershipToggleButton = ({ groupId }) => {
             setOpenSnackbar(true);
         }
     };
-    
-    
+
+
 
     return (
         <>
