@@ -86,14 +86,17 @@ export const GroupDataProvider = ({ children }) => {
     setGroups((currentGroups) => {
         return currentGroups.map((group) => {
             if (group.id === groupId) {
-                let updatedMembers = group.members;
-                if (action === "add") {
+              let updatedMembers = [...group.members];
+                if (action === "join") {
+                  const isAlreadyMember = updatedMembers.some(member => member.user.id === memberData.user.id)
+                  if(!isAlreadyMember) {
                     console.log(`Adding member to group with ID: ${groupId}`);
-                    updatedMembers = [...group.members, memberData];
+                    updatedMembers.push(memberData);
                     console.log(`Updated members after adding:`, updatedMembers);
-                } else if (action === "remove") {
+                  }
+                } else if (action === "leave") {
                     console.log(`Removing member from group with ID: ${groupId}`);
-                    updatedMembers = group.members.filter(member => member.user.id !== memberData);
+                    updatedMembers = updatedMembers.filter(member => member.user.id !== memberData.user.id);
                     console.log(`Updated members after removing:`, updatedMembers);
                 }
                 return { ...group, members: updatedMembers };

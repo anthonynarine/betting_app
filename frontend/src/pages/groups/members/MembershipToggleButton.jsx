@@ -28,22 +28,22 @@ export const MembershipToggleButton = ({ groupId }) => {
     const handleToggleMembership = async () => {
         try {
             if (isMember) {
-                await deleteObject(`/groups/${groupId}/leave/`);
-                updateGroups(groupId, "remove", userId);
+                await createObject(`/groups/${groupId}/leave/`);
+                updateGroups(groupId, "leave", {user: { id: userId}});
                 setSnackbarMessage("Sad to see you go");
-                setIsMember(false);
+                setIsMember((prevIsMember) => !prevIsMember);
             } else {
                 const response = await createObject(`/groups/${groupId}/join/`, {});
                 // Check if the response contains the member data before trying to use it
                 if (response.data && response.data.member) {
-                    updateGroups(groupId, "add", response.data.member);
+                    updateGroups(groupId, "join", response.data.member);
                     setSnackbarMessage("Welcome to the group!");
-                    setIsMember(true);
+                    setIsMember((prevIsMember) => !prevIsMember);
                 } else {
                     // Handle cases where member data is not found in the response
                     console.error("Unexpected response structure:", response);
                     setSnackbarMessage("Joined the group, but member details are unavailable.");
-                    setIsMember(true); // Assuming the join was successful even if member data isn't returned
+                    setIsMember((prevIsMember) => !prevIsMember); // Assuming the join was successful even if member data isn't returned
                 }
             }
             setOpenSnackbar(true);

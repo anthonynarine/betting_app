@@ -12,10 +12,9 @@ export default function GroupsList() {
         <Box>
             <Grid container spacing={3} >
                 {groups.map((group) => (
-                    <Grid item key={group.id} xs={12} sm={12} md={12} lg={12} display="flex" justifyContent="center" alignItems="center" >
+                    <Grid item key={`group-${group.id}-${group.members.length}`} xs={12} sm={12} md={12} lg={12} display="flex" justifyContent="center" alignItems="center" >
                         <GroupCardV2 group={group} />
                     </Grid>
-
                 ))}
             </Grid>
         </Box>

@@ -45,8 +45,7 @@ class GroupViewset(viewsets.ModelViewSet):
         new_member_data = MemberSerializer(new_member).data
 
         return Response(
-            {"message": "Successfully joined the group",
-            "member": new_member_data},
+            {"member": new_member_data},
             status=status.HTTP_200_OK
         )
 
