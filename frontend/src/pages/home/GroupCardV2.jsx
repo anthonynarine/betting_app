@@ -8,12 +8,13 @@ import {
     Grid,
     useTheme,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import CreateEventForm from '../events/crud-forms/CreateEventForm';
 import { useState } from 'react';
 // Icons
 import AddBoxIcon from '@mui/icons-material/AddBox'; import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import NearMeIcon from '@mui/icons-material/NearMe';
+import InfoIcon from '@mui/icons-material/Info';
 import { MembershipToggleButton } from '../groups/members/MembershipToggleButton';
 
 
@@ -22,7 +23,7 @@ import { MembershipToggleButton } from '../groups/members/MembershipToggleButton
 export default function GroupCardV2({ group }) {
 
     const theme = useTheme();
-    const { name, events, members, location } = group;
+    const { name, events, members } = group;
 
     const [openCreateEventForm, setCreateEventFormOpen] = useState(false);
     const toggleCreateEventForm = () => setCreateEventFormOpen(!openCreateEventForm);
@@ -55,10 +56,17 @@ export default function GroupCardV2({ group }) {
                 <MembershipToggleButton groupId={group.id} />
             </CardContent>
             <CardActions>
-                <NearMeIcon fontSize="medium" sx={{ marginLeft: ".4rem", paddingTop: ".1rem" }} />
-                <Typography variant="body2" fontWeight="medium" sx={{ ml: ".5rem" }}>
-                    {location}
-                </Typography>
+                <Button
+                    variant="contained"
+                    endIcon={<InfoIcon />}
+                    size="small"
+                    color="primary"
+                    component={Link}
+                    to={`/group/${group.id}`}
+                    // href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
+                    sx={{ marginLeft: ".6rem", marginBottom: ".5rem", maxWidth: "145px", maxHeight: "30px", bgcolor: "#000000", color: "#ffffff" }}>
+                    View
+                </Button>
                 <Grid sx={{ ml: "auto" }}>
                     <Button
                         onClick={toggleCreateEventForm}
