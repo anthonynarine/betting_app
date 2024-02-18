@@ -39,7 +39,7 @@ export const GroupDataProvider = ({ children }) => {
   const [group, setGroup] = useState([]);
   const [groups, setGroups] = useState([]);
 
-  // Fetch group data when groupId changes
+  // Fetch group data when groupId change
 
   useEffect(() => {
     if (groupId) {
@@ -57,54 +57,65 @@ export const GroupDataProvider = ({ children }) => {
     }
   }, [groupId]);
 
+  const fetchAllGroupsData = async () => {
+    try {
+      const allGroupsData = await fetchData("/groups");
+      setGroups(allGroupsData);
+    } catch (error) {
+      console.error("Error fetching all groups data", error);
+    }
+  };
+
   useEffect(() => {
     if (!groupId) {
-      const fetchAllGroupsData = async () => {
-        try {
-          const allGroupsData = await fetchData("/groups");
-          setGroups(allGroupsData);
-        } catch (error) {
-          console.error("Error fetching all groups data", error);
-        }
-      };
       fetchAllGroupsData();
     }
-  }, [groupId]);
+  }, [groupId]); 
+
 
   useEffect(() => {
     console.log("Current Member State: ", members);
-  }, [members]);
+  }, [members, groups]);
 
   
   const updateGroup = (newGroup) => {
     setGroup(newGroup);
   };
 
-  const updateGroups = (groupId, action, memberData) => {
+  const updateGroups = async (groupId, action, memberData) => {
     console.log(`updateGroups called with groupId: ${groupId}, action: ${action}, and memberData:`, memberData);
 
-    setGroups((currentGroups) => {
-        return currentGroups.map((group) => {
+    // Optimistically update the local state first
+    setGroups(currentGroups => {
+        return currentGroups.map(group => {
             if (group.id === groupId) {
-              let updatedMembers = [...group.members];
+                let updatedMembers = [...group.members];
                 if (action === "join") {
-                  const isAlreadyMember = updatedMembers.some(member => member.user.id === memberData.user.id)
-                  if(!isAlreadyMember) {
-                    console.log(`Adding member to group with ID: ${groupId}`);
-                    updatedMembers.push(memberData);
-                    console.log(`Updated members after adding:`, updatedMembers);
-                  }
+                    const isAlreadyMember = updatedMembers.some(member => member.user.id === memberData.user.id);
+                    if (!isAlreadyMember) {
+                        console.log(`Adding member to group with ID: ${groupId}`);
+                        updatedMembers.push(memberData);
+                    }
                 } else if (action === "leave") {
                     console.log(`Removing member from group with ID: ${groupId}`);
                     updatedMembers = updatedMembers.filter(member => member.user.id !== memberData.user.id);
-                    console.log(`Updated members after removing:`, updatedMembers);
                 }
+                // Return a new object to ensure React detects the change
                 return { ...group, members: updatedMembers };
             }
             return group;
         });
     });
+
+    // After the local state is updated, refetch all groups data to synchronize with the server
+    try {
+        await fetchAllGroupsData(); // Assuming this function is correctly implemented to fetch and set the groups state
+    } catch (error) {
+        console.error("Error refetching all groups data:", error);
+        // Handle error appropriately (e.g., showing an error message to the user)
+    }
 };
+
   
 
   const updateMembers = (newMembers) => {
@@ -132,7 +143,8 @@ export const GroupDataProvider = ({ children }) => {
     members,
     setMembers,
     updateMembers,
-    updateEventList
+    updateEventList,
+    fetchAllGroupsData
   };
 
   // Provide the value to the children components

@@ -11,60 +11,39 @@ export const MembershipToggleButton = ({ groupId }) => {
     const [snackbarMessage, setSnackbarMessage] = useState("");
 
     // Context and CRUD operations
-    const { groups, userId, updateGroups } = useGroupData();
-    const { createObject, deleteObject } = useCrud();
+    const { groups, userId, fetchAllGroupsData } = useGroupData();
+    const { createObject } = useCrud();
 
     useEffect(() => {
-        console.log("Effect running: Checking membership status...");
-        const userIdToNumber = +userId; // userId converted to number
+        const userIdToNumber = +userId;
         const groupFind = groups.find(group => group.id === groupId);
         const isMemberStatus = groupFind?.members.some(member => member.user.id === userIdToNumber);
         setIsMember(isMemberStatus);
-        console.log(`Membership status for group ${groupId}:`, isMemberStatus);
     }, [groups, groupId, userId]);
 
     const handleCloseSnackbar = () => setOpenSnackbar(false);
 
     const handleToggleMembership = async () => {
         try {
-            if (isMember) {
-                await createObject(`/groups/${groupId}/leave/`);
-                updateGroups(groupId, "leave", {user: { id: userId}});
-                setSnackbarMessage("Sad to see you go");
-                setIsMember((prevIsMember) => !prevIsMember);
-            } else {
-                const response = await createObject(`/groups/${groupId}/join/`, {});
-                // Check if the response contains the member data before trying to use it
-                if (response.data && response.data.member) {
-                    updateGroups(groupId, "join", response.data.member);
-                    setSnackbarMessage("Welcome to the group!");
-                    setIsMember((prevIsMember) => !prevIsMember);
-                } else {
-                    // Handle cases where member data is not found in the response
-                    console.error("Unexpected response structure:", response);
-                    setSnackbarMessage("Joined the group, but member details are unavailable.");
-                    setIsMember((prevIsMember) => !prevIsMember); // Assuming the join was successful even if member data isn't returned
-                }
-            }
+            const actionPath = isMember ? `/groups/${groupId}/leave/` : `/groups/${groupId}/join/`;
+            await createObject(actionPath, {});
+            
+            await fetchAllGroupsData(); // Refetch to ensure UI is updated
+            
+            setSnackbarMessage(isMember ? "Sad to see you go" : "Welcome to the group!");
+            setIsMember(prev => !prev); // Toggle membership status
             setOpenSnackbar(true);
         } catch (error) {
-            let errorMessage = "Failed to update membership";
-            if (error.response && error.response.data && error.response.data.message) {
-                errorMessage = error.response.data.message;
-            } else if (error.message) {
-                errorMessage = error.message;
-            }
-            setSnackbarMessage(errorMessage);
+            console.error("Error toggling membership:", error);
+            setSnackbarMessage("Failed to update membership");
             setOpenSnackbar(true);
         }
     };
 
-
-
     return (
         <>
             <Stack direction="row">
-                <IconButton aria-label="Group Button" onClick={handleToggleMembership} sx={{ margin: "0px", padding: "0px" }} >
+                <IconButton aria-label="Group Button" onClick={handleToggleMembership} sx={{ margin: "0px", padding: "0px" }}>
                     {isMember ? <RemoveCircleOutlineIcon /> : <AddCircleOutlineOutlinedIcon />}
                 </IconButton>
                 <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".4rem", mr: ".5rem" }}>
@@ -77,10 +56,7 @@ export const MembershipToggleButton = ({ groupId }) => {
                 onClose={handleCloseSnackbar}
                 message={snackbarMessage}
                 TransitionComponent={Grow}
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                }}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
             />
         </>
     );
