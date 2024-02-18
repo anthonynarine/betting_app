@@ -7,8 +7,6 @@ import {
     CardActions,
     Grid,
     useTheme,
-    IconButton,
-    Tooltip,
 } from '@mui/material';
 import CreateEventForm from '../events/crud-forms/CreateEventForm';
 import { useState } from 'react';
@@ -55,14 +53,6 @@ export default function GroupCardV2({ group }) {
                     </Typography>
                 </Stack>
                 <MembershipToggleButton groupId={group.id} />
-                {/* <Stack direction="row">
-                    <Tooltip title="Join" arrow placement="left">
-                        <MembershipToggleButton groupId={group.id} sx={{ color: theme.palette.secondary.dark, mr: "0.3rem", }} />
-                    </Tooltip>
-                    <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".1rem", pt: "0.5" }} >
-                        Join Group
-                    </Typography>
-                </Stack> */}
             </CardContent>
             <CardActions>
                 <NearMeIcon fontSize="medium" sx={{ marginLeft: ".4rem", paddingTop: ".1rem" }} />
@@ -71,14 +61,20 @@ export default function GroupCardV2({ group }) {
                 </Typography>
                 <Grid sx={{ ml: "auto" }}>
                     <Button
+                        onClick={toggleCreateEventForm}
                         variant="contained"
                         endIcon={<AddBoxIcon />}
                         size="small"
                         color="secondary"
-                        href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
+                        // href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
                         sx={{ marginRight: ".6rem", marginBottom: ".5rem", maxWidth: "145px", maxHeight: "30px" }}>
                         Add Event
                     </Button>
+                    <CreateEventForm
+                        openCreateEventForm={openCreateEventForm}
+                        toggleCreateEventForm={toggleCreateEventForm}
+                        groupId={group.id}
+                    />
                 </Grid>
             </CardActions>
         </Card >

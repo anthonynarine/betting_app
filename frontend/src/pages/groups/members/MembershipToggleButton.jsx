@@ -44,7 +44,7 @@ export const MembershipToggleButton = ({ groupId }) => {
         <>
             <Stack direction="row">
                 <IconButton aria-label="Group Button" onClick={handleToggleMembership} sx={{ margin: "0px", padding: "0px" }}>
-                    {isMember ? <RemoveCircleOutlineIcon /> : <AddCircleOutlineOutlinedIcon />}
+                    {isMember ? <RemoveCircleOutlineIcon sx={{color: "#C3073F"}} /> : <AddCircleOutlineOutlinedIcon sx={{color: "#C3073F"}} />}
                 </IconButton>
                 <Typography variant="subtitle1" fontWeight="medium" sx={{ ml: ".4rem", mr: ".5rem" }}>
                     {isMember ? "Leave Group" : "Join Group"}

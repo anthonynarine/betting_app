@@ -11,13 +11,14 @@ import {
 } from "@mui/material";
 import useCrud from "../../../services/useCrud";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
+import { useNavigate } from "react-router-dom";
 
 
-const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm }) => {
+const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId}) => {
   // Get the userId from local storage, this is needed to create a new event.
   const userId = localStorage.getItem("userId");
-  // Get the GroupID from the URL
-  const { groupId } = useParams();
+  // // Get the GroupID from the URL
+  // const { groupId } = useParams();
   console.log("groupId", groupId)
   // func to update context of Event List
   const { updateEventList } = useGroupData();
