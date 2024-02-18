@@ -15,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 
 
 const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId}) => {
+  const navigate = useNavigate();
+  
   // Get the userId from local storage, this is needed to create a new event.
   const userId = localStorage.getItem("userId");
   // // Get the GroupID from the URL
@@ -80,6 +82,7 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId})
       const createdEventObject = await createObject("/events/", eventDetails);
       handleSuccess(createdEventObject);
       updateEventList(createdEventObject)
+      navigate(`/group/${groupId}`)
 
     } catch (error) {
       handleError(error);
