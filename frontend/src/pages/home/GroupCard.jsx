@@ -9,13 +9,13 @@ import {
     useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import CreateEventForm from '../events/crud-forms/CreateEventForm';
+import CreateEventForm from '../events/forms/CreateEventForm';
 import { useState } from 'react';
 // Icons
 import AddBoxIcon from '@mui/icons-material/AddBox'; import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import InfoIcon from '@mui/icons-material/Info';
-import { MembershipToggleButton } from '../groups/members/MembershipToggleButton';
+import { MembershipToggleButton } from '../group/members/MembershipToggleButton';
 
 
 
@@ -30,7 +30,6 @@ export default function GroupCardV2({ group }) {
 
     return (
         <Card sx={{ width: { xs: '90%', sm: 450, md: 650 } }}>
-
             <CardContent>
                 <Typography gutterBottom variant="h4" component="div" fontWeight="bold">
                     {name.toUpperCase()}
@@ -56,6 +55,8 @@ export default function GroupCardV2({ group }) {
                 <MembershipToggleButton groupId={group.id} />
             </CardContent>
             <CardActions>
+                <Grid container sx={{ ml: "auto", justifyContent:"space-between"}}>
+                <Grid item>
                 <Button
                     variant="contained"
                     endIcon={<InfoIcon />}
@@ -63,18 +64,17 @@ export default function GroupCardV2({ group }) {
                     color="primary"
                     component={Link}
                     to={`/group/${group.id}`}
-                    // href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
                     sx={{ marginLeft: ".6rem", marginBottom: ".5rem", maxWidth: "145px", maxHeight: "30px", bgcolor: "#000000", color: "#ffffff" }}>
                     View
                 </Button>
-                <Grid sx={{ ml: "auto" }}>
+                </Grid>
+                <Grid item>
                     <Button
                         onClick={toggleCreateEventForm}
                         variant="contained"
                         endIcon={<AddBoxIcon />}
                         size="small"
                         color="secondary"
-                        // href={`/group/${group.id}`} // Should not use HREF, needs to use Link from React-Router
                         sx={{ marginRight: ".6rem", marginBottom: ".5rem", maxWidth: "145px", maxHeight: "30px" }}>
                         Add Event
                     </Button>
@@ -83,6 +83,7 @@ export default function GroupCardV2({ group }) {
                         toggleCreateEventForm={toggleCreateEventForm}
                         groupId={group.id}
                     />
+                    </Grid>
                 </Grid>
             </CardActions>
         </Card >

@@ -32,7 +32,7 @@ function ReusableTabs({ tabsConfig }) {
       }}
     >  
       <AppBar
-        position="static"
+        position="sticky"
         sx={{
           backgroundColor: theme.palette.primary.dark,
           color: theme.palette.primary.contrastText,

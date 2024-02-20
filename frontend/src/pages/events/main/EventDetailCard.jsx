@@ -14,7 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import CountDownTimer from "./EventCountDownTimer";
-import EventTimeStamp from "../../groups/main/EventTimeStamp"
+import EventTimeStamp from "../../group/main/EventTimeStamp"
 
 // Styles
 import { EventDetailCardStyles } from "./EventDetailCardStyles";
@@ -35,8 +35,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 //crud
 import useCrud from "../../../services/useCrud";
-import { handleDeleteObject } from "../crud-forms/DeleteEvent";
-import UpdateEventForm from "../crud-forms/UpdateEventForm";
+import { handleDeleteObject } from "../forms/DeleteEvent";
+import UpdateEventForm from "../forms/UpdateEventForm";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;

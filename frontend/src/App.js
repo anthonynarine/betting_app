@@ -1,4 +1,4 @@
-import DetailPage from "./pages/groups/DetailsPage";
+import DetailPage from "./pages/group/DetailsPage";
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";

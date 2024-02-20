@@ -19,7 +19,7 @@ import { ListViewStyles } from "../../home/ListViewStyles";
 import React from "react";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CreateEventForm from "../../events/crud-forms/CreateEventForm";
+import CreateEventForm from "../../events/forms/CreateEventForm";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import CountDownTimer from "../../events/main/EventCountDownTimer";
 
