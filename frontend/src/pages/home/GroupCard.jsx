@@ -32,7 +32,7 @@ export default function GroupCardV2({ group }) {
         <Card sx={{ width: { xs: '90%', sm: 450, md: 650 } }}>
             <CardContent>
                 <Typography gutterBottom variant="h4" component="div" fontWeight="bold">
-                    {name.toUpperCase()}
+                    <Link to={`/group/${group.id}`} style={{ textDecoration: "none", color: theme.palette.primary.dark}} >{name.toUpperCase()}</Link>
                 </Typography>
                 <Stack direction="row">
                     <EventAvailableIcon fontSize="medium" sx={{ marginRight: ".3rem", paddingTop: ".1rem" }} />

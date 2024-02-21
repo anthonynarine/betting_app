@@ -1,4 +1,3 @@
-import DetailPage from "./pages/group/DetailsPage";
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
 import ToggleColorModeProvider from "./color/ToggleColorMode";
@@ -16,6 +15,8 @@ import Home from "./pages/home/Home";
 // import HomeV2 from "./pages/home/HomeV2";
 import TestLogin from "./pages/login/test/testLogin";
 import LoginPage from "./pages/login/LoginPage";
+import DetailPage from "./pages/group/DetailsPage";
+import GroupPage from "./pages/group/GroupPage";
 import Signup from "./pages/signup/SignupPage";
 import ProtectedRoute from "./context/Auth/ProtectedRoute";
 // import { LoginProvider } from "./context/login/LoginProvider";  //NO LONGER IN USE
@@ -40,12 +41,12 @@ function App() {
 					<GroupDataProvider>
 						<EventDataProvider>
 							<BetDataProvider>
-								<ToggleColorModeProvider>
 									<CssBaseline />
 									<Routes>
 										{/* <Route path="/" element={<Home />} /> */}
 										<Route path="/" element={<Home />} />
-										<Route path="/group/:groupId" element={<DetailPage />} />
+										{/* <Route path="/group/:groupId" element={<DetailPage />} /> */}
+										<Route path="/group/:groupId" element={<GroupPage />} />
 										<Route path="/event/:eventId" element={<EventPage />} />
 										<Route path="/login" element={<LoginPage />} />
 										<Route path="/signup" element={<Signup />} />
@@ -67,7 +68,6 @@ function App() {
 											}
 										/>
 									</Routes>
-								</ToggleColorModeProvider>
 							</BetDataProvider>
 						</EventDataProvider>
 					</GroupDataProvider>
