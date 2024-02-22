@@ -13,7 +13,7 @@ export default function PageHeader() {
 
     // Conditional rendering based on if the group is found
     return (
-        <Container maxWidth="lg" sx={{  }}>
+        <Container maxWidth="md" sx={{  }}>
             {group ? (
                 <Box
                     key={group.id}
@@ -22,10 +22,10 @@ export default function PageHeader() {
                         flexDirection: 'column',
                         alignItems: 'center',
                         paddingBottom: 2,
-                        borderBottom: `1px solid ${theme.palette.primary.dark}`,
-                        '&:not(:last-child)': {
-                            mb: 4,
-                        },
+                        // borderBottom: `1px solid ${theme.palette.primary.dark}`,
+                        // '&:not(:last-child)': {
+                        //     mb: 4,
+                        // },
                     }}
                 >
                     <Typography variant="h3" component="h1" gutterBottom>
