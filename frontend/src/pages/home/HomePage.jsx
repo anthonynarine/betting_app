@@ -8,7 +8,7 @@ import { BetDataProvider } from "../../context/bet/BetDataProvider";
 import { EventDataProvider } from "../../context/eventData/EventDataProvider";
 
 
-const Home = () => {
+const HomePage = () => {
 
   return (
     <EventDataProvider>
@@ -24,4 +24,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

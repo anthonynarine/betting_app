@@ -5,7 +5,7 @@ import PageHeader from "./header/PageHeader";
 import React, { useEffect } from "react";
 import { EventDataProvider } from "../../context/eventData/EventDataProvider";
 import GroupTabs from "./GroupTabs";
-import EventList from "./EventList";
+import EventList from "../events/EventList";
 import { useParams } from "react-router-dom";
 
 

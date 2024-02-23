@@ -1,6 +1,7 @@
-import GroupsList from './GroupsList';
+import GroupsList from '../group/GroupsList';
 import ReusableTabs from '../../components/tabs/ReusableTabs';
 import BetList from '../events/bets/BetList';
+import UserEvents from '../events/userEvents/UserEvents';
 import { Typography } from '@mui/material';
 
 
@@ -20,7 +21,7 @@ export default function HomeTabs() {
     },
     {
       label: "My Event",
-      content: <Typography variant='h1'>"UNDER CONSTRUCTION"</Typography>, 
+      content: <UserEvents />, 
     },
     // Add more tabs if needed
   ];

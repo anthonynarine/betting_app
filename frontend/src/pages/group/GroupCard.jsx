@@ -15,7 +15,7 @@ import { useState } from 'react';
 import AddBoxIcon from '@mui/icons-material/AddBox'; import GroupsIcon from '@mui/icons-material/Groups';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import InfoIcon from '@mui/icons-material/Info';
-import { MembershipToggleButton } from '../group/members/MembershipToggleButton';
+import { MembershipToggleButton } from './members/MembershipToggleButton';
 
 
 

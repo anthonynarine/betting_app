@@ -11,7 +11,7 @@ import ThemeWrapper from "./theme/ThemeProvider";
 import LoginPageV0 from "./pages/login/test/LoginPageV0";
 // import TestLogin from "./pages/login/test/TestLogin"
 
-import Home from "./pages/home/Home";
+import HomePage from "./pages/home/HomePage";
 // import HomeV2 from "./pages/home/HomeV2";
 import TestLogin from "./pages/login/test/testLogin";
 import LoginPage from "./pages/login/LoginPage";
@@ -44,7 +44,7 @@ function App() {
 									<CssBaseline />
 									<Routes>
 										{/* <Route path="/" element={<Home />} /> */}
-										<Route path="/" element={<Home />} />
+										<Route path="/" element={<HomePage />} />
 										{/* <Route path="/group/:groupId" element={<DetailPage />} /> */}
 										<Route path="/group/:groupId" element={<GroupPage />} />
 										<Route path="/event/:eventId" element={<EventPage />} />

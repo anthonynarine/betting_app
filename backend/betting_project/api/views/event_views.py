@@ -38,11 +38,6 @@ class EventViewset(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
 
-    # def get_queryset(self):
-    #     queryset = Event.objects.all()
-    #     if self.request.user.is_authenticated:
-    #         queryset = queryset.filter(organizer=self.request.user)
-    #     return super().get_queryset()
 
     def create(self, request, *args, **kwargs):
         logger.info("Received data for Event creation: %s", request.data)
@@ -100,6 +95,12 @@ class EventViewset(viewsets.ModelViewSet):
         
         return Response(response_data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def user_events(self, request):
+        """A custom action to return events by the currently logged in user"""
+        user_events = self.queryset.filter(organizer=request.user)
+        serializer = self.get_serializer(user_events, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     @action(
         detail=True,
