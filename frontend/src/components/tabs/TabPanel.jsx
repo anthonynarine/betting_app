@@ -26,6 +26,7 @@ function TabPanel(props) {
       id={`tabpanel-${index}`} // Unique ID for accessibility, associating the panel with its tab.
       aria-labelledby={`tab-${index}`} // Accessibility attribute to label the tab panel by its corresponding tab.
       {...other} // Spread any other passed props to the div for flexibility.
+      
     >
       {value === index && (
         // Only render the children (content) if this tab panel is active.

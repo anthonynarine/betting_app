@@ -116,8 +116,6 @@ export const GroupDataProvider = ({ children }) => {
     }
 };
 
-  
-
   const updateMembers = (newMembers) => {
     console.log("New members to set:", newMembers);
     setMembers(newMembers);
@@ -127,8 +125,6 @@ export const GroupDataProvider = ({ children }) => {
     console.log("updatingGroupData function called")
     setEvents((preEvents) => [...preEvents, newEventData]);
   };
-
-
 
   // The value that will be available to components wrapped in this Provider
   const value = {

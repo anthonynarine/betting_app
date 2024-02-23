@@ -32,7 +32,7 @@ function ReusableTabs({ tabsConfig }) {
       }}
     >  
       <AppBar
-        position="static"
+        position="sticky"
         sx={{
           backgroundColor: theme.palette.primary.dark,
           color: theme.palette.primary.contrastText,
@@ -63,6 +63,16 @@ function ReusableTabs({ tabsConfig }) {
             <Tab
               label={tab.label}
               key={index}
+              onClick={event => {
+                // Prevent the default tab change behavior if there's a custom onClick handler
+                if (tab.onClick) {
+                  event.stopPropagation();
+                  tab.onClick();
+                } else {
+                  // Default behavior: Change tabs
+                  handleChange(event, index);
+                }
+              }}
               sx={{
                 color: value === index ? theme.palette.primary.contrastText : '#0A0A0A', // Adjusted for active/inactive tab colors
                 flex: 1, // Makes each tab flex equally
