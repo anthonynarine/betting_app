@@ -37,7 +37,7 @@ function EventList() {
   };
 
   return (
-    <TableContainer component={Paper} sx={{mt: 2, maxWidth: 'md', mx: "auto" }}>
+    <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 'md', mx: "auto" }}>
       <Table aria-label="event table">
         <TableHead>
           <TableRow>

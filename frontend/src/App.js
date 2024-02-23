@@ -28,14 +28,13 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import useFetchStripeKey from "./stripe/FetchStripeKeyRequest";
 
-
 function App() {
 	const { stripePublicKey } = useFetchStripeKey();
 	const stripePromise = stripePublicKey ? loadStripe(stripePublicKey) : null;
 	console.log(stripePromise);
 
 	return (
-		<ThemeWrapper> 
+		<ThemeWrapper>
 			<UserServiceProvider>
 				<AuthProvider>
 					<GroupDataProvider>
