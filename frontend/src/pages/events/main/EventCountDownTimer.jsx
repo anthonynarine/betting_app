@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Box, Chip, IconButton, useTheme } from '@mui/material';
+import { Typography, Box, Chip, IconButton, useTheme, Tooltip } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CompleteEventForm from "./CompleteEvent";
 
 
@@ -112,7 +113,7 @@ const CountDownTimer = ({ event }) => {
     return (
         <>
             <Box sx={{ 
-                maxWidth: "15rem",
+                maxWidth: "16rem",
                 display: 'flex', 
                 alignItems: 'center', 
                 gap: 4, 
@@ -142,7 +143,9 @@ const CountDownTimer = ({ event }) => {
                 </Typography>
                 {status === "Ended" && (
                     <IconButton onClick={toggleModal}>
-                        <EventAvailableIcon color="primary" />
+                            <Tooltip sx={{color: theme.palette.primary.contrastText}} title="Complete Event" placement="left">
+                                <CheckCircleIcon sx={{ color: theme.palette.secondary.contrastText,  }} />
+                            </Tooltip>
                     </IconButton>
                 )}
 

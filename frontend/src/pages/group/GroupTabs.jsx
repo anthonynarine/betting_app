@@ -14,23 +14,30 @@ export default function GroupTabs() {
         </div>
     );
 
+    const handleHomeTabNavWithActiveTab = (tabIndex) => {
+        navigate(`/?tab=${tabIndex}`);
+    };
+
     const tabsConfig = [
         {
             label: "Groups",
-            onClick: () => navigate('/')
+            onClick: () => handleHomeTabNavWithActiveTab(0),
         },
         {
             label: "My Bets",
             // Direct navigation using Link or NavigateOnClick as needed
             content: <NavigateOnClick to="/bets">Bets</NavigateOnClick>, 
+            onClick: () => handleHomeTabNavWithActiveTab(1),
         },
         {
             label: "Popular Events",
             content: <Typography variant='h1'>UNDER CONSTRUCTION</Typography>,
+            onClick: () => handleHomeTabNavWithActiveTab(2),
         },
         {
             label: "My Event",
             content: <Typography variant='h1'>UNDER CONSTRUCTION</Typography>,
+            onClick: () => handleHomeTabNavWithActiveTab(3),
         },
         // Add more tabs if needed
     ];

@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
-import ToggleColorModeProvider from "./color/ToggleColorMode";
 
 import AuthProvider from "./context/Auth/AuthContext";
 import { GroupDataProvider } from "./context/groupData/GroupDataProvider";

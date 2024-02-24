@@ -2,6 +2,7 @@ import { AppBar, Toolbar, Typography, Box, IconButton, Drawer, Button, Stack } f
 import { Link } from "react-router-dom";
 // import CasinoIcon from "@mui/icons-material/Casino";
 import { LogoIcon } from "./LogoIcon";
+
 import { useResponsiveDrawer } from "../primaryDraw/useResponsive";
 import { useTheme } from "@mui/material/styles";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -71,19 +72,21 @@ function PrimaryAppBar() {
           </Drawer>
 
           <Link to={"/"} style={{ textDecoration: "none", color: "inherit" }}>
-            <Stack direction="row" spacing={0}>
-            <LogoIcon sx={(theme) => ({ backgroundColor: theme.palette.secondary.dark })} />
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{
-                  display: { fontWeight: 900, color: theme.palette.primary.dark },
-                }}
-              >
-                WagerWorld
-              </Typography>
-            </Stack>
+          <Stack direction="row" spacing={0} alignItems="center">
+            <Box sx={{ display: 'flex', alignItems: 'center' }}> {/* Wrapper for styling */}
+              <LogoIcon />
+            </Box>
+            <Typography
+              variant="h6"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: 'block', fontWeight: 900, color: theme.palette.primary.dark },
+              }}
+            >
+              WagerWorld
+            </Typography>
+          </Stack>
           </Link>
           <Box sx={{ flexGrow: 1 }}></Box>
           <LoginLogoutButton />
