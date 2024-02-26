@@ -81,9 +81,10 @@ export const EventDataProvider = ({ children }) => {
     
 
   // Function to update event data
-  const updateEventData = (updatedEventData) => {
+  const updateEventData = async (updatedEventData) => {
     setEvent(updatedEventData); // Directly update the context with the provided data
     console.log("Event data updated in context");
+    await fetchAllAndUserEvents();
 }
 
   const value = {

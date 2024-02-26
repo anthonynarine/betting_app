@@ -1,12 +1,8 @@
-import React, { useState, useEffect } from "react";
-import useCrud from "../../../services/useCrud";
 import { useMediaQuery, useTheme, Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Typography } from '@mui/material';
 import EventRow from "./EventRow";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 const UserEvents = () => {
-    const [userEvents, setUserEvents] = useState([]);
-    const { fetchData } = useCrud();
     const { allUserEvents: events } = useEventData()
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));

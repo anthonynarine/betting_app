@@ -77,10 +77,6 @@ export const GroupDataProvider = ({ children }) => {
     console.log("Current Member State: ", members);
   }, [members, groups]);
 
-  
-  const updateGroup = (newGroup) => {
-    setGroup(newGroup);
-  };
 
   const updateGroups = async (groupId, action, memberData) => {
     console.log(`updateGroups called with groupId: ${groupId}, action: ${action}, and memberData:`, memberData);
@@ -116,15 +112,7 @@ export const GroupDataProvider = ({ children }) => {
     }
 };
 
-  const updateMembers = (newMembers) => {
-    console.log("New members to set:", newMembers);
-    setMembers(newMembers);
-  };
 
-  const updateEventList = (newEventData) => {
-    console.log("updatingGroupData function called")
-    setEvents((preEvents) => [...preEvents, newEventData]);
-  };
 
   // The value that will be available to components wrapped in this Provider
   const value = {
@@ -133,13 +121,10 @@ export const GroupDataProvider = ({ children }) => {
     group,
     groups,
     setGroup,
-    updateGroup,
     updateGroups,
     events,
     members,
     setMembers,
-    updateMembers,
-    updateEventList,
     fetchAllGroupsData
   };
 

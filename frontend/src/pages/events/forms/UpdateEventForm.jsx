@@ -1,6 +1,7 @@
 // Importing necessary React hooks, context, Material-UI components, and custom hooks
 import React, { useEffect, useState } from "react";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
+import { useGroupData } from "../../../context/groupData/GroupDataProvider";
 import {
     Dialog, DialogActions, DialogContent, DialogTitle, TextField,
     Button, Typography, Snackbar, Box
@@ -12,6 +13,7 @@ import EditIcon from "@mui/icons-material/Edit";
 const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     // Accessing event data from context
     const { updateEventData } = useEventData();
+    const { fetchAllGroupsData } = useGroupData();
     // console.log("TESTING event data input", event)
     // CRUD operations custom hook
     const { updateObject } = useCrud();
@@ -75,6 +77,7 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     const handleSuccess = (updatedEventObject) => {
         console.log(updatedEventObject)
         updateEventData(updatedEventObject) // Update context with the new event data
+        fetchAllGroupsData();
         toggleEventForm();
         setSnackbarMessage("Event updated successfully!");
         setSnackbarOpen(true);
