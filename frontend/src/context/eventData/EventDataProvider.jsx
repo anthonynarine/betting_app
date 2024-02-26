@@ -98,7 +98,8 @@ export const EventDataProvider = ({ children }) => {
     userIsEventCreator,
     updateEventData,
     error,
-    loading
+    loading,
+    fetchAllAndUserEvents,
   };
 
   return (

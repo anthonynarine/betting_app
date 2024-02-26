@@ -16,10 +16,6 @@ const EventRow = ({ event }) => {
 
   const toggleEventForm = () => {setOpenUpdateEventForm(!openUpdateEvenForm)};
 
- 
-    
-
-
   return (
     <>
       <TableRow sx={{ '& > *': { borderBottom: 'unset' }, }}>

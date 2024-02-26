@@ -7,7 +7,6 @@ const UserEvents = () => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     
-
     return (
         <TableContainer component={Paper} sx={{
             maxWidth: { xs: '100%', sm: 600, md: 675 },

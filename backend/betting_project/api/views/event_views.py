@@ -139,12 +139,6 @@ class EventViewset(viewsets.ModelViewSet):
         
         return Response(response_data, status=status.HTTP_200_OK)
     
-    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
-    def user_events(self, request):
-        """A custom action to return events by the currently logged in user"""
-        user_events = self.queryset.filter(organizer=request.user)
-        serializer = self.get_serializer(user_events, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
     
     @action(
         detail=True,

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import useCrud from "../../../services/useCrud";
 import { useGroupData } from "../../../context/groupData/GroupDataProvider";
+import { useEventData } from "../../../context/eventData/EventDataProvider";
 import { useNavigate } from "react-router-dom";
 
 
@@ -23,7 +24,8 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId})
   // const { groupId } = useParams();
   console.log("groupId", groupId)
   // func to update context of Event List
-  const { updateEventList } = useGroupData();
+  const { fetchAllAndUserEvents } = useEventData();
+  const { fetchAllGroupsData } = useGroupData();
 
   // State for managing event input
   const [eventDetails, setEventDetails] = useState({
@@ -48,6 +50,8 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId})
 
   const handleSuccess = (data) => {
     console.log("Event created:", data);
+    fetchAllAndUserEvents();  // update ui in group list
+    fetchAllGroupsData();
     // Close the form
     toggleCreateEventForm();
     // Show a successful message
@@ -81,7 +85,6 @@ const CreateEventForm = ({ openCreateEventForm, toggleCreateEventForm, groupId})
     try {
       const createdEventObject = await createObject("/events/", eventDetails);
       handleSuccess(createdEventObject);
-      updateEventList(createdEventObject)
       navigate(`/group/${groupId}`)
 
     } catch (error) {

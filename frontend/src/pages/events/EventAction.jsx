@@ -1,8 +1,10 @@
 import React from "react";
-import { Icon, IconButton } from "@mui/material"; 
+import { IconButton } from "@mui/material"; 
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import EditIcon from '@mui/icons-material/Edit';
 import useCrud from "../../services/useCrud";
+import { useGroupData } from "../../context/groupData/GroupDataProvider";
+import { useEventData } from "../../context/eventData/EventDataProvider";
 
 const EventActions = ({ event, toggleEventForm }) => {
 
@@ -13,11 +15,16 @@ const EventActions = ({ event, toggleEventForm }) => {
     const eventHasEnded = now >= endTime;
 
     const { deleteObject, setIsLoading, setError } = useCrud();
+    const { fetchAllGroupsData } = useGroupData();
+    const { fetchAllAndUserEvents } = useEventData();
 
     const handleDelete = async () => {
+        console.log(`Deleting event with ID: ${event.id}`); 
         setIsLoading(true);
         try {
-            await deleteObject(`/events/${event.id}`)
+            await deleteObject('/events/', event.id)
+            fetchAllGroupsData(); //updates group/id UI
+            fetchAllAndUserEvents(); //updates UserEvents tab pannel UI
             setError(false);
             setIsLoading(false);
         } catch (error) {

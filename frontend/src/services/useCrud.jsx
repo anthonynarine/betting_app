@@ -182,6 +182,8 @@ const deleteObject = async (url, id) => {
   setIsLoading(true); // Start loading state
   try {
     const fullUrl = `${url}${id}/`; // Construct the full URL
+    // const fullUrl = `/events/60/`; // Construct the full URL
+    console.log(`Constructed URL for deletion: ${fullUrl}`);
     await jwtReqAxios.delete(fullUrl); // Make the DELETE request
 
     setError(null); // Reset any previous errors
