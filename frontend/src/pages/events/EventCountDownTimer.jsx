@@ -3,7 +3,7 @@ import { Typography, Box, Chip, IconButton, useTheme, Tooltip } from '@mui/mater
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CompleteEventForm from "./CompleteEvent";
+import CompleteEventForm from "./forms/CompleteEventForm";
 
 
 /**

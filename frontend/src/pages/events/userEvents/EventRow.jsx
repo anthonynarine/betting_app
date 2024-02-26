@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography, Paper, useMediaQuery, useTheme } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import CountDownTimer from '../main/EventCountDownTimer';
+import CountDownTimer from '../EventCountDownTimer';
 import EventActions from '../EventAction';
 import UpdateEventForm from "../forms/UpdateEventForm"
 
