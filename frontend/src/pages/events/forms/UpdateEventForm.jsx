@@ -9,9 +9,9 @@ import useCrud from "../../../services/useCrud";
 import EditIcon from "@mui/icons-material/Edit";
 
 // UpdateEventForm component: Manages the update functionality for an event
-const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm }) => {
+const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     // Accessing event data from context
-    const { event, updateEventData } = useEventData();
+    const { updateEventData } = useEventData();
     // console.log("TESTING event data input", event)
     // CRUD operations custom hook
     const { updateObject } = useCrud();

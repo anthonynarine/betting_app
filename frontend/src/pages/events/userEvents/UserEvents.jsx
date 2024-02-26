@@ -2,25 +2,15 @@ import React, { useState, useEffect } from "react";
 import useCrud from "../../../services/useCrud";
 import { useMediaQuery, useTheme, Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Typography } from '@mui/material';
 import EventRow from "./EventRow";
+import { useEventData } from "../../../context/eventData/EventDataProvider";
 
 const UserEvents = () => {
     const [userEvents, setUserEvents] = useState([]);
     const { fetchData } = useCrud();
+    const { allUserEvents: events } = useEventData()
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-    useEffect(() => {
-        const fetchLoggedInUserEvents = async () => {
-            try {
-                const userEventsData = await fetchData(`/events/user_events/`);
-                setUserEvents(userEventsData);
-            } catch (error) {
-                console.error("Failed to fetch user events:", error);
-                // Consider adding user feedback for the error
-            }
-        };
-        fetchLoggedInUserEvents();
-    }, []);
+    
 
     return (
         <TableContainer component={Paper} sx={{
@@ -40,7 +30,7 @@ const UserEvents = () => {
                             // For larger screens: Evenly distribute "Events" and "Available Balance"
                             <>
                                 <TableCell></TableCell>
-                                <TableCell><Typography sx={{color: theme.palette.secondary.contrastText}} variant="h6">Events</Typography></TableCell>
+                                <TableCell><Typography sx={{color: theme.palette.primary.contrastText}} variant="">My Events</Typography></TableCell>
                                 <TableCell></TableCell>
                             
                             </>
@@ -48,7 +38,7 @@ const UserEvents = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {userEvents.map((event) => (
+                    {events.map((event) => (
                         <EventRow key={event.id} event={event} />
                     ))}
                 </TableBody>

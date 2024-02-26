@@ -3,11 +3,22 @@ import { Box, Button, Collapse, IconButton, Table, TableBody, TableCell, TableCo
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CountDownTimer from '../main/EventCountDownTimer';
+import EventActions from '../EventAction';
+import UpdateEventForm from "../forms/UpdateEventForm"
+
 
 const EventRow = ({ event }) => {
-  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const matchesSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
+  
+  const [open, setOpen] = useState(false);
+  const [openUpdateEvenForm, setOpenUpdateEventForm] = useState(false);
+
+  const toggleEventForm = () => {setOpenUpdateEventForm(!openUpdateEvenForm)};
+
+ 
+    
+
 
   return (
     <>
@@ -27,9 +38,8 @@ const EventRow = ({ event }) => {
           {/* Add Place Bet Button here for larger screens */}
           {!matchesSmallScreen && (
               <TableCell>
-                  <Button variant="contained" color="primary">
-                      Place Bet
-                  </Button>
+                <EventActions event={event} toggleEventForm={toggleEventForm} />
+                <UpdateEventForm openUpdateEventForm={openUpdateEvenForm} toggleEventForm={toggleEventForm} event={event} />
               </TableCell>
           )}
       </>

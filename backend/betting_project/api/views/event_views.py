@@ -83,14 +83,58 @@ class EventViewset(viewsets.ModelViewSet):
     url_path="all_and_user_events",
     )
     def all_and_user_events(self, request):
+        """
+        Retrieves a list of all events, annotated with the number of distinct participants,
+        and optionally, a list of events organized by the current user if they are authenticated.
+
+        This method serves two main purposes:
+        1. It provides a global view of all events, useful for any user of the platform.
+        2. For authenticated users, it adds a personalized list of events that the user is organizing,
+        allowing them to easily manage their own events.
+
+        The response is structured as a JSON object with two keys:
+        - 'all_events': A list of all events, ordered by the number of participants in descending order.
+        - 'user_events': (Optional) A list of events organized by the current authenticated user.
+
+        Example response for an authenticated user:
+        {
+            "all_events": [
+                {
+                    "id": 1,
+                    "name": "Global Hackathon",
+                    "num_participants": 150
+                },
+                {
+                    "id": 2,
+                    "name": "Local Meetup",
+                    "num_participants": 40
+                }
+            ],
+            "user_events": [
+                {
+                    "id": 3,
+                    "name": "My Tech Talk",
+                    "num_participants": 30
+                }
+            ]
+        }
+
+        Parameters:
+        - request (HttpRequest): The HTTP request object.
+
+        Returns:
+        - Response: A Django REST Framework Response object containing the serialized event data.
+        """
+        # Annotate each event with the number of distinct participants and order by this count
         all_events_queryset = Event.objects.annotate(num_participants=Count("bets__user", distinct=True)).order_by("-num_participants")
         all_events_serializer = self.get_serializer(all_events_queryset, many=True)
         
         response_data = {"all_events": all_events_serializer.data}
         
+        # If the user is authenticated, include their organized events in the response
         if request.user and request.user.is_authenticated:
             user_events_queryset = Event.objects.filter(organizer=request.user)
-            user_events_serializer = self.get_serializer(user_events_queryset, many=True)  # Corrected typo here
+            user_events_serializer = self.get_serializer(user_events_queryset, many=True)
             response_data["user_events"] = user_events_serializer.data
         
         return Response(response_data, status=status.HTTP_200_OK)

@@ -25,7 +25,6 @@ export default EventDataContext;
 
 export const EventDataProvider = ({ children }) => {
   // console.log("EventDataProvider is re-rendering"); // DEBUG TEST
-
   const { eventId } = useParams();
   const { fetchData, updateObject } = useCrud();
 
@@ -33,7 +32,7 @@ export const EventDataProvider = ({ children }) => {
   const [loading, setIsLoading] = useState(false);
   const [error, setError]  = useState(null);
   const [allEvents, setAllEvents] = useState([]);
-  const [allUserEvent, setAllUserEvents] = useState([]);
+  const [allUserEvents, setAllUserEvents] = useState([]);
   const [event, setEvent] = useState({});
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
@@ -89,7 +88,7 @@ export const EventDataProvider = ({ children }) => {
 
   const value = {
     allEvents,
-    allUserEvent,
+    allUserEvents,
     event, 
     eventId,
     group,

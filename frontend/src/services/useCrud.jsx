@@ -16,7 +16,6 @@ const useCrud = () => {
 
   // const jwtAxios = useAxiosWithInterceptor();
   const jwtReqAxios = useAxiosWithInterceptorJwt();
-  const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -198,7 +197,9 @@ const deleteObject = async (url, id) => {
 
   return {
     error,
+    setError,
     isLoading,
+    setIsLoading,
     fetchData,
     createObject,
     updateObject,
