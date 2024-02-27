@@ -139,7 +139,7 @@ class EventViewset(viewsets.ModelViewSet):
         
         return Response(response_data, status=status.HTTP_200_OK)
     
-    
+        
     @action(
         detail=True,
         methods=["post"],

@@ -42,43 +42,65 @@ export const EventDataProvider = ({ children }) => {
   const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
   // console.log(typeof(userIsEventCreator))
 
+// Function to determine the actions that can be performed on an event based on its start and end times
+const checkEventActions = (event) => {
+  const now = new Date();
+  const startTime = new Date(event.start_time);
+  const endTime = new Date(event.end_time);
+  
+  // Check if the current time is equal to or after the event's start time
+  const eventHasStarted = now >= startTime;
+  // Check if the current time is equal to or after the event's end time
+  const eventHasEnded = now >= endTime;
 
-    const fetchAllAndUserEvents = async () => {
-      setIsLoading(true);
+  // An event cannot be updated if it has already started or ended.
+  const canUpdate = !(eventHasStarted || eventHasEnded);
+  // An event cannot be deleted if it has started or if it has ended and is marked as complete.
+  const canDelete = !(eventHasStarted || (eventHasEnded && !event.is_complete));
+
+
+  return {
+    canUpdate, canDelete };
+};
+
+
+
+  const fetchAllAndUserEvents = async () => {
+    setIsLoading(true);
+    try {
+      const data = await fetchData("/events/all_and_user_events/");
+      setAllEvents(data.all_events); // Correctly set all events ordered by most participants
+      setAllUserEvents(data.user_events || []); // Sets user events if a user is logged in; defaults to empty if undefined.
+    } catch (error) {
+      console.error("Error fetching all and user events:", error);
+      setError(error);
+      setIsLoading(false);
+    }
+  };
+  
+  const fetchEventData = async (id) => {
+    setIsLoading(true); 
       try {
-        const data = await fetchData("/events/all_and_user_events/");
-        setAllEvents(data.all_events); // Correctly set all events ordered by most participants
-        setAllUserEvents(data.user_events || []); // Sets user events if a user is logged in; defaults to empty if undefined.
+        const data = await fetchData(`/events/${id || eventId}`);
+        setEvent(data);
+        setGroup(data.group);
+        setParticipants(data.participants);
+        setOrganizer(data.organizer);
+        // Removed the console.log from here as organizer might not be updated immediately due to setState being asynchronous
       } catch (error) {
-        console.error("Error fetching all and user events:", error);
+        console.error("Error fetching event data by ID:", error);
         setError(error);
         setIsLoading(false);
-      }
-    };
-  
-    const fetchEventData = async (id) => {
-      setIsLoading(true); 
-        try {
-          const data = await fetchData(`/events/${id || eventId}`);
-          setEvent(data);
-          setGroup(data.group);
-          setParticipants(data.participants);
-          setOrganizer(data.organizer);
-          // Removed the console.log from here as organizer might not be updated immediately due to setState being asynchronous
-        } catch (error) {
-          console.error("Error fetching event data by ID:", error);
-          setError(error);
-          setIsLoading(false);
-      }
-    };
+    }
+  };
 
-    useEffect(()=> {
-      fetchAllAndUserEvents();
-      if (eventId) {
-        fetchEventData(eventId)
-      }
-    }, [eventId])
-    
+  useEffect(()=> {
+    fetchAllAndUserEvents();
+    if (eventId) {
+      fetchEventData(eventId)
+    }
+  }, [eventId])
+  
 
   // Function to update event data
   const updateEventData = async (updatedEventData) => {

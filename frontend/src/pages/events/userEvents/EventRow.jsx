@@ -5,7 +5,10 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CountDownTimer from '../EventCountDownTimer';
 import EventActions from '../EventAction';
 import UpdateEventForm from "../forms/UpdateEventForm"
-
+import useCrud from '../../../services/useCrud';
+import { useGroupData } from '../../../context/groupData/GroupDataProvider';
+import { useEventData } from '../../../context/eventData/EventDataProvider';
+import SmallScreenEventMenu from './SmallScreenEventMenu';
 
 const EventRow = ({ event }) => {
   const theme = useTheme();
@@ -15,6 +18,27 @@ const EventRow = ({ event }) => {
   const [openUpdateEvenForm, setOpenUpdateEventForm] = useState(false);
 
   const toggleEventForm = () => {setOpenUpdateEventForm(!openUpdateEvenForm)};
+
+  const { deleteObject, setIsLoading, setError } = useCrud();
+  const { fetchAllGroupsData } = useGroupData();
+  const { fetchAllAndUserEvents } = useEventData();
+
+  const handleDelete = async () => {
+      console.log(`Deleting event with ID: ${event.id}`); 
+      setIsLoading(true);
+      try {
+          await deleteObject('/events/', event.id)
+          fetchAllGroupsData(); //updates group/id UI
+          fetchAllAndUserEvents(); //updates UserEvents tab pannel UI
+          setError(false);
+          setIsLoading(false);
+      } catch (error) {
+          console.error("Error deleting event:", error);
+          setError(error);
+          setIsLoading(false);
+          
+      }
+  };
 
   return (
     <>
@@ -26,7 +50,16 @@ const EventRow = ({ event }) => {
         </TableCell>
         {matchesSmallScreen ? (
           // For small screens: Just show "Team1 vs Team2" with the ability to expand for more details
-          <TableCell component="th" scope="row" colSpan={5}>{event.team1} vs {event.team2}</TableCell>
+        <TableCell component="th" scope="row" colSpan={5} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div>
+            {event.team1} vs {event.team2}
+            {/* Any other content that should appear to the left */}
+          </div>
+          <SmallScreenEventMenu
+            onUpdate={toggleEventForm}
+            onDelete={handleDelete}
+          />
+        </TableCell>
         ) : (
           <>
           <TableCell component="th" scope="row">{event.team1} vs {event.team2}</TableCell>
@@ -34,7 +67,7 @@ const EventRow = ({ event }) => {
           {/* Add Place Bet Button here for larger screens */}
           {!matchesSmallScreen && (
               <TableCell>
-                <EventActions event={event} toggleEventForm={toggleEventForm} />
+                <EventActions event={event} toggleEventForm={toggleEventForm} onDelete={handleDelete} />
                 <UpdateEventForm openUpdateEventForm={openUpdateEvenForm} toggleEventForm={toggleEventForm} event={event} />
               </TableCell>
           )}
