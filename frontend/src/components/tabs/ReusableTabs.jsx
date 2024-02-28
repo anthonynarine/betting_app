@@ -34,8 +34,8 @@ function ReusableTabs({ tabsConfig, initialTab }) {
         <Tabs
           value={value}
           onChange={handleChange}
-          variant="scrollable"
-          scrollButtons="auto"
+          // variant="scrollable"
+          // scrollButtons="auto"
           sx={{
             ".MuiTabs-flexContainer": { justifyContent: "space-evenly" },
             ".MuiTabs-indicator": { backgroundColor: theme.palette.secondary.main },

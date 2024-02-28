@@ -9,7 +9,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import LoginLogoutButton from "./LoginLogoutButton";
 import { useAuthServices } from "../../context/Auth/AuthServices";
-import BetList from "../../pages/events/bets/BetList";
+// import BetList from "../../pages/events/bets/BetList";
 
 function PrimaryAppBar() {
   const theme = useTheme();
@@ -26,7 +26,7 @@ function PrimaryAppBar() {
       onKeydown={toggleDrawer(false)}
     >
       {/* <LoginLogoutButton /> */}
-      <BetList open={toggleDrawer} />
+      {/* <BetList open={toggleDrawer} /> */}
     </Box>
   );
 

@@ -3,7 +3,7 @@ import { Card, CardContent, Typography, Divider, Grid, Box, useTheme } from '@mu
 
 // Independent components 
 import { PlaceBetBtn } from './placeBetBtn/PlaceBetBtn'; 
-import CountDownTimer from '../EventCountDownTimer'; // Ensure this import path is correct
+import CountDownTimer from '../EventCountDownTimer';
 import BetForm from './BetForm'; 
 
 const BetCard = ({ bet, userData, toggleBetForm, openBetFormId }) => {
