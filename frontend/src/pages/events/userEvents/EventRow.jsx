@@ -42,7 +42,7 @@ const EventRow = ({ event }) => {
 
   return (
     <>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset' }, }}>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
         <TableCell>
           <IconButton aria-label={open ? "collapse row" : "expand row"} size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}

@@ -37,9 +37,9 @@ const UserEvents = () => {
                 mt: 3,
             }}>
                 <Table aria-label="collapsible table">
-                    <TableHead sx={{ backgroundColor: "black"}} >
+                    {/* <TableHead sx={{ backgroundColor: theme.palette.warning.light}} >
                         <TableRow >
-                            <TableCell /> {/* Adjust the width as needed */}
+                            <TableCell /> 
                             {isSmallScreen ? (
                                 // For small screens: Center "Events" in the TableCell
                                 <TableCell  align={isSmallScreen ? "left" : "left"} colSpan={isSmallScreen ? 1 : 3} >Events</TableCell>
@@ -47,18 +47,22 @@ const UserEvents = () => {
                                 // For larger screens: Evenly distribute "Events" and "Available Balance"
                                 <>
                                     <TableCell></TableCell>
-                                    <TableCell><Typography sx={{color: theme.palette.primary.contrastText}} variant="">My Events</Typography></TableCell>
+                                    <TableCell><Typography sx={{color: theme.palette.primary.main}} variant="button">My Events</Typography></TableCell>
                                     <TableCell></TableCell>
                                 
                                 </>
                             )}
                         </TableRow>
-                    </TableHead>
+                    </TableHead> */}
                     <TableBody>
                         {events
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((event) => (
-                                <EventRow key={event.id} event={event} />
+                            .map((event, index) => (
+                                <EventRow
+                                    key={event.id} 
+                                    event={event}
+
+                                />
                         ))}
                     </TableBody>
                 </Table>

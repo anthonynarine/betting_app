@@ -114,6 +114,8 @@ const CountDownTimer = ({ event }) => {
         <>
             <Box sx={{ 
                 maxWidth: "16rem",
+                minHeight: "3rem",
+                maxHeight: "3rem",
                 display: 'flex', 
                 alignItems: 'center', 
                 gap: 4, 
@@ -126,7 +128,7 @@ const CountDownTimer = ({ event }) => {
                 <Chip 
                     // icon={<AccessTimeIcon />} 
                     label={status} 
-                    size="medium" 
+                    size="small" 
                     sx={{ 
                         fontWeight: 'bold', 
                         color: theme.palette.secondary.main, 

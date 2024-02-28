@@ -34,8 +34,8 @@ function ReusableTabs({ tabsConfig, initialTab }) {
         <Tabs
           value={value}
           onChange={handleChange}
-          // variant="scrollable"
-          // scrollButtons="auto"
+          variant="scrollable"
+          scrollButtons="auto"
           sx={{
             ".MuiTabs-flexContainer": { justifyContent: "space-evenly" },
             ".MuiTabs-indicator": { backgroundColor: theme.palette.secondary.main },
@@ -56,9 +56,9 @@ function ReusableTabs({ tabsConfig, initialTab }) {
                 }
               }}
               sx={{
-                color: value === index ? theme.palette.primary.contrastText : '#0A0A0A',
+                color: value === index ? theme.palette.warning.light : '#0A0A0A',
                 flex: 1,
-                '&.Mui-selected': { color: theme.palette.primary.contrastText },
+                '&.Mui-selected': { color: theme.palette.warning.light },
               }}
             />
           ))}
