@@ -4,29 +4,25 @@ import { useEventData } from "../../../context/eventData/EventDataProvider";
 import { useState } from 'react';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import PaginationComponet from '../../../components/pagination/PaginationComponent';
 
 const UserEvents = () => {
     const { allUserEvents: events } = useEventData()
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-    //Pagination state
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
-    // Calculate total pages
-    const totalPages = Math.ceil(events.length / rowsPerPage);
+    //Pagination functionality
+    const [currentPageEvents, setCurrentPageEvents] = useState([]);
 
-    const handleNext = () => {
-        if (page < totalPages - 1) {
-            setPage((prevPage) => prevPage + 1);
-        }
+    const itemsPerPage = 5;
+
+    // Callback function to update the current items based on page chagne
+    const handleChagePage = (page) => {
+        const start = page * itemsPerPage;
+        const end = start + itemsPerPage;
+        setCurrentPageEvents(events.slice(start, end));
     };
 
-    const handlePrevious = () => {
-        if (page > 0) {
-            setPage((prevPage) => prevPage - 1);
-        }
-    };
 
     
     return (
@@ -39,29 +35,17 @@ const UserEvents = () => {
             }}>
                 <Table aria-label="collapsible table">
                     <TableBody>
-                        {events
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((event, index) => (
-                                <EventRow
-                                    key={event.id} 
-                                    event={event}
-
-                                />
+                        {currentPageEvents.map((event, index) => (
+                            <EventRow key={event.id} event={event}/>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
-            <Box display="flex" justifyContent="space-evenly" alignItems="center" p={2}>
-                <IconButton onClick={handlePrevious} disabled={page === 0}>
-                    <NavigateBeforeIcon />
-                </IconButton>
-                <Typography>
-                    Page {page + 1} of {totalPages}
-                </Typography>
-                <IconButton onClick={handleNext} disabled={page === totalPages - 1}>
-                    <NavigateNextIcon />
-                </IconButton>
-            </Box>
+            <PaginationComponet
+                totalItems={events.length}
+                itemsPerPage={itemsPerPage}
+                onChange={handleChagePage}
+            />
         </Box>
         
     );

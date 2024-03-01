@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
@@ -17,6 +17,7 @@ import CountDownTimer from "./EventCountDownTimer"
 import { PlaceBetBtn } from "./bets/placeBetBtn/PlaceBetBtn"
 
 function EventList() {
+  const [page, setPage] = useState()
   const { groups } = useGroupData();
   const { groupId } = useParams();
 
