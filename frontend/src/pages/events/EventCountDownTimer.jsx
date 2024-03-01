@@ -13,7 +13,9 @@ import { useGroupData } from "../../context/groupData/GroupDataProvider";
  * @param {Object} props.event - Event object containing start and end times.
  * @returns React component.
  */
-const CountDownTimer = ({ event, isUserEventOrganizer }) => {
+const CountDownTimer = ({ event }) => {
+
+    const isUserEventOrganizer = parseInt(localStorage.getItem("userId"), 10) === event.organizer
 
     const theme = useTheme(); 
     // State to store the remaining time until the event.
