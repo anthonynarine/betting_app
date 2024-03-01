@@ -13,6 +13,8 @@ import CasinoIcon from "@mui/icons-material/Casino"; // Example icon for placing
 import VisibilityIcon from "@mui/icons-material/Visibility"; // Example icon for viewing a bet
 import { useGroupData } from "../../context/groupData/GroupDataProvider";
 import { useParams } from "react-router-dom";
+import CountDownTimer from "./EventCountDownTimer"
+import { PlaceBetBtn } from "./bets/placeBetBtn/PlaceBetBtn"
 
 function EventList() {
   const { groups } = useGroupData();
@@ -40,11 +42,10 @@ function EventList() {
     <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 'md', mx: "auto" }}>
       <Table aria-label="event table">
         <TableHead>
-          <TableRow>
+          <TableRow sx={{justifyContent: "center"}} >
             <TableCell>Team 1</TableCell>
             <TableCell>Team 2</TableCell>
-            <TableCell>Start Time</TableCell>
-            <TableCell>End Time</TableCell>
+            <TableCell sx={{justifyContent: "center"}} >Event Status</TableCell>
             <TableCell>Actions</TableCell>
           </TableRow>
         </TableHead>
@@ -55,16 +56,9 @@ function EventList() {
                 {event.team1} {/* Updated to use group.description */}
               </TableCell>
               <TableCell>{event.team2}</TableCell>
-              <TableCell>{event.endTime}</TableCell>
-              <TableCell>${event.totalTeam2}</TableCell>
+              <TableCell><CountDownTimer event={event}/></TableCell>
               <TableCell>
-                <IconButton
-                  onClick={() => {
-                    /* logic to handle icon click */
-                  }}
-                >
-                  {betIcon(event)}
-                </IconButton>
+                {/* <PlaceBetBtn bet={bet} toggleBetForm={toggleBetForm} onDeleteBet={onDeleteBet} /> */}
               </TableCell>
             </TableRow>
           ))}

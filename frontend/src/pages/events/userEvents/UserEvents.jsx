@@ -27,6 +27,7 @@ const UserEvents = () => {
             setPage((prevPage) => prevPage - 1);
         }
     };
+
     
     return (
         <Box>
