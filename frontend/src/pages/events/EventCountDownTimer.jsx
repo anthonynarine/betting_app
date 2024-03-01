@@ -41,7 +41,7 @@ const CountDownTimer = ({ event }) => {
         // Check if the current time is before the target time.
         if (now < targetTime) {
             // Update the status based on whether the event is upcoming or in progress.
-            setStatus(now < new Date(event.start_time) ? "Starts in" : "In Progress");
+            setStatus(now < new Date(event.start_time) ? "Starts in" : "Acitve");
             let difference = targetTime - now;
             let timeLeft = {};
 
@@ -115,13 +115,14 @@ const CountDownTimer = ({ event }) => {
     return (
         <>
             <Box sx={{ 
-                maxWidth: "16rem",
+                maxWidth: "14rem",
                 minHeight: "3rem",
                 maxHeight: "3rem",
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: 4, 
-                padding: '6px 10px', 
+                justifyContent:"space-between",
+                gap: 1, 
+                padding: "2px 8px",
                 borderRadius: '16px', 
                 backgroundColor: theme.palette.primary.dark,
                 boxShadow: '0 1px 3px rgba(0,0,0,0.1)', 
@@ -135,10 +136,10 @@ const CountDownTimer = ({ event }) => {
                         fontWeight: 'bold', 
                         color: theme.palette.secondary.main, 
                         backgroundColor: theme.palette.primary.dark,
-                        display: 'flex',
+                        justifyContent: "flex-start",
                         width: {
                             xs: '5rem', 
-                            sm: '6rem', 
+                            sm: '5.rem', 
                         }
                     }}
                 />

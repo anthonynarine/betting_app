@@ -8,15 +8,13 @@ import {
   TableRow,
   TableFooter,
   Paper,
-  IconButton,
-  TablePagination // We won't use TablePagination but including for completeness if needed later
 } from "@mui/material";
 import CasinoIcon from "@mui/icons-material/Casino";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useGroupData } from "../../context/groupData/GroupDataProvider";
 import { useParams } from "react-router-dom";
 import CountDownTimer from "./EventCountDownTimer";
-import PaginationComponent from "../../components/pagination/PaginationComponent"; // Ensure the correct import path
+import PaginationComponet from "../../components/pagination/PaginationComponent";
 
 function EventList() {
   const { groups } = useGroupData();
@@ -81,6 +79,11 @@ function EventList() {
           </TableFooter>
         </Table>
       </TableContainer>
+          <PaginationComponet
+                totalItems={events.length}
+                itemsPerPage={itemsPerPage}
+                onChangePage={handlePageChange}
+            />
     </>
   );
 }
