@@ -38,23 +38,6 @@ const UserEvents = () => {
                 mt: 3,
             }}>
                 <Table aria-label="collapsible table">
-                    {/* <TableHead sx={{ backgroundColor: theme.palette.warning.light}} >
-                        <TableRow >
-                            <TableCell /> 
-                            {isSmallScreen ? (
-                                // For small screens: Center "Events" in the TableCell
-                                <TableCell  align={isSmallScreen ? "left" : "left"} colSpan={isSmallScreen ? 1 : 3} >Events</TableCell>
-                            ) : (
-                                // For larger screens: Evenly distribute "Events" and "Available Balance"
-                                <>
-                                    <TableCell></TableCell>
-                                    <TableCell><Typography sx={{color: theme.palette.primary.main}} variant="button">My Events</Typography></TableCell>
-                                    <TableCell></TableCell>
-                                
-                                </>
-                            )}
-                        </TableRow>
-                    </TableHead> */}
                     <TableBody>
                         {events
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

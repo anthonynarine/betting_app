@@ -23,6 +23,8 @@ const EventRow = ({ event }) => {
   const { fetchAllGroupsData } = useGroupData();
   const { fetchAllAndUserEvents } = useEventData();
 
+  const isUserEventOrganizer = parseInt(localStorage.getItem("userId"), 10) === event.organizer
+
   const handleDelete = async () => {
       console.log(`Deleting event with ID: ${event.id}`); 
       setIsLoading(true);
@@ -63,7 +65,7 @@ const EventRow = ({ event }) => {
         ) : (
           <>
           <TableCell component="th" scope="row">{event.team1} vs {event.team2}</TableCell>
-          <TableCell><CountDownTimer event={event}/></TableCell>
+          <TableCell><CountDownTimer event={event} isUserEventOrganizer={isUserEventOrganizer}/></TableCell>
           {/* Add Place Bet Button here for larger screens */}
           {!matchesSmallScreen && (
               <TableCell>

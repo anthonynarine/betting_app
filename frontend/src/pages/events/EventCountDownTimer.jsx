@@ -4,7 +4,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CompleteEventForm from "./forms/CompleteEventForm";
-
+import { useGroupData } from "../../context/groupData/GroupDataProvider";
 
 /**
  * A countdown timer component that displays the time remaining until an event starts or ends.
@@ -13,7 +13,7 @@ import CompleteEventForm from "./forms/CompleteEventForm";
  * @param {Object} props.event - Event object containing start and end times.
  * @returns React component.
  */
-const CountDownTimer = ({ event }) => {
+const CountDownTimer = ({ event, isUserEventOrganizer }) => {
 
     const theme = useTheme(); 
     // State to store the remaining time until the event.
@@ -143,7 +143,7 @@ const CountDownTimer = ({ event }) => {
                 <Typography component="span" variant="caption" sx={{ color: '#00DE49', fontWeight: "bold", minWidth: '75px' }}>
                     {renderTimeLeft()}
                 </Typography>
-                {status === "Ended" && (
+                {status === "Ended" && isUserEventOrganizer && (
                     <IconButton onClick={toggleModal}>
                             <Tooltip sx={{color: theme.palette.primary.contrastText}} title="Complete Event" placement="left">
                                 <CheckCircleIcon sx={{ color: theme.palette.secondary.contrastText,  }} />

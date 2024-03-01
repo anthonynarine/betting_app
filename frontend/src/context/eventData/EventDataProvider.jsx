@@ -36,12 +36,8 @@ export const EventDataProvider = ({ children }) => {
   const [event, setEvent] = useState({});
   const [group, setGroup] = useState([]);
   const [participants, setParticipants] = useState([]);
-  const [organizer, setOrganizer] = useState(null);
-  
-  // Function to check if the logged-in user is the organizer
-  const userIsEventCreator = parseInt(localStorage.getItem("userId"), 10) === organizer;
-  // console.log(typeof(userIsEventCreator))
 
+  
 // Function to determine the actions that can be performed on an event based on its start and end times
 const checkEventActions = (event) => {
   const now = new Date();
@@ -58,11 +54,9 @@ const checkEventActions = (event) => {
   // An event cannot be deleted if it has started or if it has ended and is marked as complete.
   const canDelete = !(eventHasStarted || (eventHasEnded && !event.is_complete));
 
-
   return {
     canUpdate, canDelete };
 };
-
 
 
   const fetchAllAndUserEvents = async () => {
@@ -85,7 +79,6 @@ const checkEventActions = (event) => {
         setEvent(data);
         setGroup(data.group);
         setParticipants(data.participants);
-        setOrganizer(data.organizer);
         // Removed the console.log from here as organizer might not be updated immediately due to setState being asynchronous
       } catch (error) {
         console.error("Error fetching event data by ID:", error);
@@ -116,8 +109,6 @@ const checkEventActions = (event) => {
     eventId,
     group,
     participants,
-    organizer,
-    userIsEventCreator,
     updateEventData,
     error,
     loading,

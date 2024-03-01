@@ -13,7 +13,7 @@ export default function PageHeader() {
 
     // Conditional rendering based on if the group is found
     return (
-        <Container maxWidth="md" sx={{ mt: 4,   }}>
+        <Container maxWidth="md" sx={{ mt: 3,   }}>
             {group ? (
                 <Box
                     key={group.id}
