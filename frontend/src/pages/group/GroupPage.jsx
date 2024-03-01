@@ -1,5 +1,5 @@
 import { Box, CssBaseline } from "@mui/material";
-import PrimaryAppBar from "../../components/primaryAppBar/PrimaryAppBar";
+import PrimaryAppBar from "../../components/header/PrimaryAppBar";
 import PageHeader from "./header/PageHeader";
 
 import React, { useEffect } from "react";

@@ -13,15 +13,15 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
  * - onChange(function): A callback func that is caleld w/ the new page num whenever the page changes 
  */
 
-const PaginationComponet = ({ totalItems, itemsPerPage, onChange }) => {
+const PaginationComponet = ({ totalItems, itemsPerPage, onChangePage }) => {
     const [page, setPage] = useState(0);
     //Calculate the total num of pages bases on total items and items per page
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
     useEffect(()=>{
     // Effect to call the onChangePage callback with the current page whenever the page changes.
-        onChange(page);
-    }, [page, onChange]);
+        onChangePage(page);
+    }, [page, onChangePage]);
 
     // Func to handle clicking the "next" btn. Increments the page state.
     const handleNext = () => {

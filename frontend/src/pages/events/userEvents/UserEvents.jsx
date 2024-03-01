@@ -44,7 +44,7 @@ const UserEvents = () => {
             <PaginationComponet
                 totalItems={events.length}
                 itemsPerPage={itemsPerPage}
-                onChange={handleChagePage}
+                onChangePage={handleChagePage}
             />
         </Box>
         
