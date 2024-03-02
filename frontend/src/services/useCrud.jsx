@@ -1,6 +1,5 @@
 /* eslint-disable no-lone-blocks */
 import { useState, useCallback } from "react";
-import useAxiosWithInterceptor from "./jwtinterceptor-jwtNotReq";
 import useAxiosWithInterceptorJwt from "./jwtinterceptor-jwtReq";
 
 {/*custom React hook designed for CRUD (Create, Read, Update, Delete)

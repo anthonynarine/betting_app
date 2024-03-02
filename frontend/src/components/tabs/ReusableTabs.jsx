@@ -2,14 +2,31 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Tabs, Tab, Box } from "@mui/material";
 import TabPanel from "./TabPanel";
 import { useTheme } from "@mui/material/styles";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function ReusableTabs({ tabsConfig, initialTab }) {
   const theme = useTheme();
   const navigate = useNavigate();
-  
-  // Initialize the active tab state with initialTab prop, if provided
-  const [value, setValue] = useState(initialTab || 0);
+  const location = useLocation();
+
+  // Initialize the active tab state with the value from the URL or the initialTab prop
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    const getTabFromUrl = () => {
+      const searchParams = new URLSearchParams(location.search);
+      const tabParam = searchParams.get("tab");
+      const tabValue = parseInt(tabParam, 10);
+      if (!isNaN(tabValue) && tabValue >= 0 && tabValue < tabsConfig.length) {
+        return tabValue;
+      }
+      return initialTab || 0; // Default to initialTab or the 1st tab if URL param is invalid
+    };
+
+    // Set the tab based on the URL or the initialTab prop
+    setValue(getTabFromUrl());
+  }, [location.search, tabsConfig.length, initialTab]); // Depend on location.search, tabsConfig.length, and initialTab
+
 
   // Handles changing the active tab
   const handleChange = (event, newValue) => {
@@ -18,9 +35,6 @@ function ReusableTabs({ tabsConfig, initialTab }) {
     navigate(`?tab=${newValue}`, { replace: true });
   };
 
-  useEffect(() => {
-    setValue(initialTab);
-  }, [initialTab]);
 
   return (
     <Box

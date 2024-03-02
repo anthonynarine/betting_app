@@ -5,7 +5,7 @@ import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
 
-export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet }) => { 
+export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet, onUpdateBet }) => { 
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   useEffect(() => {

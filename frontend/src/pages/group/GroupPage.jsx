@@ -24,7 +24,7 @@ const GroupPage = () => {
           <CssBaseline />
           <PrimaryAppBar />
           <GroupTabs />
-          <PageHeader />
+          {/* <PageHeader /> */}
           <EventList />
         </Box>
       </EventDataProvider>

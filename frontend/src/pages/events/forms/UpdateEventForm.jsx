@@ -78,6 +78,7 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
         console.log(updatedEventObject)
         updateEventData(updatedEventObject) // Update context with the new event data
         fetchAllGroupsData();
+
         toggleEventForm();
         setSnackbarMessage("Event updated successfully!");
         setSnackbarOpen(true);
@@ -93,7 +94,6 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
         setSnackbarMessage(errorMessage);
         setSnackbarOpen(true);
     };
-
     // useEffect for debugging: Manually trigger the Snackbar for testing
     // useEffect(() => {
     //     console.log("Snackbar Open: ", snackbarOpen);

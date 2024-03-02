@@ -1,9 +1,7 @@
-import { useMediaQuery, IconButton, useTheme, Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Typography, Box, Toolbar, TableFooter } from '@mui/material';
+import { useMediaQuery,  useTheme, Table, TableBody, TableCell, TableHead, TableRow, Paper, TableContainer, Typography, Box, Toolbar, TableFooter } from '@mui/material';
 import EventRow from "./EventRow";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
-import { useState } from 'react';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { useCallback, useState } from 'react';
 import PaginationComponet from '../../../components/pagination/PaginationComponent';
 import UserEventListToolBar from './UserEventListToolBar';
 
@@ -21,17 +19,17 @@ const UserEvents = () => {
     const blankRowsCount = currentPageEvents.length < itemsPerPage ? itemsPerPage - currentPageEvents.length : 0;
 
     // Callback function to update the current items based on page chagne
-    const handleChagePage = (page) => {
+    const handleChagePage = useCallback((page) => {
         const start = page * itemsPerPage;
         const end = start + itemsPerPage;
         setCurrentPageEvents(events.slice(start, end));
-    };
+    },[events, itemsPerPage]);
 
 
     
     return (
         <Box>
-            <TableContainer component={Paper} elevation={20} sx={{
+            <TableContainer component={Paper} elevation={1} sx={{
                 maxWidth: { xs: '100%', sm: 600, md: 675 },
                 mx: 'auto',
                 my: 2,
@@ -40,7 +38,7 @@ const UserEvents = () => {
             }}>
                 <UserEventListToolBar />
                 <Table aria-label="collapsible table">
-                <TableBody  sx={{ borderTop: "1.5px solid black"}}>
+                <TableBody  >
                     {currentPageEvents.map((event, index) => (
                         <EventRow key={event.id} event={event} />
                     ))}

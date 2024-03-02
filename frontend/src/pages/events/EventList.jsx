@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Table,
   TableBody,
@@ -9,15 +9,15 @@ import {
   TableFooter,
   Paper,
 } from "@mui/material";
-import CasinoIcon from "@mui/icons-material/Casino";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useGroupData } from "../../context/groupData/GroupDataProvider";
 import { useParams } from "react-router-dom";
+import { PlaceBetBtn } from "./bets/placeBetBtn/PlaceBetBtn";
 import CountDownTimer from "./EventCountDownTimer";
 import PaginationComponet from "../../components/pagination/PaginationComponent";
 
+
 function EventList() {
-  const { groups } = useGroupData();
+  const { groups, updateEvent, deleteEvent } = useGroupData();
   const { groupId } = useParams();
 
   // Find the specific group by ID
@@ -34,21 +34,42 @@ function EventList() {
   }, [events, page]); // Ensure effect runs when events change or page changes
 
   // Callback function to update the current items based on page change
-  const handlePageChange = (newPage) => {
+  const handlePageChange = useCallback((newPage) => {
     const start = newPage * itemsPerPage;
     const end = start + itemsPerPage;
     setCurrentPageEvents(events.slice(start, end));
     setPage(newPage); // Update the current page
+  }, [itemsPerPage, events, setPage]);
+  
+
+  // BetForm functionality
+  const [isBetFormOpen, setIsBetFormOpen] = useState(false);
+
+  const toggleBetForm = useCallback((eventId) =>{
+    setIsBetFormOpen((preIsBetFormOpen) => !preIsBetFormOpen);
+  },[])
+
+  const handleUpdateEvent = async(eventId, betData) => {
+    try {
+      await updateEvent(eventId, {...betData});
+    } catch (error) {
+      console.error("Failed to place/update bet:", error)
+    }
+  };
+  
+  const handleDeleteBet = async(eventId) => {
+    try {
+      await deleteEvent(eventId); 
+    } catch (error) {
+      console.error("Failed to delete bet:", error)
+    }
   };
 
-  const betIcon = (event) => {
-    const hasBet = Math.random() > 0.5; // Placeholder logic
-    return hasBet ? <VisibilityIcon /> : <CasinoIcon />;
-  };
+
 
   return (
     <>
-      <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 'md', mx: "auto" }}>
+      <TableContainer component={Paper} sx={{ mt: 6, maxWidth: 'md', mx: "auto" }}>
         <Table aria-label="event table">
           <TableHead>
             <TableRow>
@@ -65,7 +86,12 @@ function EventList() {
                 <TableCell>{event.team2}</TableCell>
                 <TableCell><CountDownTimer event={event}/></TableCell>
                 <TableCell>
-                  {/* Here you can use your betIcon function or PlaceBetBtn component */}
+                  <PlaceBetBtn 
+                    // bet={bet ? bet : {}}
+                    toggleBetForm={()=> toggleBetForm(event.id)}
+                    onUpdateBet={(betData) => handleUpdateEvent(event.id, betData)}
+                    onDeleteBet={() => handleDeleteBet(event.id)}
+                  />
                 </TableCell>
               </TableRow>
             ))}

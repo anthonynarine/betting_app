@@ -26,7 +26,7 @@ export default EventDataContext;
 export const EventDataProvider = ({ children }) => {
   // console.log("EventDataProvider is re-rendering"); // DEBUG TEST
   const { eventId } = useParams();
-  const { fetchData, updateObject } = useCrud();
+  const { fetchData, updateObject, deleteObject } = useCrud();
 
   //State needed for Events
   const [loading, setIsLoading] = useState(false);
@@ -95,12 +95,26 @@ const checkEventActions = (event) => {
   }, [eventId])
   
 
-  // Function to update event data
-  const updateEventData = async (updatedEventData) => {
-    setEvent(updatedEventData); // Directly update the context with the provided data
-    console.log("Event data updated in context");
-    await fetchAllAndUserEvents();
-}
+  // Function to update event 
+  const updateEvent = async (eventId, updatedEventData) => {
+    try {
+      await updateObject("/events/", eventId, updatedEventData)
+      fetchAllAndUserEvents(); // Update UI state
+    } catch (error) {
+      console.error("Failed to update event:", error);
+    }
+  };
+
+  const deleteEvent = async (eventId) => {
+    try {
+      await deleteObject("/events/", eventId);
+      fetchAllAndUserEvents(); // Update UI state
+    } catch (error) {
+      console.error("Failded to delete event:", error);
+    }
+  };
+
+
 
   const value = {
     allEvents,
@@ -109,7 +123,8 @@ const checkEventActions = (event) => {
     eventId,
     group,
     participants,
-    updateEventData,
+    updateEvent,
+    deleteEvent,
     error,
     loading,
     fetchAllAndUserEvents,
