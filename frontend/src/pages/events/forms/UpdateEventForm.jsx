@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 // UpdateEventForm component: Manages the update functionality for an event
 const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     // Accessing event data from context
-    const { updateEventData } = useEventData();
+    const { fetchAllAndUserEvents} = useEventData();
     const { fetchAllGroupsData } = useGroupData();
     // console.log("TESTING event data input", event)
     // CRUD operations custom hook
@@ -66,9 +66,10 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
             console.log('Event ID:', event.id); // Debugging
             console.log('Event Details:', eventDetails); // Debugging
             const updatedEventObject = await updateObject('/events/', event.id, eventDetails);
-            console.log('Updated Event Object:', updatedEventObject); // Debugging
+            console.log('Success Updated Event Object:', updatedEventObject); // Debugging
             handleSuccess(updatedEventObject);
         } catch (error) {
+            console.log('Caught Error:', error);
             handleError(error);
         }
     };
@@ -76,8 +77,8 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     // Handling successful update
     const handleSuccess = (updatedEventObject) => {
         console.log(updatedEventObject)
-        updateEventData(updatedEventObject) // Update context with the new event data
         fetchAllGroupsData();
+        fetchAllAndUserEvents();
 
         toggleEventForm();
         setSnackbarMessage("Event updated successfully!");
