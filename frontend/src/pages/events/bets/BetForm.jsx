@@ -16,9 +16,8 @@ import CustomAlert from "./placeBetBtn/CustomAlert";
 import { useEventData } from "../../../context/eventData/EventDataProvider";
 import { useBetData } from "../../../context/bet/BetDataProvider";
 
-const BetForm = ({ open, onClose, bet }) => {
+const BetForm = ({ open, onClose, bet, eventId }) => {
   // Hooks
-  const { eventId } = useParams();
   const { createBet, updateBet } = useBetData();
   const { event: contextEvent, loading: eventLoading, error: eventError } = useEventData();
 

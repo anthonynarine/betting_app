@@ -3,7 +3,6 @@ import useCrud from "../../services/useCrud";
 import { useParams } from "react-router-dom";
 
 // === Context Creation ===
-// Create a new context for API data
 export const GroupDataContext = createContext();
 
 // Custom hook to use the GroupDataContext
@@ -111,8 +110,6 @@ export const GroupDataProvider = ({ children }) => {
         // Handle error appropriately (e.g., showing an error message to the user)
     }
 };
-
-
 
   // The value that will be available to components wrapped in this Provider
   const value = {

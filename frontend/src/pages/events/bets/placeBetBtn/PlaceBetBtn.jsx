@@ -1,67 +1,96 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add'; // For placing a new bet
+import EditIcon from '@mui/icons-material/Edit'; // For editing an existing bet
+import DeleteIcon from '@mui/icons-material/Delete'; // For deleting an existing bet
 import { PlaceBetBtnStyles } from "./placeBetBtnStyles";
+import useCrud from "../../../../services/useCrud";
+import { useGroupData } from "../../../../context/groupData/GroupDataProvider";
 
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete'; // Import DeleteIcon
-
-export const PlaceBetBtn = ({ bet, toggleBetForm, onDeleteBet, onUpdateBet }) => { 
+export const PlaceBetBtn = ({ bet, toggleBetForm, eventId}) => {
   const [currentTime, setCurrentTime] = useState(Date.now());
 
+  console.log("testing bet", bet)
+
+  const { updateObject, deleteObject } = useCrud();
+  const { fetchAllAndUserEvents } = useGroupData()
+  const theme = useTheme();
+  const classes = PlaceBetBtnStyles(theme);
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTime(Date.now());
-    }, 1000); // Continuously update currentTime every second
+    }, 1000);
     return () => clearInterval(interval);
   }, []);
-
-  // Parse event start and end times
+  
+  // Event time calculations
   const eventStartTime = new Date(bet?.event?.start_time).getTime();
   const eventEndTime = new Date(bet?.event?.end_time).getTime();
 
-  // Determine the event and bet status
+  // Event status
   const eventInProgress = currentTime >= eventStartTime && currentTime <= eventEndTime;
   const eventHasEnded = currentTime > eventEndTime;
 
-  let theme = useTheme();
-  let classes = PlaceBetBtnStyles(theme);
-
-  let buttonElement; // This will hold the JSX for our buttons
-
-  // Determine if the bet can be edited
+  // Editability
   const canEditBet = bet && !eventInProgress && !eventHasEnded;
 
-  if (canEditBet) {
-    // Bet can be edited, display the EditIcon and DeleteIcon with tooltips for editing and deleting
+  const updateEvent = useCallback(async (updatedEventData) =>{
+    try {
+      await updateObject("/events/", eventId, updatedEventData);
+      fetchAllAndUserEvents()
+    } catch (error) {
+      console.error("Failed to update event:", error);
+    }
+  },[eventId]);
+  
+  const deleteEvent = useCallback(async () =>{
+    try {
+      await deleteObject("/events/", eventId);
+      fetchAllAndUserEvents();
+    } catch (error) { 
+      console.error("Failed to delete event:", error);
+    }
+  }, [eventId])
+
+  let buttonElement;
+
+  if (!bet) {
+    // Scenario: No bet exists
     buttonElement = (
-      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1} }}>
-        <Tooltip
-          title="Edit Bet"
-          placement="top"
-          PopperProps={classes.tooltipConfig.PopperProps}
-          PaperProps={classes.tooltipConfig.PaperProps}
-        >
-          <IconButton onClick={toggleBetForm} sx={classes.placeBet}>
+      <Tooltip title="Place Bet" placement="top">
+        <IconButton onClick={() => toggleBetForm('new', bet?.event)} sx={classes.placeBet}>
+          <AddIcon />
+        </IconButton>
+      </Tooltip>
+    );
+  } else if (canEditBet) {
+    // Scenario: Bet exists and can be edited
+    buttonElement = (
+      <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 } }}>
+        <Tooltip title="Edit Bet" placement="top">
+          <IconButton onClick={() => toggleBetForm('edit', bet)} sx={classes.placeBet}>
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip
-          title="Delete Bet"
-          placement="top"
-          PopperProps={classes.tooltipConfig.PopperProps}
-          PaperProps={classes.tooltipConfig.PaperProps}
-        >
-          <IconButton onClick={onDeleteBet} sx={classes.placeBet}> {/* Assuming onDeleteBet handles bet deletion */}
+        <Tooltip title="Delete Bet" placement="top">
+          <IconButton onClick={deleteEvent} sx={classes.placeBet}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
       </Box>
     );
   } else {
-    // Bet cannot be edited or there is no bet; do not display icons
+    // Scenario: Bet cannot be edited (event in progress/ended)
     buttonElement = (
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        {/* Display alternative content or nothing if no editable bet */}
+      <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {/* Optionally, display why editing/deleting is not allowed */}
+        <Tooltip title="Betting closed" placement="top">
+          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 0.5, sm: 1 }, ...classes.disabledState }}>
+            <EditIcon color="disabled" />
+            <DeleteIcon color="disabled" />
+          </Box>
+        </Tooltip>
       </Box>
     );
   }

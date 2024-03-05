@@ -12,7 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 // UpdateEventForm component: Manages the update functionality for an event
 const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
     // Accessing event data from context
-    const { fetchAllAndUserEvents} = useEventData();
+    const {  fetchAllAndUserEvents } = useEventData();
     const { fetchAllGroupsData } = useGroupData();
     // console.log("TESTING event data input", event)
     // CRUD operations custom hook
@@ -79,7 +79,6 @@ const UpdateEventForm = ({ openUpdateEventForm, toggleEventForm, event }) => {
         console.log(updatedEventObject)
         fetchAllGroupsData();
         fetchAllAndUserEvents();
-
         toggleEventForm();
         setSnackbarMessage("Event updated successfully!");
         setSnackbarOpen(true);

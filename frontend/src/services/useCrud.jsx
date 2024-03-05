@@ -65,7 +65,7 @@ const fetchData = useCallback(
       throw error; // Re-throw the error for further handling
     }
   },
-  [jwtReqAxios, BASE_URL] // Dependencies for useCallback
+  [BASE_URL] // Dependencies for useCallback
 );
 
 
@@ -88,7 +88,7 @@ const fetchData = useCallback(
  * createObject('/groups/', groupData)
  * createObject('/events/', eventData)
  */
-const createObject = async (url, data = {}) => {
+const createObject = useCallback(async (url, data = {}) => {
   setIsLoading(true); // Start loading state
   try {
     const response = await jwtReqAxios.post(url, data); // Make the POST request
@@ -102,7 +102,7 @@ const createObject = async (url, data = {}) => {
     setIsLoading(false); // End loading state
     throw error; // Re-throw the error for further handling
   }
-};
+},[]);
 
 /**
  * Asynchronously updates an object on the server.
@@ -132,7 +132,7 @@ const createObject = async (url, data = {}) => {
  * To update this group, call the function with the API endpoint, the group's id, and the new data:
  *   updateObject('/groups/', 123, updatedGroupData);
  */
-const updateObject = async (url, id, data) => {
+const updateObject = useCallback(async (url, id, data) => {
   setIsLoading(true); // Start loading state
   try {
     // Debugging logs
@@ -152,7 +152,7 @@ const updateObject = async (url, id, data) => {
     setIsLoading(false); // End loading state
     throw error; // Re-throw the error for further handling
   }
-};
+},[]);
 
 
 /**
@@ -177,7 +177,7 @@ const updateObject = async (url, id, data) => {
  * Note: The function currently lacks error handling in the catch block. It's recommended
  * to add appropriate error handling logic and possibly update the UI state accordingly.
  */
-const deleteObject = async (url, id) => {
+const deleteObject = useCallback(async (url, id) => {
   setIsLoading(true); // Start loading state
   try {
     const fullUrl = `${url}${id}/`; // Construct the full URL
@@ -194,7 +194,7 @@ const deleteObject = async (url, id) => {
     setError(error);
     setIsLoading(false);
   }
-};
+},[]);
 
   return {
     error,

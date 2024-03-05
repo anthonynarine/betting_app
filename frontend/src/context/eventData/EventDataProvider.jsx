@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useCrud from "../../services/useCrud";
+import { useCallback } from "react";
 
 //  To Use this context 
 //  import { useEventData } from "somedir"
@@ -22,11 +23,10 @@ export const useEventData = () => {
 export default EventDataContext;
 
 
-
 export const EventDataProvider = ({ children }) => {
   // console.log("EventDataProvider is re-rendering"); // DEBUG TEST
   const { eventId } = useParams();
-  const { fetchData, updateObject, deleteObject } = useCrud();
+  const { fetchData } = useCrud();
 
   //State needed for Events
   const [loading, setIsLoading] = useState(false);
@@ -38,39 +38,19 @@ export const EventDataProvider = ({ children }) => {
   const [participants, setParticipants] = useState([]);
 
   
-// Function to determine the actions that can be performed on an event based on its start and end times
-const checkEventActions = (event) => {
-  const now = new Date();
-  const startTime = new Date(event.start_time);
-  const endTime = new Date(event.end_time);
-  
-  // Check if the current time is equal to or after the event's start time
-  const eventHasStarted = now >= startTime;
-  // Check if the current time is equal to or after the event's end time
-  const eventHasEnded = now >= endTime;
-
-  // An event cannot be updated if it has already started or ended.
-  const canUpdate = !(eventHasStarted || eventHasEnded);
-  // An event cannot be deleted if it has started or if it has ended and is marked as complete.
-  const canDelete = !(eventHasStarted || (eventHasEnded && !event.is_complete));
-
-  return {
-    canUpdate, canDelete };
-};
-
-
-  const fetchAllAndUserEvents = async () => {
+  const fetchAllAndUserEvents = useCallback(async () => {
     setIsLoading(true);
     try {
       const data = await fetchData("/events/all_and_user_events/");
-      setAllEvents(data.all_events); // Correctly set all events ordered by most participants
-      setAllUserEvents(data.user_events || []); // Sets user events if a user is logged in; defaults to empty if undefined.
+      setAllEvents(data.all_events);
+      setAllUserEvents(data.user_events || []);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching all and user events:", error);
       setError(error);
       setIsLoading(false);
     }
-  };
+  }, []);
   
   const fetchEventData = async (id) => {
     setIsLoading(true); 
@@ -95,27 +75,6 @@ const checkEventActions = (event) => {
   }, [eventId])
   
 
-  // Function to update event 
-  const updateEvent = async (eventId, updatedEventData) => {
-    try {
-      await updateObject("/events/", eventId, updatedEventData)
-      fetchAllAndUserEvents(); // Update UI state
-    } catch (error) {
-      console.error("Failed to update event:", error);
-    }
-  };
-
-  const deleteEvent = async (eventId) => {
-    try {
-      await deleteObject("/events/", eventId);
-      fetchAllAndUserEvents(); // Update UI state
-    } catch (error) {
-      console.error("Failded to delete event:", error);
-    }
-  };
-
-
-
   const value = {
     allEvents,
     allUserEvents,
@@ -123,8 +82,6 @@ const checkEventActions = (event) => {
     eventId,
     group,
     participants,
-    updateEvent,
-    deleteEvent,
     error,
     loading,
     fetchAllAndUserEvents,
